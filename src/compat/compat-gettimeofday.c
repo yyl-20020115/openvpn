@@ -46,8 +46,7 @@ static time_t last_sec = 0;
 static unsigned int last_msec = 0;
 static int bt_last = 0;
 
-static void
-gettimeofday_calibrate(void)
+static void gettimeofday_calibrate(void)
 {
     const time_t t = time(NULL);
     const DWORD gtc = GetTickCount();
@@ -60,13 +59,12 @@ gettimeofday_calibrate(void)
  * QueryPerformanceCounter takes nearly 2 orders of magnitude
  * more processor cycles than GetTickCount.
  */
-int
-gettimeofday(struct timeval *tv, void *tz)
+int gettimeofday(struct timeval *tv, void *tz)
 {
     const DWORD gtc = GetTickCount();
     int bt = 0;
-    time_t sec;
-    unsigned int msec;
+    time_t sec = { 0 };
+    unsigned int msec = 0;
     const int backtrack_hold_seconds = 10;
 
     (void)tz;
@@ -119,8 +117,7 @@ gettimeofday(struct timeval *tv, void *tz)
 
 #include <time.h>
 
-int
-gettimeofday(struct timeval *tv, void *tz)
+int gettimeofday(struct timeval *tv, void *tz)
 {
     (void)tz;
     tv->tv_sec = time(NULL);

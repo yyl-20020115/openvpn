@@ -184,8 +184,7 @@ unsigned int mroute_extract_addr_ether(struct mroute_addr *src,
  * Given a raw packet in buf, return the src and dest
  * addresses of the packet.
  */
-static inline unsigned int
-mroute_extract_addr_from_packet(struct mroute_addr *src,
+static inline unsigned int mroute_extract_addr_from_packet(struct mroute_addr *src,
                                 struct mroute_addr *dest,
                                 uint16_t vid,
                                 const struct buffer *buf,
@@ -204,8 +203,7 @@ mroute_extract_addr_from_packet(struct mroute_addr *src,
     return ret;
 }
 
-static inline bool
-mroute_addr_equal(const struct mroute_addr *a1, const struct mroute_addr *a2)
+static inline bool mroute_addr_equal(const struct mroute_addr *a1, const struct mroute_addr *a2)
 {
     if (a1->type != a2->type)
     {
@@ -222,21 +220,18 @@ mroute_addr_equal(const struct mroute_addr *a1, const struct mroute_addr *a2)
     return memcmp(a1->raw_addr, a2->raw_addr, a1->len) == 0;
 }
 
-static inline const uint8_t *
-mroute_addr_hash_ptr(const struct mroute_addr *a)
+static inline const uint8_t * mroute_addr_hash_ptr(const struct mroute_addr *a)
 {
     /* NOTE: depends on ordering of struct mroute_addr */
     return (uint8_t *) &a->type;
 }
 
-static inline uint32_t
-mroute_addr_hash_len(const struct mroute_addr *a)
+static inline uint32_t mroute_addr_hash_len(const struct mroute_addr *a)
 {
     return (uint32_t) a->len + 2;
 }
 
-static inline void
-mroute_extract_in_addr_t(struct mroute_addr *dest, const in_addr_t src)
+static inline void mroute_extract_in_addr_t(struct mroute_addr *dest, const in_addr_t src)
 {
     dest->type = MR_ADDR_IPV4;
     dest->netbits = 0;
@@ -244,8 +239,7 @@ mroute_extract_in_addr_t(struct mroute_addr *dest, const in_addr_t src)
     dest->v4.addr = htonl(src);
 }
 
-static inline in_addr_t
-in_addr_t_from_mroute_addr(const struct mroute_addr *addr)
+static inline in_addr_t in_addr_t_from_mroute_addr(const struct mroute_addr *addr)
 {
     if ((addr->type & MR_ADDR_MASK) == MR_ADDR_IPV4 && addr->netbits == 0 && addr->len == 4)
     {
@@ -257,8 +251,7 @@ in_addr_t_from_mroute_addr(const struct mroute_addr *addr)
     }
 }
 
-static inline void
-mroute_addr_reset(struct mroute_addr *ma)
+static inline void mroute_addr_reset(struct mroute_addr *ma)
 {
     ma->len = 0;
     ma->type = MR_ADDR_NONE;

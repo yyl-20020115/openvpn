@@ -115,8 +115,7 @@ EVP_PKEY *xkey_load_management_key(OSSL_LIB_CTX *libctx, EVP_PKEY *pubkey);
  * to the required size and false is returned.
  *
  */
-bool
-encode_pkcs1(unsigned char *enc, size_t *enc_len, const char *mdname,
+bool encode_pkcs1(unsigned char *enc, size_t *enc_len, const char *mdname,
              const unsigned char *tbs, size_t tbslen);
 
 /**
@@ -133,8 +132,7 @@ encode_pkcs1(unsigned char *enc, size_t *enc_len, const char *mdname,
  * On successful return *buflen is set to the actual size of the result.
  * TIP: EVP_MD_MAX_SIZE should be enough capacity of buf for al algorithms.
  */
-int
-xkey_digest(const unsigned char *src, size_t srclen, unsigned char *buf,
+int xkey_digest(const unsigned char *src, size_t srclen, unsigned char *buf,
             size_t *buflen, const char *mdname);
 
 /**
@@ -150,8 +148,7 @@ xkey_digest(const unsigned char *src, size_t srclen, unsigned char *buf,
  * IMPORTANT: a reference to the handle is retained by the provider and
  * relased by calling free_op. The caller should not free it.
  */
-EVP_PKEY *
-xkey_load_generic_key(OSSL_LIB_CTX *libctx, void *handle, EVP_PKEY *pubkey,
+EVP_PKEY * xkey_load_generic_key(OSSL_LIB_CTX *libctx, void *handle, EVP_PKEY *pubkey,
                       XKEY_EXTERNAL_SIGN_fn *sign_op, XKEY_PRIVKEY_FREE_fn *free_op);
 
 extern OSSL_LIB_CTX *tls_libctx; /* Global */
@@ -163,8 +160,7 @@ extern OSSL_LIB_CTX *tls_libctx; /* Global */
  * @param hLen       Length of digest to be signed
  * @returns the maximum allowed salt length. Caller must check it's not < 0.
  */
-static inline int
-xkey_max_saltlen(int modBits, int hLen)
+static inline int xkey_max_saltlen(int modBits, int hLen)
 {
     int emLen = (modBits - 1 + 7)/8; /* ceil((modBits - 1)/8) */
 

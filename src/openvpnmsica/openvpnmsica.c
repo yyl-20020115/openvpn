@@ -82,13 +82,12 @@
  *
  * @return ERROR_SUCCESS on success; An error code otherwise
  */
-static UINT
-setup_sequence(
+static UINT setup_sequence(
     _In_ MSIHANDLE hInstall,
     _In_z_ LPCTSTR szProperty,
     _In_ struct msica_arg_seq *seq)
 {
-    UINT uiResult;
+    UINT uiResult = 0;
     LPTSTR szSequence = msica_arg_seq_join(seq);
     uiResult = MsiSetProperty(hInstall, szProperty, szSequence);
     free(szSequence);
@@ -111,15 +110,14 @@ setup_sequence(
  * @param szFunctionName  Function name that triggered the pop-up. Displayed in message box's
  *                        title.
  */
-static void
-_debug_popup(_In_z_ LPCSTR szFunctionName)
+static void _debug_popup(_In_z_ LPCSTR szFunctionName)
 {
-    TCHAR szTitle[0x100], szMessage[0x100+MAX_PATH], szProcessPath[MAX_PATH];
+    TCHAR szTitle[0x100] = { 0 }, szMessage[0x100+MAX_PATH] = { 0 }, szProcessPath[MAX_PATH] = { 0 };
 
     /* Compose pop-up title. The dialog title will contain function name to ease the process
      * locating. Mind that Visual Studio displays window titles on the process list. */
     _stprintf_s(szTitle, _countof(szTitle), TEXT("%hs v%") TEXT(PRIsLPTSTR),
-                szFunctionName, TEXT(PACKAGE_VERSION));
+                szFunctionName, (PACKAGE_VERSION));
 
     /* Get process name. */
     GetModuleFileName(NULL, szProcessPath, _countof(szProcessPath));
@@ -147,14 +145,13 @@ _debug_popup(_In_z_ LPCSTR szFunctionName)
 #define debug_popup(f)
 #endif /* ifdef _DEBUG */
 
-static void
-find_adapters(
+static void find_adapters(
     _In_ MSIHANDLE hInstall,
     _In_z_ LPCTSTR szzHardwareIDs,
     _In_z_ LPCTSTR szAdaptersPropertyName,
     _In_z_ LPCTSTR szActiveAdaptersPropertyName)
 {
-    UINT uiResult;
+    UINT uiResult = 0;
 
     /* Get network adapters with given hardware ID. */
     struct tap_adapter_node *pAdapterList = NULL;
@@ -245,8 +242,8 @@ find_adapters(
         /* If this adapter is active (connected), add it to the list of active TAP adapter ID(s). */
         for (PIP_ADAPTER_ADDRESSES p = pAdapterAdresses; p; p = p->Next)
         {
-            OLECHAR szId[38 /*GUID*/ + 1 /*terminator*/];
-            GUID guid;
+            OLECHAR szId[38 /*GUID*/ + 1 /*terminator*/] = { 0 };
+            GUID guid = { 0 };
             if (MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, p->AdapterName, -1, szId, _countof(szId)) > 0
                 && SUCCEEDED(IIDFromString(szId, &guid))
                 && memcmp(&guid, &pAdapter->guid, sizeof(GUID)) == 0)
@@ -296,8 +293,7 @@ cleanup_pAdapterList:
 }
 
 
-UINT __stdcall
-FindSystemInfo(_In_ MSIHANDLE hInstall)
+UINT __stdcall FindSystemInfo(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -311,7 +307,7 @@ FindSystemInfo(_In_ MSIHANDLE hInstall)
 
     find_adapters(
         hInstall,
-        TEXT("root\\") TEXT(TAP_WIN_COMPONENT_ID) TEXT("\0") TEXT(TAP_WIN_COMPONENT_ID) TEXT("\0"),
+        TEXT("root\\") TAP_WIN_COMPONENT_ID TEXT("\0") TAP_WIN_COMPONENT_ID TEXT("\0"),
         TEXT("TAPWINDOWS6ADAPTERS"),
         TEXT("ACTIVETAPWINDOWS6ADAPTERS"));
     find_adapters(
@@ -333,8 +329,7 @@ FindSystemInfo(_In_ MSIHANDLE hInstall)
 }
 
 
-UINT __stdcall
-CloseOpenVPNGUI(_In_ MSIHANDLE hInstall)
+UINT __stdcall CloseOpenVPNGUI(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -356,8 +351,7 @@ CloseOpenVPNGUI(_In_ MSIHANDLE hInstall)
 }
 
 
-UINT __stdcall
-StartOpenVPNGUI(_In_ MSIHANDLE hInstall)
+UINT __stdcall StartOpenVPNGUI(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -365,7 +359,7 @@ StartOpenVPNGUI(_In_ MSIHANDLE hInstall)
 
     debug_popup(__FUNCTION__);
 
-    UINT uiResult;
+    UINT uiResult = 0;
     BOOL bIsCoInitialized = SUCCEEDED(CoInitialize(NULL));
 
     OPENVPNMSICA_SAVE_MSI_SESSION(hInstall);
@@ -387,7 +381,7 @@ StartOpenVPNGUI(_In_ MSIHANDLE hInstall)
     }
 
     /* Format string. */
-    TCHAR szStackBuf[MAX_PATH];
+    TCHAR szStackBuf[MAX_PATH] = { 0 };
     DWORD dwPathSize = _countof(szStackBuf);
     LPTSTR szPath = szStackBuf;
     uiResult = MsiFormatRecord(hInstall, hRecord, szPath, &dwPathSize);
@@ -462,8 +456,7 @@ cleanup_CoInitialize:
  *
  * @return ERROR_SUCCESS on success; An error code otherwise
  */
-static DWORD
-schedule_adapter_create(
+static DWORD schedule_adapter_create(
     _Inout_ struct msica_arg_seq *seq,
     _Inout_opt_ struct msica_arg_seq *seqRollback,
     _In_z_ LPCTSTR szDisplayName,
@@ -484,7 +477,7 @@ schedule_adapter_create(
         if (pAdapterOther == NULL)
         {
             /* No adapter with a same name found. */
-            TCHAR szArgument[10 /*create=""|deleteN=""*/ + MAX_PATH /*szDisplayName*/ + 1 /*|*/ + MAX_PATH /*szHardwareId*/ + 1 /*terminator*/];
+            TCHAR szArgument[10 /*create=""|deleteN=""*/ + MAX_PATH /*szDisplayName*/ + 1 /*|*/ + MAX_PATH /*szHardwareId*/ + 1 /*terminator*/] = { 0 };
 
             /* InstallTUNTAPAdapters will create the adapter. */
             _stprintf_s(
@@ -562,8 +555,7 @@ cleanup_pAdapterList:
  *
  * @return ERROR_SUCCESS on success; An error code otherwise
  */
-static DWORD
-schedule_adapter_delete(
+static DWORD schedule_adapter_delete(
     _Inout_ struct msica_arg_seq *seq,
     _Inout_opt_ struct msica_arg_seq *seqCommit,
     _Inout_opt_ struct msica_arg_seq *seqRollback,
@@ -629,8 +621,7 @@ schedule_adapter_delete(
 }
 
 
-UINT __stdcall
-EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall)
+UINT __stdcall EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -638,7 +629,7 @@ EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall)
 
     debug_popup(__FUNCTION__);
 
-    UINT uiResult;
+    UINT uiResult = 0;
     BOOL bIsCoInitialized = SUCCEEDED(CoInitialize(NULL));
 
     OPENVPNMSICA_SAVE_MSI_SESSION(hInstall);
@@ -787,8 +778,8 @@ EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall)
                 }
 #ifdef __GNUC__
 /*
- * warning: enumeration value ‘MSICONDITION_TRUE’ not handled in switch
- * warning: enumeration value ‘MSICONDITION_NONE’ not handled in switch
+ * warning: enumeration value MSICONDITION_TRUE not handled in switch
+ * warning: enumeration value MSICONDITION_NONE not handled in switch
  */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
@@ -860,10 +851,10 @@ cleanup_hRecord:
     }
 
     /* save path to user's temp dir to be used later by deferred actions */
-    TCHAR tmpDir[MAX_PATH];
+    TCHAR tmpDir[MAX_PATH] = { 0 };
     GetTempPath(MAX_PATH, tmpDir);
 
-    TCHAR str[MAX_PATH + 7];
+    TCHAR str[MAX_PATH + 7] = { 0 };
     _stprintf_s(str, _countof(str), TEXT("tmpdir=%") TEXT(PRIsLPTSTR), tmpDir);
     msica_arg_seq_add_tail(&seqInstall, str);
     msica_arg_seq_add_tail(&seqInstallCommit, str);
@@ -917,8 +908,7 @@ cleanup_exec_seq:
  *
  * @return TRUE on success; FALSE otherwise
  */
-static BOOL
-parse_guid(
+static BOOL parse_guid(
     _In_z_ LPCWSTR szArg,
     _Out_ GUID *guid)
 {
@@ -939,10 +929,9 @@ parse_guid(
  * @param szTmpDir path to user's temp dirctory
  *
  */
-static void
-CreateRebootFile(_In_z_ LPCWSTR szTmpDir)
+static void CreateRebootFile(_In_z_ LPCWSTR szTmpDir)
 {
-    WCHAR path[MAX_PATH];
+    WCHAR path[MAX_PATH] = { 0 };
     swprintf_s(path, _countof(path), L"%s%s", szTmpDir, FILE_NEED_REBOOT);
 
     msg(M_WARN, "%s: Reboot required, create reboot indication file \"%ls\"", __FUNCTION__, path);
@@ -958,8 +947,7 @@ CreateRebootFile(_In_z_ LPCWSTR szTmpDir)
     }
 }
 
-UINT __stdcall
-ProcessDeferredAction(_In_ MSIHANDLE hInstall)
+UINT __stdcall ProcessDeferredAction(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -967,7 +955,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
 
     debug_popup(__FUNCTION__);
 
-    UINT uiResult;
+    UINT uiResult = 0;
     BOOL bIsCoInitialized = SUCCEEDED(CoInitialize(NULL));
     WCHAR tmpDir[MAX_PATH] = {0};
 
@@ -982,7 +970,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
     {
         goto cleanup_CoInitialize;
     }
-    int nArgs;
+    int nArgs = 0;
     LPWSTR *szArg = CommandLineToArgvW(szSequence, &nArgs);
     if (szArg == NULL)
     {
@@ -1035,7 +1023,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
                 }
             }
 
-            GUID guidAdapter;
+            GUID guidAdapter = { 0 };
             dwResult = tap_create_adapter(NULL, NULL, szHardwareId, &bRebootRequired, &guidAdapter);
             if (dwResult == ERROR_SUCCESS)
             {
@@ -1085,7 +1073,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
         else if (wcsncmp(szArg[i], L"delete=", 7) == 0)
         {
             /* Delete the adapter by GUID. */
-            GUID guid;
+            GUID guid = { 0 };
             if (!parse_guid(szArg[i] + 7, &guid))
             {
                 goto invalid_argument;
@@ -1095,7 +1083,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
         else if (wcsncmp(szArg[i], L"enable=", 7) == 0)
         {
             /* Enable the adapter. */
-            GUID guid;
+            GUID guid = { 0 };
             if (!parse_guid(szArg[i] + 7, &guid))
             {
                 goto invalid_argument;
@@ -1105,7 +1093,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall)
         else if (wcsncmp(szArg[i], L"disable=", 8) == 0)
         {
             /* Disable the adapter. */
-            GUID guid;
+            GUID guid = { 0 };
             if (!parse_guid(szArg[i] + 8, &guid))
             {
                 goto invalid_argument;
@@ -1158,8 +1146,7 @@ cleanup_CoInitialize:
     return uiResult;
 }
 
-UINT __stdcall
-CheckAndScheduleReboot(_In_ MSIHANDLE hInstall)
+UINT __stdcall CheckAndScheduleReboot(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -1172,11 +1159,11 @@ CheckAndScheduleReboot(_In_ MSIHANDLE hInstall)
     OPENVPNMSICA_SAVE_MSI_SESSION(hInstall);
 
     /* get user-specific temp path, to where we create reboot indication file */
-    WCHAR tempPath[MAX_PATH];
+    WCHAR tempPath[MAX_PATH] = { 0 };
     GetTempPathW(MAX_PATH, tempPath);
 
     /* check if reboot file exists */
-    WCHAR path[MAX_PATH];
+    WCHAR path[MAX_PATH] = { 0 };
     swprintf_s(path, _countof(path), L"%s%s", tempPath, FILE_NEED_REBOOT);
     WIN32_FIND_DATA data = { 0 };
     HANDLE searchHandle = FindFirstFileW(path, &data);
@@ -1197,31 +1184,27 @@ CheckAndScheduleReboot(_In_ MSIHANDLE hInstall)
     return ERROR_SUCCESS;
 }
 
-static BOOL
-IsInstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
+static BOOL IsInstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
 {
     return INSTALLSTATE_LOCAL == ActionState || INSTALLSTATE_SOURCE == ActionState
            || (INSTALLSTATE_DEFAULT == ActionState
                && (INSTALLSTATE_LOCAL == InstallState || INSTALLSTATE_SOURCE == InstallState));
 }
 
-static BOOL
-IsReInstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
+static BOOL IsReInstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
 {
     return (INSTALLSTATE_LOCAL == ActionState || INSTALLSTATE_SOURCE == ActionState
             || INSTALLSTATE_DEFAULT == ActionState)
            && (INSTALLSTATE_LOCAL == InstallState || INSTALLSTATE_SOURCE == InstallState);
 }
 
-static BOOL
-IsUninstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
+static BOOL IsUninstalling(_In_ INSTALLSTATE InstallState, _In_ INSTALLSTATE ActionState)
 {
     return (INSTALLSTATE_ABSENT == ActionState || INSTALLSTATE_REMOVED == ActionState)
            && (INSTALLSTATE_LOCAL == InstallState || INSTALLSTATE_SOURCE == InstallState);
 }
 
-UINT __stdcall
-EvaluateDriver(_In_ MSIHANDLE hInstall)
+UINT __stdcall EvaluateDriver(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)
@@ -1229,12 +1212,12 @@ EvaluateDriver(_In_ MSIHANDLE hInstall)
 
     debug_popup(__FUNCTION__);
 
-    UINT ret;
+    UINT ret = 0;
     BOOL bIsCoInitialized = SUCCEEDED(CoInitialize(NULL));
 
     OPENVPNMSICA_SAVE_MSI_SESSION(hInstall);
 
-    INSTALLSTATE InstallState, ActionState;
+    INSTALLSTATE InstallState = 0, ActionState = 0;
     ret = MsiGetComponentStateW(hInstall, CMP_OVPN_DCO_INF, &InstallState, &ActionState);
     if (ret != ERROR_SUCCESS)
     {
@@ -1244,10 +1227,10 @@ EvaluateDriver(_In_ MSIHANDLE hInstall)
     }
 
     /* get user-specific temp path, to where we create reboot indication file */
-    WCHAR tempPath[MAX_PATH];
+    WCHAR tempPath[MAX_PATH] = { 0 };
     GetTempPathW(MAX_PATH, tempPath);
 
-    WCHAR pathToInf[MAX_PATH];
+    WCHAR pathToInf[MAX_PATH] = { 0 };
     DWORD pathLen = _countof(pathToInf);
     ret = MsiGetPropertyW(hInstall, L"OVPNDCO", pathToInf, &pathLen);
     if (ret != ERROR_SUCCESS)
@@ -1257,7 +1240,7 @@ EvaluateDriver(_In_ MSIHANDLE hInstall)
         goto cleanup;
     }
 
-    WCHAR action[0x400];
+    WCHAR action[0x400] = { 0 };
     if ((IsReInstalling(InstallState, ActionState) || IsInstalling(InstallState, ActionState)))
     {
         swprintf_s(action, _countof(action), L"%s|%s%s|%s", ACTION_ADD_DRIVER, pathToInf, FILE_OVPN_DCO_INF, tempPath);
@@ -1281,8 +1264,7 @@ cleanup:
     return ret;
 }
 
-static BOOL
-GetPublishedDriverName(_In_z_ LPCWSTR hwid, _Out_writes_z_(len) LPWSTR publishedName, _In_ DWORD len)
+static BOOL GetPublishedDriverName(_In_z_ LPCWSTR hwid, _Out_writes_z_(len) LPWSTR publishedName, _In_ DWORD len)
 {
     wcscpy_s(publishedName, len, L"");
 
@@ -1310,7 +1292,7 @@ GetPublishedDriverName(_In_z_ LPCWSTR hwid, _Out_writes_z_(len) LPWSTR published
             msg(M_NONFATAL | M_ERRNO, "%s: SetupDiEnumDriverInfoW failed", __FUNCTION__);
             goto cleanupDriverInfoList;
         }
-        DWORD size;
+        DWORD size = 0;
         if (SetupDiGetDriverInfoDetailW(devInfoSet, NULL, &drvInfo, NULL, 0, &size) || GetLastError() != ERROR_INSUFFICIENT_BUFFER)
         {
             msg(M_NONFATAL | M_ERRNO, "%s: SetupDiGetDriverInfoDetailW failed", __FUNCTION__);
@@ -1347,8 +1329,7 @@ cleanupDeviceInfoSet:
     return res;
 }
 
-static void
-DeleteDriver(_In_z_ LPCWSTR pathToTmp)
+static void DeleteDriver(_In_z_ LPCWSTR pathToTmp)
 {
     /* get list of adapters for hwid */
     struct tap_adapter_node *pAdapterList = NULL;
@@ -1381,8 +1362,7 @@ DeleteDriver(_In_z_ LPCWSTR pathToTmp)
     }
 }
 
-static void
-AddDriver(_In_z_ LPCWSTR pathToInf, _In_z_ LPCWSTR pathToTmp)
+static void AddDriver(_In_z_ LPCWSTR pathToInf, _In_z_ LPCWSTR pathToTmp)
 {
     /* copy driver to driver store */
     if (!SetupCopyOEMInfW(pathToInf, NULL, SPOST_PATH, 0, NULL, 0, NULL, NULL))
@@ -1408,8 +1388,7 @@ AddDriver(_In_z_ LPCWSTR pathToInf, _In_z_ LPCWSTR pathToTmp)
     }
 }
 
-UINT __stdcall
-ProcessDriver(_In_ MSIHANDLE hInstall)
+UINT __stdcall ProcessDriver(_In_ MSIHANDLE hInstall)
 {
 #ifdef _MSC_VER
 #pragma comment(linker, DLLEXP_EXPORT)

@@ -230,8 +230,7 @@ struct tuntap
     dco_context_t dco;
 };
 
-static inline bool
-tuntap_defined(const struct tuntap *tt)
+static inline bool tuntap_defined(const struct tuntap *tt)
 {
 #ifdef _WIN32
     return tt && tt->hand != NULL;
@@ -241,14 +240,12 @@ tuntap_defined(const struct tuntap *tt)
 }
 
 #ifdef _WIN32
-static inline bool
-tuntap_is_wintun(struct tuntap *tt)
+static inline bool tuntap_is_wintun(struct tuntap *tt)
 {
     return tt && tt->windows_driver == WINDOWS_DRIVER_WINTUN;
 }
 
-static inline bool
-tuntap_ring_empty(struct tuntap *tt)
+static inline bool tuntap_ring_empty(struct tuntap *tt)
 {
     return tuntap_is_wintun(tt) && (tt->wintun_send_ring->head == tt->wintun_send_ring->tail);
 }
@@ -376,8 +373,7 @@ ifconfig_order(void)
 #define ROUTE_AFTER_TUN 1
 #define ROUTE_ORDER_DEFAULT ROUTE_AFTER_TUN
 
-static inline int
-route_order(void)
+static inline int route_order(void)
 {
 #if defined(TARGET_ANDROID)
     return ROUTE_BEFORE_TUN;
@@ -465,8 +461,7 @@ int tun_read_queue(struct tuntap *tt, int maxsize);
 
 int tun_write_queue(struct tuntap *tt, struct buffer *buf);
 
-static inline bool
-tuntap_stop(int status)
+static inline bool tuntap_stop(int status)
 {
     /*
      * This corresponds to the STATUS_NO_SUCH_DEVICE
@@ -479,8 +474,7 @@ tuntap_stop(int status)
     return false;
 }
 
-static inline bool
-tuntap_abort(int status)
+static inline bool tuntap_abort(int status)
 {
     /*
      * Typically generated when driver is halted.
@@ -494,20 +488,17 @@ tuntap_abort(int status)
 
 int tun_write_win32(struct tuntap *tt, struct buffer *buf);
 
-static inline ULONG
-wintun_ring_packet_align(ULONG size)
+static inline ULONG wintun_ring_packet_align(ULONG size)
 {
     return (size + (WINTUN_PACKET_ALIGN - 1)) & ~(WINTUN_PACKET_ALIGN - 1);
 }
 
-static inline ULONG
-wintun_ring_wrap(ULONG value)
+static inline ULONG wintun_ring_wrap(ULONG value)
 {
     return value & (WINTUN_RING_CAPACITY - 1);
 }
 
-static inline void
-read_wintun(struct tuntap *tt, struct buffer *buf)
+static inline void read_wintun(struct tuntap *tt, struct buffer *buf)
 {
     struct tun_ring *ring = tt->wintun_send_ring;
     ULONG head = ring->head;
@@ -562,8 +553,7 @@ read_wintun(struct tuntap *tt, struct buffer *buf)
     ring->head = head;
 }
 
-static inline bool
-is_ip_packet_valid(const struct buffer *buf)
+static inline bool is_ip_packet_valid(const struct buffer *buf)
 {
     const struct openvpn_iphdr *ih = (const struct openvpn_iphdr *)BPTR(buf);
 
@@ -589,8 +579,7 @@ is_ip_packet_valid(const struct buffer *buf)
     return true;
 }
 
-static inline int
-write_wintun(struct tuntap *tt, struct buffer *buf)
+static inline int write_wintun(struct tuntap *tt, struct buffer *buf)
 {
     struct tun_ring *ring = tt->wintun_receive_ring;
     ULONG head = ring->head;
@@ -635,8 +624,7 @@ write_wintun(struct tuntap *tt, struct buffer *buf)
     return BLEN(buf);
 }
 
-static inline int
-write_tun_buffered(struct tuntap *tt, struct buffer *buf)
+static inline int write_tun_buffered(struct tuntap *tt, struct buffer *buf)
 {
     if (tt->windows_driver == WINDOWS_DRIVER_WINTUN)
     {
@@ -648,52 +636,44 @@ write_tun_buffered(struct tuntap *tt, struct buffer *buf)
     }
 }
 
-static inline bool
-tuntap_is_dco_win(struct tuntap *tt)
+static inline bool tuntap_is_dco_win(struct tuntap *tt)
 {
     return tt && tt->windows_driver == WINDOWS_DRIVER_DCO;
 }
 
-static inline bool
-tuntap_is_dco_win_timeout(struct tuntap *tt, int status)
+static inline bool tuntap_is_dco_win_timeout(struct tuntap *tt, int status)
 {
     return tuntap_is_dco_win(tt) && (status < 0) && (openvpn_errno() == ERROR_NETNAME_DELETED);
 }
 
 #else  /* ifdef _WIN32 */
 
-static inline bool
-tuntap_stop(int status)
+static inline bool tuntap_stop(int status)
 {
     return false;
 }
 
-static inline bool
-tuntap_abort(int status)
+static inline bool tuntap_abort(int status)
 {
     return false;
 }
 
-static inline void
-tun_standby_init(struct tuntap *tt)
+static inline void tun_standby_init(struct tuntap *tt)
 {
 }
 
-static inline bool
-tun_standby(struct tuntap *tt)
+static inline bool tun_standby(struct tuntap *tt)
 {
     return true;
 }
 
 
-static inline bool
-tuntap_is_dco_win(struct tuntap *tt)
+static inline bool tuntap_is_dco_win(struct tuntap *tt)
 {
     return false;
 }
 
-static inline bool
-tuntap_is_dco_win_timeout(struct tuntap *tt, int status)
+static inline bool tuntap_is_dco_win_timeout(struct tuntap *tt, int status)
 {
     return false;
 }
@@ -704,8 +684,7 @@ tuntap_is_dco_win_timeout(struct tuntap *tt, int status)
  * TUN/TAP I/O wait functions
  */
 
-static inline event_t
-tun_event_handle(const struct tuntap *tt)
+static inline event_t tun_event_handle(const struct tuntap *tt)
 {
 #ifdef _WIN32
     return &tt->rw_handle;
@@ -714,8 +693,7 @@ tun_event_handle(const struct tuntap *tt)
 #endif
 }
 
-static inline void
-tun_set(struct tuntap *tt,
+static inline void tun_set(struct tuntap *tt,
         struct event_set *es,
         unsigned int rwflags,
         void *arg,
@@ -748,8 +726,7 @@ tun_set(struct tuntap *tt,
 const char *tun_stat(const struct tuntap *tt, unsigned int rwflags, struct gc_arena *gc);
 bool tun_name_is_fixed(const char *dev);
 
-static inline bool
-is_tun_type_set(const struct tuntap *tt)
+static inline bool is_tun_type_set(const struct tuntap *tt)
 {
     return tt && tt->type != DEV_TYPE_UNDEF;
 }

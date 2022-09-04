@@ -28,45 +28,37 @@
 
 #include "ssl_common.h"
 
-bool
-pkcs11_initialize(
+bool pkcs11_initialize(
     const bool fProtectedAuthentication,
     const int nPINCachePeriod
     );
 
-void
-pkcs11_terminate();
+void pkcs11_terminate();
 
-bool
-pkcs11_addProvider(
+bool pkcs11_addProvider(
     const char *const provider,
     const bool fProtectedAuthentication,
     const unsigned private_mode,
     const bool fCertIsPrivate
     );
 
-int
-pkcs11_logout();
+int pkcs11_logout();
 
-int
-pkcs11_management_id_count();
+int pkcs11_management_id_count();
 
-bool
-pkcs11_management_id_get(
+bool pkcs11_management_id_get(
     const int index,
     char **id,
     char **base64
     );
 
-int
-tls_ctx_use_pkcs11(
+int tls_ctx_use_pkcs11(
     struct tls_root_ctx *const ssl_ctx,
     bool pkcs11_id_management,
     const char *const pkcs11_id
     );
 
-void
-show_pkcs11_ids(
+void show_pkcs11_ids(
     const char *const provider,
     bool cert_private
     );

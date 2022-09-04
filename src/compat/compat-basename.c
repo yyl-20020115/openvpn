@@ -35,8 +35,7 @@
 /* Modified version based on glibc-2.14.1 by Roland McGrath <roland@gnu.org>
  * This version is extended to handle both / and \ in path names
  */
-char *
-basename(char *filename)
+char * basename(char *filename)
 {
     char *p = strrchr(filename, '/');
     if (!p)

@@ -35,8 +35,7 @@ struct virtual_output {
     void (*func) (void *arg, const unsigned int flags, const char *str);
 };
 
-static inline void
-virtual_output_print(const struct virtual_output *vo, const unsigned int flags, const char *str)
+static inline void virtual_output_print(const struct virtual_output *vo, const unsigned int flags, const char *str)
 {
     (*vo->func)(vo->arg, flags, str);
 }
@@ -89,8 +88,7 @@ __attribute__ ((format(__printf__, 2, 3)))
 
 bool status_read(struct status_output *so, struct buffer *buf);
 
-static inline unsigned int
-status_rw_flags(const struct status_output *so)
+static inline unsigned int status_rw_flags(const struct status_output *so)
 {
     if (so)
     {

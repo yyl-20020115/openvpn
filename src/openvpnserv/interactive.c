@@ -63,9 +63,9 @@ static HANDLE rdns_semaphore = NULL;
 
 openvpn_service_t interactive_service = {
     interactive,
-    TEXT(PACKAGE_NAME "ServiceInteractive"),
-    TEXT(PACKAGE_NAME " Interactive Service"),
-    TEXT(SERVICE_DEPENDENCIES),
+    PACKAGE_NAME TEXT("ServiceInteractive"),
+    PACKAGE_NAME TEXT(" Interactive Service"),
+    SERVICE_DEPENDENCIES,
     SERVICE_AUTO_START
 };
 
@@ -112,8 +112,7 @@ typedef struct {
 } ring_buffer_handles_t;
 
 
-static DWORD
-AddListItem(list_item_t **pfirst, LPVOID data)
+static DWORD AddListItem(list_item_t **pfirst, LPVOID data)
 {
     list_item_t *new_item = malloc(sizeof(list_item_t));
     if (new_item == NULL)
@@ -130,11 +129,10 @@ AddListItem(list_item_t **pfirst, LPVOID data)
 
 typedef BOOL (*match_fn_t) (LPVOID item, LPVOID ctx);
 
-static LPVOID
-RemoveListItem(list_item_t **pfirst, match_fn_t match, LPVOID ctx)
+static LPVOID RemoveListItem(list_item_t **pfirst, match_fn_t match, LPVOID ctx)
 {
     LPVOID data = NULL;
-    list_item_t **pnext;
+    list_item_t **pnext = NULL;
 
     for (pnext = pfirst; *pnext; pnext = &(*pnext)->next)
     {
@@ -154,8 +152,7 @@ RemoveListItem(list_item_t **pfirst, match_fn_t match, LPVOID ctx)
 }
 
 
-static HANDLE
-CloseHandleEx(LPHANDLE handle)
+static HANDLE CloseHandleEx(LPHANDLE handle)
 {
     if (handle && *handle && *handle != INVALID_HANDLE_VALUE)
     {
@@ -165,8 +162,7 @@ CloseHandleEx(LPHANDLE handle)
     return INVALID_HANDLE_VALUE;
 }
 
-static HANDLE
-OvpnUnmapViewOfFile(LPHANDLE handle)
+static HANDLE OvpnUnmapViewOfFile(LPHANDLE handle)
 {
     if (handle && *handle && *handle != INVALID_HANDLE_VALUE)
     {
@@ -176,8 +172,7 @@ OvpnUnmapViewOfFile(LPHANDLE handle)
     return INVALID_HANDLE_VALUE;
 }
 
-static void
-CloseRingBufferHandles(ring_buffer_handles_t *ring_buffer_handles)
+static void CloseRingBufferHandles(ring_buffer_handles_t *ring_buffer_handles)
 {
     CloseHandleEx(&ring_buffer_handles->device);
     CloseHandleEx(&ring_buffer_handles->receive_tail_moved);
@@ -186,8 +181,7 @@ CloseRingBufferHandles(ring_buffer_handles_t *ring_buffer_handles)
     OvpnUnmapViewOfFile(&ring_buffer_handles->receive_ring_handle);
 }
 
-static HANDLE
-InitOverlapped(LPOVERLAPPED overlapped)
+static HANDLE InitOverlapped(LPOVERLAPPED overlapped)
 {
     ZeroMemory(overlapped, sizeof(OVERLAPPED));
     overlapped->hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -195,8 +189,7 @@ InitOverlapped(LPOVERLAPPED overlapped)
 }
 
 
-static BOOL
-ResetOverlapped(LPOVERLAPPED overlapped)
+static BOOL ResetOverlapped(LPOVERLAPPED overlapped)
 {
     HANDLE io_event = overlapped->hEvent;
     if (!ResetEvent(io_event))
@@ -215,14 +208,13 @@ typedef enum {
     write
 } async_op_t;
 
-static DWORD
-AsyncPipeOp(async_op_t op, HANDLE pipe, LPVOID buffer, DWORD size, DWORD count, LPHANDLE events)
+static DWORD AsyncPipeOp(async_op_t op, HANDLE pipe, LPVOID buffer, DWORD size, DWORD count, LPHANDLE events)
 {
-    DWORD i;
-    BOOL success;
-    HANDLE io_event;
+    DWORD i = 0;
+    BOOL success = FALSE;
+    HANDLE io_event = NULL;
     DWORD res, bytes = 0;
-    OVERLAPPED overlapped;
+    OVERLAPPED overlapped = { 0 };
     LPHANDLE handles = NULL;
 
     io_event = InitOverlapped(&overlapped);
@@ -279,29 +271,25 @@ out:
     return bytes;
 }
 
-static DWORD
-PeekNamedPipeAsync(HANDLE pipe, DWORD count, LPHANDLE events)
+static DWORD PeekNamedPipeAsync(HANDLE pipe, DWORD count, LPHANDLE events)
 {
     return AsyncPipeOp(peek, pipe, NULL, 0, count, events);
 }
 
-static DWORD
-ReadPipeAsync(HANDLE pipe, LPVOID buffer, DWORD size, DWORD count, LPHANDLE events)
+static DWORD ReadPipeAsync(HANDLE pipe, LPVOID buffer, DWORD size, DWORD count, LPHANDLE events)
 {
     return AsyncPipeOp(read, pipe, buffer, size, count, events);
 }
 
-static DWORD
-WritePipeAsync(HANDLE pipe, LPVOID data, DWORD size, DWORD count, LPHANDLE events)
+static DWORD WritePipeAsync(HANDLE pipe, LPVOID data, DWORD size, DWORD count, LPHANDLE events)
 {
     return AsyncPipeOp(write, pipe, data, size, count, events);
 }
 
-static VOID
-ReturnProcessId(HANDLE pipe, DWORD pid, DWORD count, LPHANDLE events)
+static VOID ReturnProcessId(HANDLE pipe, DWORD pid, DWORD count, LPHANDLE events)
 {
     const WCHAR msg[] = L"Process ID";
-    WCHAR buf[22 + _countof(msg)]; /* 10 chars each for error and PID and 2 for line breaks */
+    WCHAR buf[22 + _countof(msg)] = { 0 }; /* 10 chars each for error and PID and 2 for line breaks */
 
     /*
      * Same format as error messages (3 line string) with error = 0 in
@@ -312,10 +300,9 @@ ReturnProcessId(HANDLE pipe, DWORD pid, DWORD count, LPHANDLE events)
     WritePipeAsync(pipe, buf, (DWORD)(wcslen(buf) * 2), count, events);
 }
 
-static VOID
-ReturnError(HANDLE pipe, DWORD error, LPCWSTR func, DWORD count, LPHANDLE events)
+static VOID ReturnError(HANDLE pipe, DWORD error, LPCWSTR func, DWORD count, LPHANDLE events)
 {
-    DWORD result_len;
+    DWORD result_len = 0;
     LPWSTR result = L"0xffffffff\nFormatMessage failed\nCould not return result";
     DWORD_PTR args[] = {
         (DWORD_PTR) error,
@@ -351,8 +338,7 @@ ReturnError(HANDLE pipe, DWORD error, LPCWSTR func, DWORD count, LPHANDLE events
 }
 
 
-static VOID
-ReturnLastError(HANDLE pipe, LPCWSTR func)
+static VOID ReturnLastError(HANDLE pipe, LPCWSTR func)
 {
     ReturnError(pipe, GetLastError(), func, 1, &exit_event);
 }
@@ -362,13 +348,12 @@ ReturnLastError(HANDLE pipe, LPCWSTR func)
  * inside the config_dir. The white list is defined in validate.c
  * Returns true on success, false on error with reason set in errmsg.
  */
-static BOOL
-ValidateOptions(HANDLE pipe, const WCHAR *workdir, const WCHAR *options, WCHAR *errmsg, DWORD capacity)
+static BOOL ValidateOptions(HANDLE pipe, const WCHAR *workdir, const WCHAR *options, WCHAR *errmsg, DWORD capacity)
 {
-    WCHAR **argv;
-    int argc;
+    WCHAR **argv =NULL;
+    int argc = 0;
     BOOL ret = FALSE;
-    int i;
+    int i = 0;
     const WCHAR *msg1 = L"You have specified a config file location (%ls relative to %ls)"
                         L" that requires admin approval. This error may be avoided"
                         L" by adding your account to the \"%ls\" group";
@@ -443,8 +428,7 @@ out:
     return ret;
 }
 
-static BOOL
-GetStartupData(HANDLE pipe, STARTUP_DATA *sud)
+static BOOL GetStartupData(HANDLE pipe, STARTUP_DATA *sud)
 {
     size_t size, len;
     WCHAR *data = NULL;
@@ -519,17 +503,15 @@ err:
 }
 
 
-static VOID
-FreeStartupData(STARTUP_DATA *sud)
+static VOID FreeStartupData(STARTUP_DATA *sud)
 {
     free(sud->directory);
 }
 
 
-static SOCKADDR_INET
-sockaddr_inet(short family, inet_address_t *addr)
+static SOCKADDR_INET sockaddr_inet(short family, inet_address_t *addr)
 {
-    SOCKADDR_INET sa_inet;
+    SOCKADDR_INET sa_inet = { 0 };
     ZeroMemory(&sa_inet, sizeof(sa_inet));
     sa_inet.si_family = family;
     if (family == AF_INET)
@@ -543,10 +525,9 @@ sockaddr_inet(short family, inet_address_t *addr)
     return sa_inet;
 }
 
-static DWORD
-InterfaceLuid(const char *iface_name, PNET_LUID luid)
+static DWORD InterfaceLuid(const char *iface_name, PNET_LUID luid)
 {
-    NETIO_STATUS status;
+    NETIO_STATUS status = 0;
     LPWSTR wide_name = utf8to16(iface_name);
 
     if (wide_name)
@@ -561,11 +542,10 @@ InterfaceLuid(const char *iface_name, PNET_LUID luid)
     return status;
 }
 
-static DWORD
-ConvertInterfaceNameToIndex(const wchar_t *ifname, NET_IFINDEX *index)
+static DWORD ConvertInterfaceNameToIndex(const wchar_t *ifname, NET_IFINDEX *index)
 {
-    NET_LUID luid;
-    DWORD err;
+    NET_LUID luid = { 0 };
+    DWORD err = 0;
 
     err = ConvertInterfaceAliasToLuid(ifname, &luid);
     if (err == ERROR_SUCCESS)
@@ -579,23 +559,20 @@ ConvertInterfaceNameToIndex(const wchar_t *ifname, NET_IFINDEX *index)
     return err;
 }
 
-static BOOL
-CmpAddress(LPVOID item, LPVOID address)
+static BOOL CmpAddress(LPVOID item, LPVOID address)
 {
     return memcmp(item, address, sizeof(MIB_UNICASTIPADDRESS_ROW)) == 0 ? TRUE : FALSE;
 }
 
-static DWORD
-DeleteAddress(PMIB_UNICASTIPADDRESS_ROW addr_row)
+static DWORD DeleteAddress(PMIB_UNICASTIPADDRESS_ROW addr_row)
 {
     return DeleteUnicastIpAddressEntry(addr_row);
 }
 
-static DWORD
-HandleAddressMessage(address_message_t *msg, undo_lists_t *lists)
+static DWORD HandleAddressMessage(address_message_t *msg, undo_lists_t *lists)
 {
-    DWORD err;
-    PMIB_UNICASTIPADDRESS_ROW addr_row;
+    DWORD err = 0;
+    PMIB_UNICASTIPADDRESS_ROW addr_row = { 0 };
     BOOL add = msg->header.type == msg_add_address;
 
     addr_row = malloc(sizeof(*addr_row));
@@ -614,7 +591,7 @@ HandleAddressMessage(address_message_t *msg, undo_lists_t *lists)
     }
     else
     {
-        NET_LUID luid;
+        NET_LUID luid = { 0 };
         err = InterfaceLuid(msg->iface.name, &luid);
         if (err)
         {
@@ -657,23 +634,20 @@ out:
     return err;
 }
 
-static BOOL
-CmpRoute(LPVOID item, LPVOID route)
+static BOOL CmpRoute(LPVOID item, LPVOID route)
 {
     return memcmp(item, route, sizeof(MIB_IPFORWARD_ROW2)) == 0 ? TRUE : FALSE;
 }
 
-static DWORD
-DeleteRoute(PMIB_IPFORWARD_ROW2 fwd_row)
+static DWORD DeleteRoute(PMIB_IPFORWARD_ROW2 fwd_row)
 {
     return DeleteIpForwardEntry2(fwd_row);
 }
 
-static DWORD
-HandleRouteMessage(route_message_t *msg, undo_lists_t *lists)
+static DWORD HandleRouteMessage(route_message_t *msg, undo_lists_t *lists)
 {
-    DWORD err;
-    PMIB_IPFORWARD_ROW2 fwd_row;
+    DWORD err = 0;
+    PMIB_IPFORWARD_ROW2 fwd_row = { 0 };
     BOOL add = msg->header.type == msg_add_route;
 
     fwd_row = malloc(sizeof(*fwd_row));
@@ -697,7 +671,7 @@ HandleRouteMessage(route_message_t *msg, undo_lists_t *lists)
     }
     else if (strlen(msg->iface.name))
     {
-        NET_LUID luid;
+        NET_LUID luid = { 0 };
         err = InterfaceLuid(msg->iface.name, &luid);
         if (err)
         {
@@ -741,8 +715,7 @@ out:
 }
 
 
-static DWORD
-HandleFlushNeighborsMessage(flush_neighbors_message_t *msg)
+static DWORD HandleFlushNeighborsMessage(flush_neighbors_message_t *msg)
 {
     if (msg->family == AF_INET)
     {
@@ -752,11 +725,10 @@ HandleFlushNeighborsMessage(flush_neighbors_message_t *msg)
     return FlushIpNetTable2(msg->family, msg->iface.index);
 }
 
-static void
-BlockDNSErrHandler(DWORD err, const char *msg)
+static void BlockDNSErrHandler(DWORD err, const char *msg)
 {
-    TCHAR buf[256];
-    LPCTSTR err_str;
+    TCHAR buf[256] = { 0 };
+    LPCTSTR err_str = 0;
 
     if (!err)
     {
@@ -776,19 +748,17 @@ BlockDNSErrHandler(DWORD err, const char *msg)
 }
 
 /* Use an always-true match_fn to get the head of the list */
-static BOOL
-CmpEngine(LPVOID item, LPVOID any)
+static BOOL CmpEngine(LPVOID item, LPVOID any)
 {
     return TRUE;
 }
 
-static DWORD
-HandleBlockDNSMessage(const block_dns_message_t *msg, undo_lists_t *lists)
+static DWORD HandleBlockDNSMessage(const block_dns_message_t *msg, undo_lists_t *lists)
 {
     DWORD err = 0;
-    block_dns_data_t *interface_data;
+    block_dns_data_t *interface_data = 0;
     HANDLE engine = NULL;
-    LPCWSTR exe_path;
+    LPCWSTR exe_path = 0;
 
     exe_path = settings.exe_path;
 
@@ -869,12 +839,11 @@ HandleBlockDNSMessage(const block_dns_message_t *msg, undo_lists_t *lists)
  * the process if still running after timeout milliseconds. In that case
  * the return value is the windows error code WAIT_TIMEOUT = 0x102
  */
-static DWORD
-ExecCommand(const WCHAR *argv0, const WCHAR *cmdline, DWORD timeout)
+static DWORD ExecCommand(const WCHAR *argv0, const WCHAR *cmdline, DWORD timeout)
 {
-    DWORD exit_code;
-    STARTUPINFOW si;
-    PROCESS_INFORMATION pi;
+    DWORD exit_code = 0;
+    STARTUPINFOW si = { 0 };
+    PROCESS_INFORMATION pi = { 0 };
     DWORD proc_flags = CREATE_NO_WINDOW|CREATE_UNICODE_ENVIRONMENT;
     WCHAR *cmdline_dup = NULL;
 
@@ -930,15 +899,14 @@ ExecCommand(const WCHAR *argv0, const WCHAR *cmdline, DWORD timeout)
 /*
  * Entry point for register-dns thread.
  */
-static DWORD WINAPI
-RegisterDNS(LPVOID unused)
+static DWORD WINAPI RegisterDNS(LPVOID unused)
 {
-    DWORD err;
-    size_t i;
+    DWORD err = 0;
+    size_t i = 0;
     DWORD timeout = RDNS_TIMEOUT * 1000; /* in milliseconds */
 
     /* path of ipconfig command */
-    WCHAR ipcfg[MAX_PATH];
+    WCHAR ipcfg[MAX_PATH] = { 0 };
 
     struct
     {
@@ -975,10 +943,9 @@ RegisterDNS(LPVOID unused)
     return err;
 }
 
-static DWORD
-HandleRegisterDNSMessage(void)
+static DWORD HandleRegisterDNSMessage(void)
 {
-    DWORD err;
+    DWORD err = 0;
     HANDLE thread = NULL;
 
     /* Delegate this job to a sub-thread */
@@ -1010,12 +977,11 @@ HandleRegisterDNSMessage(void)
  *
  * If addr is null and action = "delete" all addresses are deleted.
  */
-static DWORD
-netsh_dns_cmd(const wchar_t *action, const wchar_t *proto, const wchar_t *if_name, const wchar_t *addr)
+static DWORD netsh_dns_cmd(const wchar_t *action, const wchar_t *proto, const wchar_t *if_name, const wchar_t *addr)
 {
     DWORD err = 0;
     int timeout = 30000; /* in msec */
-    wchar_t argv0[MAX_PATH];
+    wchar_t argv0[MAX_PATH] = { 0 };
     wchar_t *cmdline = NULL;
 
     if (!addr)
@@ -1068,12 +1034,11 @@ out:
  *                     - a single word for SetDNSDomain, empty or NULL to delete
  *                     - comma separated values for a list
  */
-static DWORD
-wmic_nicconfig_cmd(const wchar_t *action, const NET_IFINDEX if_index,
+static DWORD wmic_nicconfig_cmd(const wchar_t *action, const NET_IFINDEX if_index,
                    const wchar_t *data)
 {
     DWORD err = 0;
-    wchar_t argv0[MAX_PATH];
+    wchar_t argv0[MAX_PATH] = { 0 };
     wchar_t *cmdline = NULL;
     int timeout = 10000; /* in msec */
 
@@ -1107,23 +1072,20 @@ wmic_nicconfig_cmd(const wchar_t *action, const NET_IFINDEX if_index,
 }
 
 /* Delete all IPv4 or IPv6 dns servers for an interface */
-static DWORD
-DeleteDNS(short family, wchar_t *if_name)
+static DWORD DeleteDNS(short family, wchar_t *if_name)
 {
     wchar_t *proto = (family == AF_INET6) ? L"ipv6" : L"ip";
     return netsh_dns_cmd(L"delete", proto, if_name, NULL);
 }
 
 /* Add an IPv4 or IPv6 dns server to an interface */
-static DWORD
-AddDNS(short family, wchar_t *if_name, wchar_t *addr)
+static DWORD AddDNS(short family, wchar_t *if_name, wchar_t *addr)
 {
     wchar_t *proto = (family == AF_INET6) ? L"ipv6" : L"ip";
     return netsh_dns_cmd(L"add", proto, if_name, addr);
 }
 
-static BOOL
-CmpWString(LPVOID item, LPVOID str)
+static BOOL CmpWString(LPVOID item, LPVOID str)
 {
     return (wcscmp(item, str) == 0) ? TRUE : FALSE;
 }
@@ -1136,10 +1098,9 @@ CmpWString(LPVOID item, LPVOID str)
  *                    undo lists are not altered.
  * Will delete the currently set value if domain is empty.
  */
-static DWORD
-SetDNSDomain(const wchar_t *if_name, const char *domain, undo_lists_t *lists)
+static DWORD SetDNSDomain(const wchar_t *if_name, const char *domain, undo_lists_t *lists)
 {
-    NET_IFINDEX if_index;
+    NET_IFINDEX if_index = { 0 };
 
     DWORD err  = ConvertInterfaceNameToIndex(if_name, &if_index);
     if (err != ERROR_SUCCESS)
@@ -1176,11 +1137,10 @@ SetDNSDomain(const wchar_t *if_name, const char *domain, undo_lists_t *lists)
     return err;
 }
 
-static DWORD
-HandleDNSConfigMessage(const dns_cfg_message_t *msg, undo_lists_t *lists)
+static DWORD HandleDNSConfigMessage(const dns_cfg_message_t *msg, undo_lists_t *lists)
 {
     DWORD err = 0;
-    wchar_t addr[46]; /* large enough to hold string representation of an ipv4 / ipv6 address */
+    wchar_t addr[46] = { 0 }; /* large enough to hold string representation of an ipv4 / ipv6 address */
     undo_type_t undo_type = (msg->family == AF_INET6) ? undo_dns4 : undo_dns6;
     int addr_len = msg->addr_len;
 
@@ -1275,12 +1235,11 @@ out:
     return err;
 }
 
-static DWORD
-HandleEnableDHCPMessage(const enable_dhcp_message_t *dhcp)
+static DWORD HandleEnableDHCPMessage(const enable_dhcp_message_t *dhcp)
 {
     DWORD err = 0;
     DWORD timeout = 5000; /* in milli seconds */
-    wchar_t argv0[MAX_PATH];
+    wchar_t argv0[MAX_PATH] = { 0 };
 
     /* Path of netsh */
     openvpn_swprintf(argv0, _countof(argv0), L"%ls\\%ls", get_win_sys_path(), L"netsh.exe");
@@ -1313,8 +1272,7 @@ HandleEnableDHCPMessage(const enable_dhcp_message_t *dhcp)
     return err;
 }
 
-static DWORD
-OvpnDuplicateHandle(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle)
+static DWORD OvpnDuplicateHandle(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle)
 {
     DWORD err = ERROR_SUCCESS;
 
@@ -1328,8 +1286,7 @@ OvpnDuplicateHandle(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle)
     return err;
 }
 
-static DWORD
-DuplicateAndMapRing(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle, struct tun_ring **ring)
+static DWORD DuplicateAndMapRing(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle, struct tun_ring **ring)
 {
     DWORD err = ERROR_SUCCESS;
 
@@ -1349,13 +1306,12 @@ DuplicateAndMapRing(HANDLE ovpn_proc, HANDLE orig_handle, HANDLE *new_handle, st
     return err;
 }
 
-static DWORD
-HandleRegisterRingBuffers(const register_ring_buffers_message_t *rrb, HANDLE ovpn_proc,
+static DWORD HandleRegisterRingBuffers(const register_ring_buffers_message_t *rrb, HANDLE ovpn_proc,
                           ring_buffer_handles_t *ring_buffer_handles)
 {
     DWORD err = 0;
-    struct tun_ring *send_ring;
-    struct tun_ring *receive_ring;
+    struct tun_ring *send_ring = 0;
+    struct tun_ring *receive_ring = 0;
 
     CloseRingBufferHandles(ring_buffer_handles);
 
@@ -1399,11 +1355,10 @@ HandleRegisterRingBuffers(const register_ring_buffers_message_t *rrb, HANDLE ovp
     return err;
 }
 
-static DWORD
-HandleMTUMessage(const set_mtu_message_t *mtu)
+static DWORD HandleMTUMessage(const set_mtu_message_t *mtu)
 {
     DWORD err = 0;
-    MIB_IPINTERFACE_ROW ipiface;
+    MIB_IPINTERFACE_ROW ipiface = { 0 };
     InitializeIpInterfaceEntry(&ipiface);
     ipiface.Family = mtu->family;
     ipiface.InterfaceIndex = mtu->iface.index;
@@ -1422,11 +1377,10 @@ HandleMTUMessage(const set_mtu_message_t *mtu)
     return err;
 }
 
-static VOID
-HandleMessage(HANDLE pipe, HANDLE ovpn_proc, ring_buffer_handles_t *ring_buffer_handles,
+static VOID HandleMessage(HANDLE pipe, HANDLE ovpn_proc, ring_buffer_handles_t *ring_buffer_handles,
               DWORD bytes, DWORD count, LPHANDLE events, undo_lists_t *lists)
 {
-    DWORD read;
+    DWORD read = 0;
     union {
         message_header_t header;
         address_message_t address;
@@ -1529,11 +1483,10 @@ out:
 }
 
 
-static VOID
-Undo(undo_lists_t *lists)
+static VOID Undo(undo_lists_t *lists)
 {
-    undo_type_t type;
-    block_dns_data_t *interface_data;
+    undo_type_t type = 0;
+    block_dns_data_t *interface_data = 0;
     for (type = 0; type < _undo_type_max; type++)
     {
         list_item_t **pnext = &(*lists)[type];
@@ -1590,8 +1543,7 @@ Undo(undo_lists_t *lists)
     }
 }
 
-static DWORD WINAPI
-RunOpenvpn(LPVOID p)
+static DWORD WINAPI RunOpenvpn(LPVOID p)
 {
     HANDLE pipe = p;
     HANDLE ovpn_pipe = NULL, svc_pipe = NULL;
@@ -1601,15 +1553,15 @@ RunOpenvpn(LPVOID p)
     HANDLE stdout_write = NULL;
     DWORD pipe_mode, len, exit_code = 0;
     STARTUP_DATA sud = { 0, 0, 0 };
-    STARTUPINFOW startup_info;
-    PROCESS_INFORMATION proc_info;
+    STARTUPINFOW startup_info = { 0 };
+    PROCESS_INFORMATION proc_info = { 0 };
     LPVOID user_env = NULL;
-    TCHAR ovpn_pipe_name[256]; /* The entire pipe name string can be up to 256 characters long according to MSDN. */
-    LPCWSTR exe_path;
+    TCHAR ovpn_pipe_name[256] = { 0 }; /* The entire pipe name string can be up to 256 characters long according to MSDN. */
+    LPCWSTR exe_path = 0;
     WCHAR *cmdline = NULL;
-    size_t cmdline_size;
-    undo_lists_t undo_lists;
-    ring_buffer_handles_t ring_buffer_handles;
+    size_t cmdline_size = 0;
+    undo_lists_t undo_lists = { 0 };
+    ring_buffer_handles_t ring_buffer_handles = { 0 };
     WCHAR errmsg[512] = L"";
 
     SECURITY_ATTRIBUTES inheritable = {
@@ -1618,9 +1570,9 @@ RunOpenvpn(LPVOID p)
         .bInheritHandle = TRUE
     };
 
-    PACL ovpn_dacl;
-    EXPLICIT_ACCESS ea[2];
-    SECURITY_DESCRIPTOR ovpn_sd;
+    PACL ovpn_dacl = { 0 };
+    EXPLICIT_ACCESS ea[2] = { 0 };
+    SECURITY_DESCRIPTOR ovpn_sd = { 0 };
     SECURITY_ATTRIBUTES ovpn_sa = {
         .nLength = sizeof(ovpn_sa),
         .lpSecurityDescriptor = &ovpn_sd,
@@ -1774,7 +1726,7 @@ RunOpenvpn(LPVOID p)
     }
 
     openvpn_swprintf(ovpn_pipe_name, _countof(ovpn_pipe_name),
-                     TEXT("\\\\.\\pipe\\" PACKAGE "%ls\\service_%lu"), service_instance, GetCurrentThreadId());
+                     TEXT("\\\\.\\pipe\\") PACKAGE TEXT("%ls\\service_%lu"), service_instance, GetCurrentThreadId());
     ovpn_pipe = CreateNamedPipe(ovpn_pipe_name,
                                 PIPE_ACCESS_DUPLEX | FILE_FLAG_FIRST_PIPE_INSTANCE | FILE_FLAG_OVERLAPPED,
                                 PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, 1, 128, 128, 0, NULL);
@@ -1875,7 +1827,7 @@ RunOpenvpn(LPVOID p)
     }
     else if (exit_code != 0)
     {
-        WCHAR buf[256];
+        WCHAR buf[256] = { 0 };
         openvpn_swprintf(buf, _countof(buf),
                          L"OpenVPN exited with error: exit code = %lu", exit_code);
         ReturnError(pipe, ERROR_OPENVPN_STARTUP, buf, 1, &exit_event);
@@ -1908,8 +1860,7 @@ out:
 }
 
 
-static DWORD WINAPI
-ServiceCtrlInteractive(DWORD ctrl_code, DWORD event, LPVOID data, LPVOID ctx)
+static DWORD WINAPI ServiceCtrlInteractive(DWORD ctrl_code, DWORD event, LPVOID data, LPVOID ctx)
 {
     SERVICE_STATUS *status = ctx;
     switch (ctrl_code)
@@ -1932,20 +1883,19 @@ ServiceCtrlInteractive(DWORD ctrl_code, DWORD event, LPVOID data, LPVOID ctx)
 }
 
 
-static HANDLE
-CreateClientPipeInstance(VOID)
+static HANDLE CreateClientPipeInstance(VOID)
 {
-    TCHAR pipe_name[256]; /* The entire pipe name string can be up to 256 characters long according to MSDN. */
+    TCHAR pipe_name[256] = { 0 }; /* The entire pipe name string can be up to 256 characters long according to MSDN. */
     HANDLE pipe = NULL;
-    PACL old_dacl, new_dacl;
-    PSECURITY_DESCRIPTOR sd;
+    PACL old_dacl = { 0 }, new_dacl = { 0 };
+    PSECURITY_DESCRIPTOR sd = { 0 };
     static EXPLICIT_ACCESS ea[2];
     static BOOL initialized = FALSE;
     DWORD flags = PIPE_ACCESS_DUPLEX | WRITE_DAC | FILE_FLAG_OVERLAPPED;
 
     if (!initialized)
     {
-        PSID everyone, anonymous;
+        PSID everyone = { 0 }, anonymous = { 0 };
 
         ConvertStringSidToSid(TEXT("S-1-1-0"), &everyone);
         ConvertStringSidToSid(TEXT("S-1-5-7"), &anonymous);
@@ -1972,7 +1922,7 @@ CreateClientPipeInstance(VOID)
         initialized = TRUE;
     }
 
-    openvpn_swprintf(pipe_name, _countof(pipe_name), TEXT("\\\\.\\pipe\\" PACKAGE "%ls\\service"), service_instance);
+    openvpn_swprintf(pipe_name, _countof(pipe_name), TEXT("\\\\.\\pipe\\") PACKAGE TEXT("%ls\\service"), service_instance);
     pipe = CreateNamedPipe(pipe_name, flags,
                            PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE,
                            PIPE_UNLIMITED_INSTANCES, 1024, 1024, 0, NULL);
@@ -2006,8 +1956,7 @@ CreateClientPipeInstance(VOID)
 }
 
 
-static DWORD
-UpdateWaitHandles(LPHANDLE *handles_ptr, LPDWORD count,
+static DWORD UpdateWaitHandles(LPHANDLE *handles_ptr, LPDWORD count,
                   HANDLE io_event, HANDLE exit_event, list_item_t *threads)
 {
     static DWORD size = 10;
@@ -2035,7 +1984,7 @@ UpdateWaitHandles(LPHANDLE *handles_ptr, LPDWORD count,
     {
         if (pos == size)
         {
-            LPHANDLE tmp;
+            LPHANDLE tmp = 0;
             size += 10;
             tmp = realloc(handles, size * sizeof(HANDLE));
             if (tmp == NULL)
@@ -2056,36 +2005,32 @@ UpdateWaitHandles(LPHANDLE *handles_ptr, LPDWORD count,
 }
 
 
-static VOID
-FreeWaitHandles(LPHANDLE h)
+static VOID FreeWaitHandles(LPHANDLE h)
 {
     free(h);
 }
 
-static BOOL
-CmpHandle(LPVOID item, LPVOID hnd)
+static BOOL CmpHandle(LPVOID item, LPVOID hnd)
 {
     return item == hnd;
 }
 
 
-VOID WINAPI
-ServiceStartInteractiveOwn(DWORD dwArgc, LPTSTR *lpszArgv)
+VOID WINAPI ServiceStartInteractiveOwn(DWORD dwArgc, LPTSTR *lpszArgv)
 {
     status.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
     ServiceStartInteractive(dwArgc, lpszArgv);
 }
 
 
-VOID WINAPI
-ServiceStartInteractive(DWORD dwArgc, LPTSTR *lpszArgv)
+VOID WINAPI ServiceStartInteractive(DWORD dwArgc, LPTSTR *lpszArgv)
 {
-    HANDLE pipe, io_event = NULL;
-    OVERLAPPED overlapped;
+    HANDLE pipe = 0, io_event = NULL;
+    OVERLAPPED overlapped = { 0 };
     DWORD error = NO_ERROR;
     list_item_t *threads = NULL;
     PHANDLE handles = NULL;
-    DWORD handle_count;
+    DWORD handle_count = 0;
 
     service = RegisterServiceCtrlHandlerEx(interactive_service.name, ServiceCtrlInteractive, &status);
     if (!service)

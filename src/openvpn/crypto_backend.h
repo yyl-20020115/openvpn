@@ -225,8 +225,7 @@ cipher_valid(const char *ciphername)
  *                      be NULL
  * @return              The cipher is defined and not the null (none) cipher
  */
-static inline bool
-cipher_defined(const char *ciphername)
+static inline bool cipher_defined(const char *ciphername)
 {
     ASSERT(ciphername);
     return strcmp(ciphername, "none") != 0;
@@ -511,8 +510,7 @@ int cipher_ctx_final_check_tag(cipher_ctx_t *ctx, uint8_t *dst, int *dst_len,
  * @param mdname    Name of the digest
  * @return
  */
-static inline bool
-md_defined(const char *mdname)
+static inline bool md_defined(const char *mdname)
 {
     return strcmp(mdname, "none") != 0;
 }

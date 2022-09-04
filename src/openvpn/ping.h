@@ -37,8 +37,7 @@ extern const uint8_t ping_string[];
 /* PING_STRING_SIZE must be sizeof (ping_string) */
 #define PING_STRING_SIZE 16
 
-static inline bool
-is_ping_msg(const struct buffer *buf)
+static inline bool is_ping_msg(const struct buffer *buf)
 {
     return buf_string_match(buf, ping_string, PING_STRING_SIZE);
 }
@@ -56,8 +55,7 @@ void check_ping_send_dowork(struct context *c);
  * Should we exit or restart due to ping (or other authenticated packet)
  * not received in n seconds?
  */
-static inline void
-check_ping_restart(struct context *c)
+static inline void check_ping_restart(struct context *c)
 {
     if (c->options.ping_rec_timeout
         && event_timeout_trigger(&c->c2.ping_rec_interval,
@@ -73,8 +71,7 @@ check_ping_restart(struct context *c)
 /*
  * Should we ping the remote?
  */
-static inline void
-check_ping_send(struct context *c)
+static inline void check_ping_send(struct context *c)
 {
     if (c->options.ping_send_timeout
         && event_timeout_trigger(&c->c2.ping_send_interval,

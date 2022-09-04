@@ -37,8 +37,7 @@
  * This is considered fast enough, as only this compat
  * version of dirname() depends on it.
  */
-static const char *
-__memrchr(const char *str, int c, size_t n)
+static const char * __memrchr(const char *str, int c, size_t n)
 {
     const char *end = str;
 
@@ -60,11 +59,10 @@ __memrchr(const char *str, int c, size_t n)
 /* Modified version based on glibc-2.14.1 by Ulrich Drepper <drepper@akkadia.org>
  * This version is extended to handle both / and \ in path names.
  */
-char *
-dirname(char *path)
+char * dirname(char *path)
 {
     static const char dot[] = ".";
-    char *last_slash;
+    char *last_slash = 0;
     char separator = '/';
 
     /* Find last '/'.  */
@@ -79,7 +77,7 @@ dirname(char *path)
     if (last_slash != NULL && last_slash != path && last_slash[1] == '\0')
     {
         /* Determine whether all remaining characters are slashes.  */
-        char *runp;
+        char *runp = 0;
 
         for (runp = last_slash; runp != path; --runp)
         {
@@ -99,7 +97,7 @@ dirname(char *path)
     if (last_slash != NULL)
     {
         /* Determine whether all remaining characters are slashes.  */
-        char *runp;
+        char *runp = 0;
 
         for (runp = last_slash; runp != path; --runp)
         {

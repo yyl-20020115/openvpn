@@ -182,14 +182,12 @@ void comp_generate_peer_info_string(const struct compress_options *opt, struct b
 
 void compv2_escape_data_ifneeded(struct buffer *buf);
 
-static inline bool
-comp_enabled(const struct compress_options *info)
+static inline bool comp_enabled(const struct compress_options *info)
 {
     return info->alg != COMP_ALG_UNDEF;
 }
 
-static inline bool
-comp_non_stub_enabled(const struct compress_options *info)
+static inline bool comp_non_stub_enabled(const struct compress_options *info)
 {
     return info->alg != COMP_ALGV2_UNCOMPRESSED
            && info->alg != COMP_ALG_STUB

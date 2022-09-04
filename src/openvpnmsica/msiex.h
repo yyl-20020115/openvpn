@@ -38,8 +38,7 @@
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-UINT
-msi_get_string(
+UINT msi_get_string(
     _In_ MSIHANDLE hInstall,
     _In_z_ LPCTSTR szName,
     _Out_ LPTSTR *pszValue);
@@ -57,8 +56,7 @@ msi_get_string(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-UINT
-msi_get_record_string(
+UINT msi_get_record_string(
     _In_ MSIHANDLE hRecord,
     _In_ unsigned int iField,
     _Out_ LPTSTR *pszValue);
@@ -79,8 +77,7 @@ msi_get_record_string(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-UINT
-msi_format_record(
+UINT msi_format_record(
     _In_ MSIHANDLE hInstall,
     _In_ MSIHANDLE hRecord,
     _Out_ LPTSTR *pszValue);
@@ -102,8 +99,7 @@ msi_format_record(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-UINT
-msi_format_field(
+UINT msi_format_field(
     _In_ MSIHANDLE hInstall,
     _In_ MSIHANDLE hRecord,
     _In_ unsigned int iField,

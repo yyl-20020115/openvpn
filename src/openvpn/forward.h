@@ -260,8 +260,7 @@ void process_outgoing_tun(struct context *c);
  * @param str        - The message to be sent
  * @param msglevel   - Message level to use for logging
  */
-bool
-send_control_channel_string(struct context *c, const char *str, int msglevel);
+bool send_control_channel_string(struct context *c, const char *str, int msglevel);
 
 /*
  * Send a string to remote over the TLS control channel.
@@ -278,8 +277,7 @@ send_control_channel_string(struct context *c, const char *str, int msglevel);
  * @param msglevel   - Message level to use for logging
  */
 
-bool
-send_control_channel_string_dowork(struct tls_multi *multi,
+bool send_control_channel_string_dowork(struct tls_multi *multi,
                                    const char *str, int msglevel);
 
 
@@ -303,8 +301,7 @@ void process_ip_header(struct context *c, unsigned int flags, struct buffer *buf
 
 void schedule_exit(struct context *c, const int n_seconds, const int signal);
 
-static inline struct link_socket_info *
-get_link_socket_info(struct context *c)
+static inline struct link_socket_info * get_link_socket_info(struct context *c)
 {
     if (c->c2.link_socket_info)
     {
@@ -316,8 +313,7 @@ get_link_socket_info(struct context *c)
     }
 }
 
-static inline void
-register_activity(struct context *c, const int size)
+static inline void register_activity(struct context *c, const int size)
 {
     if (c->options.inactivity_timeout)
     {
@@ -334,8 +330,7 @@ register_activity(struct context *c, const int size)
  * Return the io_wait() flags appropriate for
  * a point-to-point tunnel.
  */
-static inline unsigned int
-p2p_iow_flags(const struct context *c)
+static inline unsigned int p2p_iow_flags(const struct context *c)
 {
     unsigned int flags = (IOW_SHAPER|IOW_CHECK_RESIDUAL|IOW_FRAG|IOW_READ|IOW_WAIT_SIGNAL);
     if (c->c2.to_link.len > 0)
@@ -359,8 +354,7 @@ p2p_iow_flags(const struct context *c)
  * This is the core I/O wait function, used for all I/O waits except
  * for TCP in server mode.
  */
-static inline void
-io_wait(struct context *c, const unsigned int flags)
+static inline void io_wait(struct context *c, const unsigned int flags)
 {
     if (c->c2.fast_io && (flags & (IOW_TO_TUN|IOW_TO_LINK|IOW_MBUF)))
     {
@@ -411,8 +405,7 @@ io_wait(struct context *c, const unsigned int flags)
     }
 }
 
-static inline bool
-connection_established(struct context *c)
+static inline bool connection_established(struct context *c)
 {
     if (c->c2.tls_multi)
     {

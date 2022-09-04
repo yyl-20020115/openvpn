@@ -664,8 +664,7 @@ struct tls_multi
 /**  gets an item  of \c key_state objects in the
  *   order they should be scanned by data
  *   channel modules. */
-static inline struct key_state *
-get_key_scan(struct tls_multi *multi, int index)
+static inline struct key_state * get_key_scan(struct tls_multi *multi, int index)
 {
     switch (index)
     {
@@ -687,8 +686,7 @@ get_key_scan(struct tls_multi *multi, int index)
 /**  gets an item  of \c key_state objects in the
  *   order they should be scanned by data
  *   channel modules. */
-static inline const struct key_state *
-get_primary_key(const struct tls_multi *multi)
+static inline const struct key_state * get_primary_key(const struct tls_multi *multi)
 {
     return &multi->session[TM_ACTIVE].key[KS_PRIMARY];
 }

@@ -37,8 +37,7 @@
  * The OpenVPN code should never directly include this file
  */
 
-static inline dco_cipher_t
-dco_get_cipher(const char *cipher)
+static inline dco_cipher_t dco_get_cipher(const char *cipher)
 {
     if (strcmp(cipher, "AES-256-GCM") == 0 || strcmp(cipher, "AES-128-GCM") == 0
         || strcmp(cipher, "AES-192-GCM") == 0)

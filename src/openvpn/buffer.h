@@ -198,33 +198,28 @@ bool buf_init_debug(struct buffer *buf, int offset, const char *file, int line);
 
 
 /* inline functions */
-static inline void
-gc_freeaddrinfo_callback(void *addr)
+static inline void gc_freeaddrinfo_callback(void *addr)
 {
     freeaddrinfo((struct addrinfo *) addr);
 }
 
 /** Return an empty struct buffer */
-static inline struct buffer
-clear_buf(void)
+static inline struct buffer clear_buf(void)
 {
     return (struct buffer) { 0 };
 }
 
-static inline bool
-buf_defined(const struct buffer *buf)
+static inline bool buf_defined(const struct buffer *buf)
 {
     return buf->data != NULL;
 }
 
-static inline bool
-buf_valid(const struct buffer *buf)
+static inline bool buf_valid(const struct buffer *buf)
 {
     return likely(buf->data != NULL) && likely(buf->len >= 0);
 }
 
-static inline uint8_t *
-buf_bptr(const struct buffer *buf)
+static inline uint8_t * buf_bptr(const struct buffer *buf)
 {
     if (buf_valid(buf))
     {
@@ -236,8 +231,7 @@ buf_bptr(const struct buffer *buf)
     }
 }
 
-static int
-buf_len(const struct buffer *buf)
+static int buf_len(const struct buffer *buf)
 {
     if (buf_valid(buf))
     {
@@ -249,14 +243,12 @@ buf_len(const struct buffer *buf)
     }
 }
 
-static inline uint8_t *
-buf_bend(const struct buffer *buf)
+static inline uint8_t * buf_bend(const struct buffer *buf)
 {
     return buf_bptr(buf) + buf_len(buf);
 }
 
-static inline uint8_t *
-buf_blast(const struct buffer *buf)
+static inline uint8_t * buf_blast(const struct buffer *buf)
 {
     if (buf_len(buf) > 0)
     {
@@ -268,26 +260,22 @@ buf_blast(const struct buffer *buf)
     }
 }
 
-static inline bool
-buf_size_valid(const size_t size)
+static inline bool buf_size_valid(const size_t size)
 {
     return likely(size < BUF_SIZE_MAX);
 }
 
-static inline bool
-buf_size_valid_signed(const int size)
+static inline bool buf_size_valid_signed(const int size)
 {
     return likely(size >= -BUF_SIZE_MAX) && likely(size < BUF_SIZE_MAX);
 }
 
-static inline char *
-buf_str(const struct buffer *buf)
+static inline char * buf_str(const struct buffer *buf)
 {
     return (char *)buf_bptr(buf);
 }
 
-static inline void
-buf_reset(struct buffer *buf)
+static inline void buf_reset(struct buffer *buf)
 {
     buf->capacity = 0;
     buf->offset = 0;
@@ -295,15 +283,13 @@ buf_reset(struct buffer *buf)
     buf->data = NULL;
 }
 
-static inline void
-buf_reset_len(struct buffer *buf)
+static inline void buf_reset_len(struct buffer *buf)
 {
     buf->len = 0;
     buf->offset = 0;
 }
 
-static inline bool
-buf_init_dowork(struct buffer *buf, int offset)
+static inline bool buf_init_dowork(struct buffer *buf, int offset)
 {
     if (offset < 0 || offset > buf->capacity || buf->data == NULL)
     {
@@ -314,8 +300,7 @@ buf_init_dowork(struct buffer *buf, int offset)
     return true;
 }
 
-static inline void
-buf_set_write(struct buffer *buf, uint8_t *data, int size)
+static inline void buf_set_write(struct buffer *buf, uint8_t *data, int size)
 {
     if (!buf_size_valid(size))
     {
@@ -331,8 +316,7 @@ buf_set_write(struct buffer *buf, uint8_t *data, int size)
     }
 }
 
-static inline void
-buf_set_read(struct buffer *buf, const uint8_t *data, size_t size)
+static inline void buf_set_read(struct buffer *buf, const uint8_t *data, size_t size)
 {
     if (!buf_size_valid(size))
     {
@@ -344,8 +328,7 @@ buf_set_read(struct buffer *buf, const uint8_t *data, size_t size)
 }
 
 /* Like strncpy but makes sure dest is always null terminated */
-static inline void
-strncpynt(char *dest, const char *src, size_t maxlen)
+static inline void strncpynt(char *dest, const char *src, size_t maxlen)
 {
     if (maxlen > 0)
     {
@@ -355,8 +338,7 @@ strncpynt(char *dest, const char *src, size_t maxlen)
 }
 
 /* return true if string contains at least one numerical digit */
-static inline bool
-has_digit(const char *src)
+static inline bool has_digit(const char *src)
 {
     char c;
     while ((c = *src++))
@@ -397,8 +379,7 @@ has_digit(const char *src)
  * @param data  Pointer to data to zeroise.
  * @param len   Length of data, in bytes.
  */
-static inline void
-secure_memzero(void *data, size_t len)
+static inline void secure_memzero(void *data, size_t len)
 {
 #if defined(_WIN32)
     SecureZeroMemory(data, len);
@@ -501,13 +482,11 @@ bool buf_parse(struct buffer *buf, const int delim, char *line, const int size);
  */
 #define FHE_SPACE_BREAK_MASK 0xFF /* space_break parameter in lower 8 bits */
 #define FHE_CAPS 0x100            /* output hex in caps */
-char *
-format_hex_ex(const uint8_t *data, int size, int maxoutput,
+char * format_hex_ex(const uint8_t *data, int size, int maxoutput,
               unsigned int space_break_flags, const char *separator,
               struct gc_arena *gc);
 
-static inline char *
-format_hex(const uint8_t *data, int size, int maxoutput, struct gc_arena *gc)
+static inline char * format_hex(const uint8_t *data, int size, int maxoutput, struct gc_arena *gc)
 {
     return format_hex_ex(data, size, maxoutput, 4, " ", gc);
 }
@@ -521,15 +500,13 @@ struct buffer buf_sub(struct buffer *buf, int size, bool prepend);
  * Check if sufficient space to append to buffer.
  */
 
-static inline bool
-buf_safe(const struct buffer *buf, size_t len)
+static inline bool buf_safe(const struct buffer *buf, size_t len)
 {
     return buf_valid(buf) && buf_size_valid(len)
            && buf->offset + buf->len + (int)len <= buf->capacity;
 }
 
-static inline bool
-buf_safe_bidir(const struct buffer *buf, int len)
+static inline bool buf_safe_bidir(const struct buffer *buf, int len)
 {
     if (buf_valid(buf) && buf_size_valid_signed(len))
     {
@@ -542,8 +519,7 @@ buf_safe_bidir(const struct buffer *buf, int len)
     }
 }
 
-static inline int
-buf_forward_capacity(const struct buffer *buf)
+static inline int buf_forward_capacity(const struct buffer *buf)
 {
     if (buf_valid(buf))
     {
@@ -560,8 +536,7 @@ buf_forward_capacity(const struct buffer *buf)
     }
 }
 
-static inline int
-buf_forward_capacity_total(const struct buffer *buf)
+static inline int buf_forward_capacity_total(const struct buffer *buf)
 {
     if (buf_valid(buf))
     {
@@ -578,8 +553,7 @@ buf_forward_capacity_total(const struct buffer *buf)
     }
 }
 
-static inline int
-buf_reverse_capacity(const struct buffer *buf)
+static inline int buf_reverse_capacity(const struct buffer *buf)
 {
     if (buf_valid(buf))
     {
@@ -591,8 +565,7 @@ buf_reverse_capacity(const struct buffer *buf)
     }
 }
 
-static inline bool
-buf_inc_len(struct buffer *buf, int inc)
+static inline bool buf_inc_len(struct buffer *buf, int inc)
 {
     if (!buf_safe_bidir(buf, inc))
     {
@@ -607,8 +580,7 @@ buf_inc_len(struct buffer *buf, int inc)
  * Return NULL if no space.
  */
 
-static inline uint8_t *
-buf_prepend(struct buffer *buf, int size)
+static inline uint8_t * buf_prepend(struct buffer *buf, int size)
 {
     if (!buf_valid(buf) || size < 0 || size > buf->offset)
     {
@@ -619,8 +591,7 @@ buf_prepend(struct buffer *buf, int size)
     return BPTR(buf);
 }
 
-static inline bool
-buf_advance(struct buffer *buf, int size)
+static inline bool buf_advance(struct buffer *buf, int size)
 {
     if (!buf_valid(buf) || size < 0 || buf->len < size)
     {
@@ -636,10 +607,9 @@ buf_advance(struct buffer *buf, int size)
  * Return NULL if no space.
  */
 
-static inline uint8_t *
-buf_write_alloc(struct buffer *buf, size_t size)
+static inline uint8_t * buf_write_alloc(struct buffer *buf, size_t size)
 {
-    uint8_t *ret;
+    uint8_t *ret = 0;
     if (!buf_safe(buf, size))
     {
         return NULL;
@@ -649,16 +619,14 @@ buf_write_alloc(struct buffer *buf, size_t size)
     return ret;
 }
 
-static inline uint8_t *
-buf_write_alloc_prepend(struct buffer *buf, int size, bool prepend)
+static inline uint8_t * buf_write_alloc_prepend(struct buffer *buf, int size, bool prepend)
 {
     return prepend ? buf_prepend(buf, size) : buf_write_alloc(buf, size);
 }
 
-static inline uint8_t *
-buf_read_alloc(struct buffer *buf, int size)
+static inline uint8_t * buf_read_alloc(struct buffer *buf, int size)
 {
-    uint8_t *ret;
+    uint8_t *ret = 0;
     if (size < 0 || buf->len < size)
     {
         return NULL;
@@ -669,8 +637,7 @@ buf_read_alloc(struct buffer *buf, int size)
     return ret;
 }
 
-static inline bool
-buf_write(struct buffer *dest, const void *src, size_t size)
+static inline bool buf_write(struct buffer *dest, const void *src, size_t size)
 {
     uint8_t *cp = buf_write_alloc(dest, size);
     if (!cp)
@@ -681,8 +648,7 @@ buf_write(struct buffer *dest, const void *src, size_t size)
     return true;
 }
 
-static inline bool
-buf_write_prepend(struct buffer *dest, const void *src, int size)
+static inline bool buf_write_prepend(struct buffer *dest, const void *src, int size)
 {
     uint8_t *cp = buf_prepend(dest, size);
     if (!cp)
@@ -693,34 +659,29 @@ buf_write_prepend(struct buffer *dest, const void *src, int size)
     return true;
 }
 
-static inline bool
-buf_write_u8(struct buffer *dest, uint8_t data)
+static inline bool buf_write_u8(struct buffer *dest, uint8_t data)
 {
     return buf_write(dest, &data, sizeof(uint8_t));
 }
 
-static inline bool
-buf_write_u16(struct buffer *dest, uint16_t data)
+static inline bool buf_write_u16(struct buffer *dest, uint16_t data)
 {
     uint16_t u16 = htons(data);
     return buf_write(dest, &u16, sizeof(uint16_t));
 }
 
-static inline bool
-buf_write_u32(struct buffer *dest, uint32_t data)
+static inline bool buf_write_u32(struct buffer *dest, uint32_t data)
 {
     uint32_t u32 = htonl(data);
     return buf_write(dest, &u32, sizeof(uint32_t));
 }
 
-static inline bool
-buf_copy(struct buffer *dest, const struct buffer *src)
+static inline bool buf_copy(struct buffer *dest, const struct buffer *src)
 {
     return buf_write(dest, BPTR(src), BLEN(src));
 }
 
-static inline bool
-buf_copy_n(struct buffer *dest, struct buffer *src, int n)
+static inline bool buf_copy_n(struct buffer *dest, struct buffer *src, int n)
 {
     uint8_t *cp = buf_read_alloc(src, n);
     if (!cp)
@@ -730,8 +691,7 @@ buf_copy_n(struct buffer *dest, struct buffer *src, int n)
     return buf_write(dest, cp, n);
 }
 
-static inline bool
-buf_copy_range(struct buffer *dest,
+static inline bool buf_copy_range(struct buffer *dest,
                int dest_index,
                const struct buffer *src,
                int src_index,
@@ -754,8 +714,7 @@ buf_copy_range(struct buffer *dest,
 }
 
 /* truncate src to len, copy excess data beyond len to dest */
-static inline bool
-buf_copy_excess(struct buffer *dest,
+static inline bool buf_copy_excess(struct buffer *dest,
                 struct buffer *src,
                 int len)
 {
@@ -779,8 +738,7 @@ buf_copy_excess(struct buffer *dest,
     }
 }
 
-static inline bool
-buf_read(struct buffer *src, void *dest, int size)
+static inline bool buf_read(struct buffer *src, void *dest, int size)
 {
     uint8_t *cp = buf_read_alloc(src, size);
     if (!cp)
@@ -791,10 +749,9 @@ buf_read(struct buffer *src, void *dest, int size)
     return true;
 }
 
-static inline int
-buf_read_u8(struct buffer *buf)
+static inline int buf_read_u8(struct buffer *buf)
 {
-    int ret;
+    int ret = 0;
     if (BLEN(buf) < 1)
     {
         return -1;
@@ -804,10 +761,9 @@ buf_read_u8(struct buffer *buf)
     return ret;
 }
 
-static inline int
-buf_read_u16(struct buffer *buf)
+static inline int buf_read_u16(struct buffer *buf)
 {
-    uint16_t ret;
+    uint16_t ret = 0;
     if (!buf_read(buf, &ret, sizeof(uint16_t)))
     {
         return -1;
@@ -815,10 +771,9 @@ buf_read_u16(struct buffer *buf)
     return ntohs(ret);
 }
 
-static inline uint32_t
-buf_read_u32(struct buffer *buf, bool *good)
+static inline uint32_t buf_read_u32(struct buffer *buf, bool *good)
 {
-    uint32_t ret;
+    uint32_t ret = 0;
     if (!buf_read(buf, &ret, sizeof(uint32_t)))
     {
         if (good)
@@ -838,8 +793,7 @@ buf_read_u32(struct buffer *buf, bool *good)
 }
 
 /** Return true if buffer contents are equal */
-static inline bool
-buf_equal(const struct buffer *a, const struct buffer *b)
+static inline bool buf_equal(const struct buffer *a, const struct buffer *b)
 {
     return BLEN(a) == BLEN(b) && 0 == memcmp(BPTR(a), BPTR(b), BLEN(a));
 }
@@ -848,8 +802,7 @@ buf_equal(const struct buffer *a, const struct buffer *b)
  * Compare src buffer contents with match.
  * *NOT* constant time. Do not use when comparing HMACs.
  */
-static inline bool
-buf_string_match(const struct buffer *src, const void *match, int size)
+static inline bool buf_string_match(const struct buffer *src, const void *match, int size)
 {
     if (size != src->len)
     {
@@ -862,8 +815,7 @@ buf_string_match(const struct buffer *src, const void *match, int size)
  * Compare first size bytes of src buffer contents with match.
  * *NOT* constant time. Do not use when comparing HMACs.
  */
-static inline bool
-buf_string_match_head(const struct buffer *src, const void *match, int size)
+static inline bool buf_string_match_head(const struct buffer *src, const void *match, int size)
 {
     if (size < 0 || size > src->len)
     {
@@ -941,8 +893,7 @@ const char *string_mod_const(const char *str,
 void string_replace_leading(char *str, const char match, const char replace);
 
 /** Return true iff str starts with prefix */
-static inline bool
-strprefix(const char *str, const char *prefix)
+static inline bool strprefix(const char *str, const char *prefix)
 {
     return 0 == strncmp(str, prefix, strlen(prefix));
 }
@@ -975,35 +926,30 @@ void x_gc_free(struct gc_arena *a);
 
 void x_gc_freespecial(struct gc_arena *a);
 
-static inline bool
-gc_defined(struct gc_arena *a)
+static inline bool gc_defined(struct gc_arena *a)
 {
     return a->list != NULL;
 }
 
-static inline void
-gc_init(struct gc_arena *a)
+static inline void gc_init(struct gc_arena *a)
 {
     a->list = NULL;
     a->list_special = NULL;
 }
 
-static inline void
-gc_detach(struct gc_arena *a)
+static inline void gc_detach(struct gc_arena *a)
 {
     gc_init(a);
 }
 
-static inline struct gc_arena
-gc_new(void)
+static inline struct gc_arena gc_new(void)
 {
-    struct gc_arena ret;
+    struct gc_arena ret = { 0 };
     gc_init(&ret);
     return ret;
 }
 
-static inline void
-gc_free(struct gc_arena *a)
+static inline void gc_free(struct gc_arena *a)
 {
     if (a->list)
     {
@@ -1015,8 +961,7 @@ gc_free(struct gc_arena *a)
     }
 }
 
-static inline void
-gc_reset(struct gc_arena *a)
+static inline void gc_reset(struct gc_arena *a)
 {
     gc_free(a);
 }
@@ -1072,8 +1017,7 @@ gc_reset(struct gc_arena *a)
         (dptr) = (type *) gc_malloc(sizeof(type), true, (gc)); \
     }
 
-static inline void
-check_malloc_return(const void *p)
+static inline void check_malloc_return(const void *p)
 {
     if (!p)
     {

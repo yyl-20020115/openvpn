@@ -36,8 +36,7 @@
 #endif
 
 
-UINT
-msi_get_string(
+UINT msi_get_string(
     _In_ MSIHANDLE hInstall,
     _In_z_ LPCTSTR szName,
     _Out_ LPTSTR *pszValue)
@@ -48,7 +47,7 @@ msi_get_string(
     }
 
     /* Try with stack buffer first. */
-    TCHAR szBufStack[128];
+    TCHAR szBufStack[128] = { 0 };
     DWORD dwLength = _countof(szBufStack);
     UINT uiResult = MsiGetProperty(hInstall, szName, szBufStack, &dwLength);
     if (uiResult == ERROR_SUCCESS)
@@ -94,8 +93,7 @@ msi_get_string(
 }
 
 
-UINT
-msi_get_record_string(
+UINT msi_get_record_string(
     _In_ MSIHANDLE hRecord,
     _In_ unsigned int iField,
     _Out_ LPTSTR *pszValue)
@@ -106,7 +104,7 @@ msi_get_record_string(
     }
 
     /* Try with stack buffer first. */
-    TCHAR szBufStack[128];
+    TCHAR szBufStack[128] = { 0 };
     DWORD dwLength = _countof(szBufStack);
     UINT uiResult = MsiRecordGetString(hRecord, iField, szBufStack, &dwLength);
     if (uiResult == ERROR_SUCCESS)
@@ -152,8 +150,7 @@ msi_get_record_string(
 }
 
 
-UINT
-msi_format_record(
+UINT msi_format_record(
     _In_ MSIHANDLE hInstall,
     _In_ MSIHANDLE hRecord,
     _Out_ LPTSTR *pszValue)
@@ -164,7 +161,7 @@ msi_format_record(
     }
 
     /* Try with stack buffer first. */
-    TCHAR szBufStack[128];
+    TCHAR szBufStack[128] = { 0 };
     DWORD dwLength = _countof(szBufStack);
     UINT uiResult = MsiFormatRecord(hInstall, hRecord, szBufStack, &dwLength);
     if (uiResult == ERROR_SUCCESS)
@@ -210,8 +207,7 @@ msi_format_record(
 }
 
 
-UINT
-msi_format_field(
+UINT msi_format_field(
     _In_ MSIHANDLE hInstall,
     _In_ MSIHANDLE hRecord,
     _In_ unsigned int iField,

@@ -40,7 +40,7 @@
 
 
 const TCHAR title_string[] =
-    TEXT(PACKAGE_NAME) TEXT(" ") TEXT(PACKAGE_VERSION)
+    PACKAGE_NAME TEXT(" ") PACKAGE_VERSION
 ;
 
 static const TCHAR usage_message[] =
@@ -118,8 +118,7 @@ static const TCHAR usage_message_delete[] =
 /**
  * Print the help message.
  */
-static void
-usage(void)
+static void usage(void)
 {
     _ftprintf(stderr,
               usage_message,
@@ -130,10 +129,9 @@ usage(void)
 /**
  * Program entry point
  */
-int __cdecl
-_tmain(int argc, LPCTSTR argv[])
+int __cdecl _tmain(int argc, LPCTSTR argv[])
 {
-    int iResult;
+    int iResult = 0;
     BOOL bRebootRequired = FALSE;
 
     /* Ask SetupAPI to keep quiet. */
@@ -174,7 +172,7 @@ _tmain(int argc, LPCTSTR argv[])
     else if (_tcsicmp(argv[1], TEXT("create")) == 0)
     {
         LPCTSTR szName = NULL;
-        LPCTSTR szHwId = TEXT("root\\") TEXT(TAP_WIN_COMPONENT_ID);
+        LPCTSTR szHwId = TEXT("root\\") TAP_WIN_COMPONENT_ID;
 
         /* Parse options. */
         for (int i = 2; i < argc; i++)
@@ -196,7 +194,7 @@ _tmain(int argc, LPCTSTR argv[])
         }
 
         /* Create TUN/TAP adapter. */
-        GUID guidAdapter;
+        GUID guidAdapter = { 0 };
         LPOLESTR szAdapterId = NULL;
         DWORD dwResult = tap_create_adapter(
             NULL,
@@ -273,8 +271,8 @@ create_delete_adapter:
     else if (_tcsicmp(argv[1], TEXT("list")) == 0)
     {
         TCHAR szzHwId[0x100] =
-            TEXT("root\\") TEXT(TAP_WIN_COMPONENT_ID) TEXT("\0")
-            TEXT(TAP_WIN_COMPONENT_ID) TEXT("\0")
+            TEXT("root\\") TAP_WIN_COMPONENT_ID TEXT("\0")
+            TAP_WIN_COMPONENT_ID TEXT("\0")
             TEXT("Wintun\0")
             TEXT("ovpn-dco\0");
 
@@ -324,7 +322,7 @@ create_delete_adapter:
             return 1;
         }
 
-        GUID guidAdapter;
+        GUID guidAdapter = { 0 };
         if (FAILED(IIDFromString(argv[2], (LPIID)&guidAdapter)))
         {
             /* The argument failed to covert to GUID. Treat it as the adapter name. */
@@ -391,8 +389,7 @@ quit:
 }
 
 
-bool
-dont_mute(unsigned int flags)
+bool dont_mute(unsigned int flags)
 {
     UNREFERENCED_PARAMETER(flags);
 
@@ -400,8 +397,7 @@ dont_mute(unsigned int flags)
 }
 
 
-void
-x_msg_va(const unsigned int flags, const char *format, va_list arglist)
+void x_msg_va(const unsigned int flags, const char *format, va_list arglist)
 {
     /* Output message string. Note: Message strings don't contain line terminators. */
     vfprintf(stderr, format, arglist);

@@ -94,8 +94,7 @@ void schedule_remove_node(struct schedule *s, struct schedule_entry *e);
  * The caller should treat the passed struct schedule_entry as
  * an opaque object.
  */
-static inline void
-schedule_add_entry(struct schedule *s,
+static inline void schedule_add_entry(struct schedule *s,
                    struct schedule_entry *e,
                    const struct timeval *tv,
                    unsigned int sigma)
@@ -114,11 +113,10 @@ schedule_add_entry(struct schedule *s,
  * the random priority assigned to each node (the priority
  * is randomized every time an entry is re-added).
  */
-static inline struct schedule_entry *
-schedule_get_earliest_wakeup(struct schedule *s,
+static inline struct schedule_entry * schedule_get_earliest_wakeup(struct schedule *s,
                              struct timeval *wakeup)
 {
-    struct schedule_entry *ret;
+    struct schedule_entry *ret = 0;
 
     /* cache result */
     if (!s->earliest_wakeup)

@@ -109,8 +109,7 @@ static WCHAR *FIREWALL_NAME = L"OpenVPN";
 /*
  * Default msg handler does nothing
  */
-static inline void
-default_msg_handler(DWORD err, const char *msg)
+static inline void default_msg_handler(DWORD err, const char *msg)
 {
     return;
 }
@@ -121,13 +120,12 @@ default_msg_handler(DWORD err, const char *msg)
 /*
  * Add a persistent sublayer with specified uuid.
  */
-static DWORD
-add_sublayer(GUID uuid)
+static DWORD add_sublayer(GUID uuid)
 {
-    FWPM_SESSION0 session;
+    FWPM_SESSION0 session = { 0 };
     HANDLE engine = NULL;
     DWORD err = 0;
-    FWPM_SUBLAYER0 sublayer;
+    FWPM_SUBLAYER0 sublayer = { 0 };
 
     memset(&session, 0, sizeof(session));
     memset(&sublayer, 0, sizeof(sublayer));
@@ -172,8 +170,7 @@ out:
  * Returns 0 on success, a non-zero status code of the last failed action on failure.
  */
 
-DWORD
-add_block_dns_filters(HANDLE *engine_handle,
+DWORD add_block_dns_filters(HANDLE *engine_handle,
                       int index,
                       const WCHAR *exe_path,
                       block_dns_msg_handler_t msg_handler
@@ -181,8 +178,8 @@ add_block_dns_filters(HANDLE *engine_handle,
 {
     FWPM_SESSION0 session = {0};
     FWPM_SUBLAYER0 *sublayer_ptr = NULL;
-    NET_LUID tapluid;
-    UINT64 filterid;
+    NET_LUID tapluid = { 0 };
+    UINT64 filterid = { 0 };
     FWP_BYTE_BLOB *openvpnblob = NULL;
     FWPM_FILTER0 Filter = {0};
     FWPM_FILTER_CONDITION0 Condition[2] = {0};
@@ -323,8 +320,7 @@ out:
     return err;
 }
 
-DWORD
-delete_block_dns_filters(HANDLE engine_handle)
+DWORD delete_block_dns_filters(HANDLE engine_handle)
 {
     DWORD err = 0;
     /*
@@ -348,11 +344,10 @@ delete_block_dns_filters(HANDLE engine_handle)
  *
  * Returns positive metric value or -1 on error.
  */
-int
-get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *is_auto)
+int get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *is_auto)
 {
     DWORD err = 0;
-    MIB_IPINTERFACE_ROW ipiface;
+    MIB_IPINTERFACE_ROW ipiface = { 0 };
     InitializeIpInterfaceEntry(&ipiface);
     ipiface.Family = family;
     ipiface.InterfaceIndex = index;
@@ -387,12 +382,11 @@ get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *
  * Returns 0 on success, a non-zero status code of the last failed action on failure.
  */
 
-DWORD
-set_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family,
+DWORD set_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family,
                      const ULONG metric)
 {
     DWORD err = 0;
-    MIB_IPINTERFACE_ROW ipiface;
+    MIB_IPINTERFACE_ROW ipiface = { 0 };
     InitializeIpInterfaceEntry(&ipiface);
     ipiface.Family = family;
     ipiface.InterfaceIndex = index;

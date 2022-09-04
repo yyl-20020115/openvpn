@@ -57,8 +57,7 @@ struct msica_arg_seq
  *
  * @param seq           Pointer to uninitialized argument sequence
  */
-void
-msica_arg_seq_init(_Inout_ struct msica_arg_seq *seq);
+void msica_arg_seq_init(_Inout_ struct msica_arg_seq *seq);
 
 
 /**
@@ -66,8 +65,7 @@ msica_arg_seq_init(_Inout_ struct msica_arg_seq *seq);
  *
  * @param seq           Pointer to the argument sequence
  */
-void
-msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq);
+void msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq);
 
 
 /**
@@ -77,8 +75,7 @@ msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq);
  *
  * @param argument      Zero-terminated argument string to insert.
  */
-void
-msica_arg_seq_add_head(
+void msica_arg_seq_add_head(
     _Inout_ struct msica_arg_seq *seq,
     _In_z_ LPCTSTR argument);
 
@@ -90,8 +87,7 @@ msica_arg_seq_add_head(
  *
  * @param argument      Zero-terminated argument string to append.
  */
-void
-msica_arg_seq_add_tail(
+void msica_arg_seq_add_tail(
     _Inout_ struct msica_arg_seq *seq,
     _Inout_ LPCTSTR argument);
 
@@ -102,8 +98,7 @@ msica_arg_seq_add_tail(
  *
  * @return Joined argument string. Must be released with free() after use.
  */
-LPTSTR
-msica_arg_seq_join(_In_ const struct msica_arg_seq *seq);
+LPTSTR msica_arg_seq_join(_In_ const struct msica_arg_seq *seq);
 
 #ifdef _MSC_VER
 #pragma warning(pop)

@@ -265,22 +265,19 @@ bool packet_id_write(struct packet_id_send *p, struct buffer *buf,
  */
 
 /** Is this struct packet_id initialized? */
-static inline bool
-packet_id_initialized(const struct packet_id *pid)
+static inline bool packet_id_initialized(const struct packet_id *pid)
 {
     return pid->rec.initialized;
 }
 
 /* are we in enabled state? */
-static inline bool
-packet_id_persist_enabled(const struct packet_id_persist *p)
+static inline bool packet_id_persist_enabled(const struct packet_id_persist *p)
 {
     return p->fd >= 0;
 }
 
 /* transfer packet_id -> packet_id_persist */
-static inline void
-packet_id_persist_save_obj(struct packet_id_persist *p, const struct packet_id *pid)
+static inline void packet_id_persist_save_obj(struct packet_id_persist *p, const struct packet_id *pid)
 {
     if (packet_id_persist_enabled(p) && pid->rec.time)
     {
@@ -297,8 +294,7 @@ packet_id_persist_save_obj(struct packet_id_persist *p, const struct packet_id *
  *
  * @param p the packet structure to modify
  */
-static inline void
-reset_packet_id_send(struct packet_id_send *p)
+static inline void reset_packet_id_send(struct packet_id_send *p)
 {
     p->time = 0;
     p->id = 0;
@@ -306,22 +302,19 @@ reset_packet_id_send(struct packet_id_send *p)
 
 const char *packet_id_net_print(const struct packet_id_net *pin, bool print_timestamp, struct gc_arena *gc);
 
-static inline int
-packet_id_size(bool long_form)
+static inline int packet_id_size(bool long_form)
 {
     return sizeof(packet_id_type) + (long_form ? sizeof(net_time_t) : 0);
 }
 
-static inline bool
-packet_id_close_to_wrapping(const struct packet_id_send *p)
+static inline bool packet_id_close_to_wrapping(const struct packet_id_send *p)
 {
     return p->id >= PACKET_ID_WRAP_TRIGGER;
 }
 
-static inline bool
-check_timestamp_delta(time_t remote, unsigned int max_delta)
+static inline bool check_timestamp_delta(time_t remote, unsigned int max_delta)
 {
-    unsigned int abs;
+    unsigned int abs = 0;
     const time_t local_now = now;
 
     if (local_now >= remote)
@@ -335,8 +328,7 @@ check_timestamp_delta(time_t remote, unsigned int max_delta)
     return abs <= max_delta;
 }
 
-static inline void
-packet_id_reap_test(struct packet_id_rec *p)
+static inline void packet_id_reap_test(struct packet_id_rec *p)
 {
     if (p->last_reap + SEQ_REAP_INTERVAL <= now)
     {

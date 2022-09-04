@@ -146,8 +146,7 @@ void free_tls_pre_decrypt_state(struct tls_pre_decrypt_state *state);
  * @li False if the packet is not valid, did not pass the HMAC firewall
  *     test, or some other error occurred.
  */
-enum first_packet_verdict
-tls_pre_decrypt_lite(const struct tls_auth_standalone *tas,
+enum first_packet_verdict tls_pre_decrypt_lite(const struct tls_auth_standalone *tas,
                      struct tls_pre_decrypt_state *state,
                      const struct link_socket_actual *from,
                      const struct buffer *buf);
@@ -172,8 +171,7 @@ hmac_ctx_t *session_id_hmac_init(void);
  * @param offset        offset to 'now' to use
  * @return              the expected server session id
  */
-struct session_id
-calculate_session_id_hmac(struct session_id client_sid,
+struct session_id calculate_session_id_hmac(struct session_id client_sid,
                           const struct openvpn_sockaddr *from,
                           hmac_ctx_t *hmac,
                           int handwindow, int offset);
@@ -187,8 +185,7 @@ calculate_session_id_hmac(struct session_id client_sid,
  * @param handwindow    the quantisation of the current time
  * @return              the expected server session id
  */
-bool
-check_session_id_hmac(struct tls_pre_decrypt_state *state,
+bool check_session_id_hmac(struct tls_pre_decrypt_state *state,
                       const struct openvpn_sockaddr *from,
                       hmac_ctx_t *hmac,
                       int handwindow);
@@ -196,8 +193,7 @@ check_session_id_hmac(struct tls_pre_decrypt_state *state,
 /*
  * Write a control channel authentication record.
  */
-void
-write_control_auth(struct tls_session *session,
+void write_control_auth(struct tls_session *session,
                    struct key_state *ks,
                    struct buffer *buf,
                    struct link_socket_actual **to_link_addr,
@@ -209,8 +205,7 @@ write_control_auth(struct tls_session *session,
 /*
  * Read a control channel authentication record.
  */
-bool
-read_control_auth(struct buffer *buf,
+bool read_control_auth(struct buffer *buf,
                   struct tls_wrap_ctx *ctx,
                   const struct link_socket_actual *from,
                   const struct tls_options *opt);
@@ -222,16 +217,14 @@ read_control_auth(struct buffer *buf,
  *
  * The returned buf needs to be free with \c free_buf
  */
-struct buffer
-tls_reset_standalone(struct tls_wrap_ctx *ctx,
+struct buffer tls_reset_standalone(struct tls_wrap_ctx *ctx,
                      struct tls_auth_standalone *tas,
                      struct session_id *own_sid,
                      struct session_id *remote_sid,
                      uint8_t header,
                      bool request_resend_wkc);
 
-static inline const char *
-packet_opcode_name(int op)
+static inline const char * packet_opcode_name(int op)
 {
     switch (op)
     {

@@ -97,8 +97,7 @@ extern "C" {
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-FindSystemInfo(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall FindSystemInfo(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -109,8 +108,7 @@ FindSystemInfo(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-CloseOpenVPNGUI(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall CloseOpenVPNGUI(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -122,8 +120,7 @@ CloseOpenVPNGUI(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-StartOpenVPNGUI(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall StartOpenVPNGUI(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -135,8 +132,7 @@ StartOpenVPNGUI(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -147,8 +143,7 @@ EvaluateTUNTAPAdapters(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-ProcessDeferredAction(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall ProcessDeferredAction(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -160,8 +155,7 @@ ProcessDeferredAction(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-EvaluateDriver(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall EvaluateDriver(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -173,8 +167,7 @@ EvaluateDriver(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-ProcessDriver(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall ProcessDriver(_In_ MSIHANDLE hInstall);
 
 
 /**
@@ -186,8 +179,7 @@ ProcessDriver(_In_ MSIHANDLE hInstall);
  * @return ERROR_SUCCESS on success; An error code otherwise
  *         See: https://msdn.microsoft.com/en-us/library/windows/desktop/aa368072.aspx
  */
-DLLEXP_DECL UINT __stdcall
-CheckAndScheduleReboot(_In_ MSIHANDLE hInstall);
+DLLEXP_DECL UINT __stdcall CheckAndScheduleReboot(_In_ MSIHANDLE hInstall);
 
 #ifdef __cplusplus
 }

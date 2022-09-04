@@ -133,14 +133,12 @@ void log_history_resize(struct log_history *h, const int capacity);
 
 const struct log_entry *log_history_ref(const struct log_history *h, const int index);
 
-static inline int
-log_history_size(const struct log_history *h)
+static inline int log_history_size(const struct log_history *h)
 {
     return h->size;
 }
 
-static inline int
-log_history_capacity(const struct log_history *h)
+static inline int log_history_capacity(const struct log_history *h)
 {
     return h->capacity;
 }
@@ -428,33 +426,28 @@ char *management_query_pk_sig(struct management *man, const char *b64_data,
 
 char *management_query_cert(struct management *man, const char *cert_name);
 
-static inline bool
-management_connected(const struct management *man)
+static inline bool management_connected(const struct management *man)
 {
     return man->connection.state == MS_CC_WAIT_READ || man->connection.state == MS_CC_WAIT_WRITE;
 }
 
-static inline bool
-management_query_user_pass_enabled(const struct management *man)
+static inline bool management_query_user_pass_enabled(const struct management *man)
 {
     return BOOL_CAST(man->settings.flags & MF_QUERY_PASSWORDS);
 }
 
-static inline bool
-management_query_remote_enabled(const struct management *man)
+static inline bool management_query_remote_enabled(const struct management *man)
 {
     return BOOL_CAST(man->settings.flags & MF_QUERY_REMOTE);
 }
 
-static inline bool
-management_query_proxy_enabled(const struct management *man)
+static inline bool management_query_proxy_enabled(const struct management *man)
 {
     return BOOL_CAST(man->settings.flags & MF_QUERY_PROXY);
 }
 
 
-static inline bool
-management_enable_def_auth(const struct management *man)
+static inline bool management_enable_def_auth(const struct management *man)
 {
     return man && BOOL_CAST(man->settings.flags & MF_CLIENT_AUTH);
 }
@@ -514,8 +507,7 @@ void management_auth_token(struct management *man, const char *token);
 
 void man_bytecount_output_client(struct management *man);
 
-static inline void
-man_bytecount_possible_output_client(struct management *man)
+static inline void man_bytecount_possible_output_client(struct management *man)
 {
     if (man->connection.bytecount_update_seconds > 0
         && now >= man->connection.bytecount_last_update
@@ -525,22 +517,19 @@ man_bytecount_possible_output_client(struct management *man)
     }
 }
 
-static inline void
-management_bytes_out_client(struct management *man, const int size)
+static inline void management_bytes_out_client(struct management *man, const int size)
 {
     man->persist.bytes_out += size;
     man_bytecount_possible_output_client(man);
 }
 
-static inline void
-management_bytes_in_client(struct management *man, const int size)
+static inline void management_bytes_in_client(struct management *man, const int size)
 {
     man->persist.bytes_in += size;
     man_bytecount_possible_output_client(man);
 }
 
-static inline void
-management_bytes_out(struct management *man, const int size)
+static inline void management_bytes_out(struct management *man, const int size)
 {
     if (!(man->persist.callback.flags & MCF_SERVER))
     {
@@ -548,8 +537,7 @@ management_bytes_out(struct management *man, const int size)
     }
 }
 
-static inline void
-management_bytes_in(struct management *man, const int size)
+static inline void management_bytes_in(struct management *man, const int size)
 {
     if (!(man->persist.callback.flags & MCF_SERVER))
     {
@@ -562,8 +550,7 @@ void man_bytecount_output_server(struct management *man,
                                  const counter_type *bytes_out_total,
                                  struct man_def_auth_context *mdac);
 
-static inline void
-management_bytes_server(struct management *man,
+static inline void management_bytes_server(struct management *man,
                         const counter_type *bytes_in_total,
                         const counter_type *bytes_out_total,
                         struct man_def_auth_context *mdac)

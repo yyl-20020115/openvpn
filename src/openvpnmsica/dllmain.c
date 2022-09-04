@@ -43,8 +43,7 @@ DWORD openvpnmsica_thread_data_idx = TLS_OUT_OF_INDEXES;
 /**
  * DLL entry point
  */
-BOOL WINAPI
-DllMain(
+BOOL WINAPI DllMain(
     _In_ HINSTANCE hinstDLL,
     _In_ DWORD dwReason,
     _In_ LPVOID lpReserved)
@@ -95,8 +94,7 @@ DllMain(
 }
 
 
-bool
-dont_mute(unsigned int flags)
+bool dont_mute(unsigned int flags)
 {
     UNREFERENCED_PARAMETER(flags);
 
@@ -104,8 +102,7 @@ dont_mute(unsigned int flags)
 }
 
 
-void
-x_msg_va(const unsigned int flags, const char *format, va_list arglist)
+void x_msg_va(const unsigned int flags, const char *format, va_list arglist)
 {
     /* Secure last error before it is overridden. */
     DWORD dwResult = (flags & M_ERRNO) != 0 ? GetLastError() : ERROR_SUCCESS;

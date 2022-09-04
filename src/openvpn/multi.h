@@ -400,8 +400,7 @@ void multi_process_file_closed(struct multi_context *m, const unsigned int mpp_f
 /*
  * Return true if our output queue is not full
  */
-static inline bool
-multi_output_queue_ready(const struct multi_context *m,
+static inline bool multi_output_queue_ready(const struct multi_context *m,
                          const struct multi_instance *mi)
 {
     if (mi->tcp_link_out_deferred)
@@ -419,8 +418,7 @@ multi_output_queue_ready(const struct multi_context *m,
  * and prepare the output for sending in
  * the to_link buffer.
  */
-static inline struct multi_instance *
-multi_process_outgoing_link_pre(struct multi_context *m)
+static inline struct multi_instance * multi_process_outgoing_link_pre(struct multi_context *m)
 {
     struct multi_instance *mi = NULL;
 
@@ -441,21 +439,18 @@ multi_process_outgoing_link_pre(struct multi_context *m)
 
 void route_quota_exceeded(const struct multi_instance *mi);
 
-static inline void
-route_quota_inc(struct multi_instance *mi)
+static inline void route_quota_inc(struct multi_instance *mi)
 {
     ++mi->route_count;
 }
 
-static inline void
-route_quota_dec(struct multi_instance *mi)
+static inline void route_quota_dec(struct multi_instance *mi)
 {
     --mi->route_count;
 }
 
 /* can we add a new route? */
-static inline bool
-route_quota_test(const struct multi_instance *mi)
+static inline bool route_quota_test(const struct multi_instance *mi)
 {
     if (mi->route_count >= mi->context.options.max_routes_per_client)
     {
@@ -472,14 +467,12 @@ route_quota_test(const struct multi_instance *mi)
  * Instance reference counting
  */
 
-static inline void
-multi_instance_inc_refcount(struct multi_instance *mi)
+static inline void multi_instance_inc_refcount(struct multi_instance *mi)
 {
     ++mi->refcount;
 }
 
-static inline void
-multi_instance_dec_refcount(struct multi_instance *mi)
+static inline void multi_instance_dec_refcount(struct multi_instance *mi)
 {
     if (--mi->refcount <= 0)
     {
@@ -488,8 +481,7 @@ multi_instance_dec_refcount(struct multi_instance *mi)
     }
 }
 
-static inline void
-multi_route_del(struct multi_route *route)
+static inline void multi_route_del(struct multi_route *route)
 {
     struct multi_instance *mi = route->instance;
     route_quota_dec(mi);
@@ -497,8 +489,7 @@ multi_route_del(struct multi_route *route)
     free(route);
 }
 
-static inline bool
-multi_route_defined(const struct multi_context *m,
+static inline bool multi_route_defined(const struct multi_context *m,
                     const struct multi_route *r)
 {
     if (r->instance->halt)
@@ -524,15 +515,13 @@ multi_route_defined(const struct multi_context *m,
 /*
  * Takes prefix away from multi_instance.
  */
-void
-ungenerate_prefix(struct multi_instance *mi);
+void ungenerate_prefix(struct multi_instance *mi);
 
 /*
  * Set a msg() function prefix with our current client instance ID.
  */
 
-static inline void
-set_prefix(struct multi_instance *mi)
+static inline void set_prefix(struct multi_instance *mi)
 {
 #ifdef MULTI_DEBUG_EVENT_LOOP
     if (mi->msg_prefix[0])
@@ -543,8 +532,7 @@ set_prefix(struct multi_instance *mi)
     msg_set_prefix(mi->msg_prefix[0] ? mi->msg_prefix : NULL);
 }
 
-static inline void
-clear_prefix(void)
+static inline void clear_prefix(void)
 {
 #ifdef MULTI_DEBUG_EVENT_LOOP
     printf("[NULL]\n");
@@ -576,8 +564,7 @@ void multi_reap_process_dowork(const struct multi_context *m);
 
 void multi_process_per_second_timers_dowork(struct multi_context *m);
 
-static inline void
-multi_reap_process(const struct multi_context *m)
+static inline void multi_reap_process(const struct multi_context *m)
 {
     if (m->reaper->last_call != now)
     {
@@ -585,8 +572,7 @@ multi_reap_process(const struct multi_context *m)
     }
 }
 
-static inline void
-multi_process_per_second_timers(struct multi_context *m)
+static inline void multi_process_per_second_timers(struct multi_context *m)
 {
     if (m->per_second_trigger != now)
     {
@@ -603,10 +589,9 @@ multi_process_per_second_timers(struct multi_context *m)
  * dest               : earliest timeout as a delta in relation
  *                      to current time.
  */
-static inline void
-multi_get_timeout(struct multi_context *m, struct timeval *dest)
+static inline void multi_get_timeout(struct multi_context *m, struct timeval *dest)
 {
-    struct timeval tv, current;
+    struct timeval tv = { 0 }, current = { 0 };
 
     CLEAR(tv);
     m->earliest_wakeup = (struct multi_instance *) schedule_get_earliest_wakeup(m->schedule, &tv);
@@ -646,8 +631,7 @@ multi_get_timeout(struct multi_context *m, struct timeval *dest)
  *    not closed due to a signal during processing.
  *  - Falls, if the \c multi_instance was closed.
  */
-static inline bool
-multi_process_outgoing_tun(struct multi_context *m, const unsigned int mpp_flags)
+static inline bool multi_process_outgoing_tun(struct multi_context *m, const unsigned int mpp_flags)
 {
     struct multi_instance *mi = m->pending;
     bool ret = true;
@@ -670,8 +654,7 @@ multi_process_outgoing_tun(struct multi_context *m, const unsigned int mpp_flags
                                  |OPT_P_PUSH | OPT_P_TIMER | OPT_P_CONFIG   \
                                  |OPT_P_ECHO | OPT_P_COMP | OPT_P_SOCKFLAGS)
 
-static inline bool
-multi_process_outgoing_link_dowork(struct multi_context *m, struct multi_instance *mi, const unsigned int mpp_flags)
+static inline bool multi_process_outgoing_link_dowork(struct multi_context *m, struct multi_instance *mi, const unsigned int mpp_flags)
 {
     bool ret = true;
     set_prefix(mi);
@@ -686,8 +669,7 @@ multi_process_outgoing_link_dowork(struct multi_context *m, struct multi_instanc
  */
 #define MULTI_CHECK_SIG(m) EVENT_LOOP_CHECK_SIGNAL(&(m)->top, multi_process_signal, (m))
 
-static inline void
-multi_set_pending(struct multi_context *m, struct multi_instance *mi)
+static inline void multi_set_pending(struct multi_context *m, struct multi_instance *mi)
 {
     m->pending = mi;
 }

@@ -36,14 +36,12 @@ struct dco_context {
 
 typedef struct dco_context dco_context_t;
 
-struct tuntap
-dco_create_socket(struct addrinfo *remoteaddr, bool bind_local,
+struct tuntap dco_create_socket(struct addrinfo *remoteaddr, bool bind_local,
                   struct addrinfo *bind, const char *devname,
                   struct gc_arena *gc, int timeout,
                   volatile int *signal_received);
 
-void
-dco_start_tun(struct tuntap *tt);
+void dco_start_tun(struct tuntap *tt);
 
 #else /* if defined(ENABLE_DCO) && defined(_WIN32) */
 

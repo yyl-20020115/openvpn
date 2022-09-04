@@ -25,14 +25,13 @@
 #include "validate.h"
 
 LPCTSTR service_instance = TEXT("");
-static wchar_t win_sys_path[MAX_PATH];
+static wchar_t win_sys_path[MAX_PATH] = { 0 };
 
 /*
  * These are necessary due to certain buggy implementations of (v)snprintf,
  * that don't guarantee null termination for size > 0.
  */
-BOOL
-openvpn_vswprintf(LPTSTR str, size_t size, LPCTSTR format, va_list arglist)
+BOOL openvpn_vswprintf(LPTSTR str, size_t size, LPCTSTR format, va_list arglist)
 {
     int len = -1;
     if (size > 0)
@@ -43,8 +42,7 @@ openvpn_vswprintf(LPTSTR str, size_t size, LPCTSTR format, va_list arglist)
     return (len >= 0 && (size_t)len < size);
 }
 
-BOOL
-openvpn_swprintf(LPTSTR str, size_t size, LPCTSTR format, ...)
+BOOL openvpn_swprintf(LPTSTR str, size_t size, LPCTSTR format, ...)
 {
     va_list arglist;
     BOOL res = FALSE;
@@ -57,8 +55,7 @@ openvpn_swprintf(LPTSTR str, size_t size, LPCTSTR format, ...)
     return res;
 }
 
-static DWORD
-GetRegString(HKEY key, LPCTSTR value, LPTSTR data, DWORD size, LPCTSTR default_value)
+static DWORD GetRegString(HKEY key, LPCTSTR value, LPTSTR data, DWORD size, LPCTSTR default_value)
 {
     LONG status = RegGetValue(key, NULL, value, RRF_RT_REG_SZ,
                               NULL, (LPBYTE) data, &size);
@@ -75,25 +72,24 @@ GetRegString(HKEY key, LPCTSTR value, LPTSTR data, DWORD size, LPCTSTR default_v
     if (status != ERROR_SUCCESS)
     {
         SetLastError(status);
-        return MsgToEventLog(M_SYSERR, TEXT("Error querying registry value: HKLM\\SOFTWARE\\" PACKAGE_NAME "%ls\\%ls"), service_instance, value);
+        return MsgToEventLog(M_SYSERR, TEXT("Error querying registry value: HKLM\\SOFTWARE\\") PACKAGE_NAME TEXT("%ls\\%ls"), service_instance, value);
     }
 
     return ERROR_SUCCESS;
 }
 
 
-DWORD
-GetOpenvpnSettings(settings_t *s)
+DWORD GetOpenvpnSettings(settings_t *s)
 {
-    TCHAR reg_path[256];
-    TCHAR priority[64];
-    TCHAR append[2];
-    DWORD error;
-    HKEY key;
-    TCHAR install_path[MAX_PATH];
-    TCHAR default_value[MAX_PATH];
+    TCHAR reg_path[256] = { 0 };
+    TCHAR priority[64] = { 0 };
+    TCHAR append[2] = { 0 };
+    DWORD error = 0;
+    HKEY key = 0;
+    TCHAR install_path[MAX_PATH] = { 0 };
+    TCHAR default_value[MAX_PATH] = { 0 };
 
-    openvpn_swprintf(reg_path, _countof(reg_path), TEXT("SOFTWARE\\" PACKAGE_NAME "%ls"), service_instance);
+    openvpn_swprintf(reg_path, _countof(reg_path), TEXT("SOFTWARE\\") PACKAGE_NAME TEXT("%ls"), service_instance);
 
     LONG status = RegOpenKeyEx(HKEY_LOCAL_MACHINE, reg_path, 0, KEY_READ, &key);
     if (status != ERROR_SUCCESS)
@@ -210,12 +206,11 @@ out:
 }
 
 
-LPCTSTR
-GetLastErrorText()
+LPCTSTR GetLastErrorText()
 {
-    DWORD error;
-    static TCHAR buf[256];
-    DWORD len;
+    DWORD error = 0;
+    static TCHAR buf[256] = { 0 };
+    DWORD len = 0;
     LPTSTR tmp = NULL;
 
     error = GetLastError();
@@ -241,11 +236,10 @@ GetLastErrorText()
 }
 
 
-DWORD
-MsgToEventLog(DWORD flags, LPCTSTR format, ...)
+DWORD MsgToEventLog(DWORD flags, LPCTSTR format, ...)
 {
-    HANDLE hEventSource;
-    TCHAR msg[2][256];
+    HANDLE hEventSource = 0;
+    TCHAR msg[2][256] = { 0 };
     DWORD error = 0;
     LPCTSTR err_msg = TEXT("");
     va_list arglist;
@@ -278,8 +272,7 @@ MsgToEventLog(DWORD flags, LPCTSTR format, ...)
 }
 
 /* Convert a utf8 string to utf16. Caller should free the result */
-wchar_t *
-utf8to16(const char *utf8)
+wchar_t * utf8to16(const char *utf8)
 {
     int n = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
     wchar_t *utf16 = malloc(n * sizeof(wchar_t));
@@ -291,8 +284,7 @@ utf8to16(const char *utf8)
     return utf16;
 }
 
-const wchar_t *
-get_win_sys_path(void)
+const wchar_t * get_win_sys_path(void)
 {
     const wchar_t *default_sys_path = L"C:\\Windows\\system32";
 

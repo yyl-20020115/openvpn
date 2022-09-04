@@ -373,8 +373,7 @@ bool netmask_to_netbits(const in_addr_t network, const in_addr_t netmask, int *n
 
 int netmask_to_netbits2(in_addr_t netmask);
 
-static inline in_addr_t
-netbits_to_netmask(const int netbits)
+static inline in_addr_t netbits_to_netmask(const int netbits)
 {
     const int addrlen = sizeof(in_addr_t) * 8;
     in_addr_t mask = 0;
@@ -385,8 +384,7 @@ netbits_to_netmask(const int netbits)
     return mask;
 }
 
-static inline bool
-route_list_vpn_gateway_needed(const struct route_list *rl)
+static inline bool route_list_vpn_gateway_needed(const struct route_list *rl)
 {
     if (!rl)
     {
@@ -398,8 +396,7 @@ route_list_vpn_gateway_needed(const struct route_list *rl)
     }
 }
 
-static inline int
-route_did_redirect_default_gateway(const struct route_list *rl)
+static inline int route_did_redirect_default_gateway(const struct route_list *rl)
 {
     return rl && BOOL_CAST(rl->iflags & RL_DID_REDIRECT_DEFAULT_GATEWAY);
 }

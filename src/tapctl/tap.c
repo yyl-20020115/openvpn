@@ -61,10 +61,9 @@ const static TCHAR szAdapterRegKeyPathTemplate[] = TEXT("SYSTEM\\CurrentControlS
  *                    NULL on error -- use GetLastError() to find the error code.
  *
  **/
-static void *
-find_function(const WCHAR *libname, const char *funcname, HMODULE *m)
+static void * find_function(const WCHAR *libname, const char *funcname, HMODULE *m)
 {
-    WCHAR libpath[MAX_PATH];
+    WCHAR libpath[MAX_PATH] = { 0 };
     void *fptr = NULL;
 
     /* Make sure the dll is loaded from the system32 folder */
@@ -105,10 +104,9 @@ find_function(const WCHAR *libname, const char *funcname, HMODULE *m)
  *
  * @return Number of characters not counting the final zero terminator
  **/
-static inline size_t
-_tcszlen(_In_z_ LPCTSTR szz)
+static inline size_t _tcszlen(_In_z_ LPCTSTR szz)
 {
-    LPCTSTR s;
+    LPCTSTR s = 0;
     for (s = szz; s[0]; s += _tcslen(s) + 1)
     {
     }
@@ -126,8 +124,7 @@ _tcszlen(_In_z_ LPCTSTR szz)
  *
  * @return Pointer to the string in szzHay that matches szNeedle is found; NULL otherwise
  */
-static LPCTSTR
-_tcszistr(_In_z_ LPCTSTR szzHay, _In_z_ LPCTSTR szNeedle)
+static LPCTSTR _tcszistr(_In_z_ LPCTSTR szzHay, _In_z_ LPCTSTR szNeedle)
 {
     for (LPCTSTR s = szzHay; s[0]; s += _tcslen(s) + 1)
     {
@@ -179,8 +176,7 @@ typedef DWORD (*devop_func_t)(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-check_reboot(
+static DWORD check_reboot(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _Inout_ LPBOOL pbRebootRequired)
@@ -226,8 +222,7 @@ check_reboot(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-delete_device(
+static DWORD delete_device(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _Inout_ LPBOOL pbRebootRequired)
@@ -290,8 +285,7 @@ delete_device(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-change_device_state(
+static DWORD change_device_state(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _In_ BOOL bEnable,
@@ -354,8 +348,7 @@ change_device_state(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-enable_device(
+static DWORD enable_device(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _Inout_ LPBOOL pbRebootRequired)
@@ -380,8 +373,7 @@ enable_device(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-disable_device(
+static DWORD disable_device(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _Inout_ LPBOOL pbRebootRequired)
@@ -404,8 +396,7 @@ disable_device(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-static DWORD
-get_reg_string(
+static DWORD get_reg_string(
     _In_ HKEY hKey,
     _In_ LPCTSTR szName,
     _Out_ LPTSTR *pszValue)
@@ -554,8 +545,7 @@ get_reg_string(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-get_net_adapter_guid(
+static DWORD get_net_adapter_guid(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _In_ int iNumAttempts,
@@ -643,8 +633,7 @@ get_net_adapter_guid(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-get_device_reg_property(
+static DWORD get_device_reg_property(
     _In_ HDEVINFO hDeviceInfoSet,
     _In_ PSP_DEVINFO_DATA pDeviceInfoData,
     _In_ DWORD dwProperty,
@@ -659,7 +648,7 @@ get_device_reg_property(
     }
 
     /* Try with stack buffer first. */
-    BYTE bBufStack[128];
+    BYTE bBufStack[128] = { 0 };
     DWORD dwRequiredSize = 0;
     if (SetupDiGetDeviceRegistryProperty(
             hDeviceInfoSet,
@@ -721,15 +710,14 @@ get_device_reg_property(
 }
 
 
-DWORD
-tap_create_adapter(
+DWORD tap_create_adapter(
     _In_opt_ HWND hwndParent,
     _In_opt_ LPCTSTR szDeviceDescription,
     _In_ LPCTSTR szHwId,
     _Inout_ LPBOOL pbRebootRequired,
     _Out_ LPGUID pguidAdapter)
 {
-    DWORD dwResult;
+    DWORD dwResult = 0;
     HMODULE libnewdev = NULL;
 
     if (szHwId == NULL
@@ -749,7 +737,7 @@ tap_create_adapter(
     }
 
     /* Get the device class name from GUID. */
-    TCHAR szClassName[MAX_CLASS_NAME_LEN];
+    TCHAR szClassName[MAX_CLASS_NAME_LEN] = { 0 };
     if (!SetupDiClassNameFromGuid(
             &GUID_DEVCLASS_NET,
             szClassName,
@@ -914,14 +902,13 @@ cleanup_hDevInfoList:
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-static DWORD
-execute_on_first_adapter(
+static DWORD execute_on_first_adapter(
     _In_opt_ HWND hwndParent,
     _In_ LPCGUID pguidAdapter,
     _In_ devop_func_t funcOperation,
     _Inout_ LPBOOL pbRebootRequired)
 {
-    DWORD dwResult;
+    DWORD dwResult = 0;
 
     if (pguidAdapter == NULL)
     {
@@ -981,7 +968,7 @@ execute_on_first_adapter(
         }
 
         /* Get adapter GUID. */
-        GUID guidAdapter;
+        GUID guidAdapter = { 0 };
         dwResult = get_net_adapter_guid(hDevInfoList, &devinfo_data, 1, &guidAdapter);
         if (dwResult != ERROR_SUCCESS)
         {
@@ -1003,8 +990,7 @@ cleanup_hDevInfoList:
 }
 
 
-DWORD
-tap_delete_adapter(
+DWORD tap_delete_adapter(
     _In_opt_ HWND hwndParent,
     _In_ LPCGUID pguidAdapter,
     _Inout_ LPBOOL pbRebootRequired)
@@ -1013,8 +999,7 @@ tap_delete_adapter(
 }
 
 
-DWORD
-tap_enable_adapter(
+DWORD tap_enable_adapter(
     _In_opt_ HWND hwndParent,
     _In_ LPCGUID pguidAdapter,
     _In_ BOOL bEnable,
@@ -1024,12 +1009,11 @@ tap_enable_adapter(
 }
 
 /* stripped version of ExecCommand in interactive.c */
-static DWORD
-ExecCommand(const WCHAR *cmdline)
+static DWORD ExecCommand(const WCHAR *cmdline)
 {
-    DWORD exit_code;
-    STARTUPINFOW si;
-    PROCESS_INFORMATION pi;
+    DWORD exit_code = 0;
+    STARTUPINFOW si = { 0 };
+    PROCESS_INFORMATION pi = { 0 };
     DWORD proc_flags = CREATE_NO_WINDOW | CREATE_UNICODE_ENVIRONMENT;
     WCHAR *cmdline_dup = NULL;
 
@@ -1061,13 +1045,12 @@ ExecCommand(const WCHAR *cmdline)
     return exit_code;
 }
 
-DWORD
-tap_set_adapter_name(
+DWORD tap_set_adapter_name(
     _In_ LPCGUID pguidAdapter,
     _In_ LPCTSTR szName,
     _In_ BOOL bSilent)
 {
-    DWORD dwResult;
+    DWORD dwResult = 0;
     int msg_flag = bSilent ? M_WARN : M_NONFATAL;
     msg_flag |= M_ERRNO;
 
@@ -1144,13 +1127,12 @@ cleanup_szAdapterId:
 }
 
 
-DWORD
-tap_list_adapters(
+DWORD tap_list_adapters(
     _In_opt_ HWND hwndParent,
     _In_opt_ LPCTSTR szzHwIDs,
     _Out_ struct tap_adapter_node **ppAdapter)
 {
-    DWORD dwResult;
+    DWORD dwResult = 0;
 
     if (ppAdapter == NULL)
     {
@@ -1260,7 +1242,7 @@ tap_list_adapters(
         }
 
         /* Get adapter GUID. */
-        GUID guidAdapter;
+        GUID guidAdapter = { 0 };
         dwResult = get_net_adapter_guid(hDevInfoList, &devinfo_data, 1, &guidAdapter);
         if (dwResult != ERROR_SUCCESS)
         {
@@ -1273,7 +1255,7 @@ tap_list_adapters(
         StringFromIID((REFIID)&guidAdapter, &szAdapterId);
 
         /* Render registry key path. */
-        TCHAR szRegKey[ADAPTER_REGKEY_PATH_MAX];
+        TCHAR szRegKey[ADAPTER_REGKEY_PATH_MAX] = { 0 };
         _stprintf_s(
             szRegKey, _countof(szRegKey),
             szAdapterRegKeyPathTemplate,
@@ -1353,8 +1335,7 @@ cleanup_hDevInfoList:
 }
 
 
-void
-tap_free_adapter_list(
+void tap_free_adapter_list(
     _In_ struct tap_adapter_node *pAdapterList)
 {
     /* Iterate over all nodes of the list. */

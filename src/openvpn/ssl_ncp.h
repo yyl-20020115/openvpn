@@ -38,8 +38,7 @@
  * Returns whether the client supports NCP either by
  * announcing IV_NCP>=2 or the IV_CIPHERS list
  */
-bool
-tls_peer_supports_ncp(const char *peer_info);
+bool tls_peer_supports_ncp(const char *peer_info);
 
 /* forward declaration to break include dependency loop */
 struct context;
@@ -50,8 +49,7 @@ struct context;
  *
  * @return  Wether the client NCP process suceeded or failed
  */
-bool
-check_pull_client_ncp(struct context *c, int found);
+bool check_pull_client_ncp(struct context *c, int found);
 
 /**
  * Iterates through the ciphers in server_list and return the first
@@ -70,8 +68,7 @@ check_pull_client_ncp(struct context *c, int found);
  * @returns NULL if no common cipher is available, otherwise the best common
  * cipher
  */
-char *
-ncp_get_best_cipher(const char *server_list, const char *peer_info,
+char * ncp_get_best_cipher(const char *server_list, const char *peer_info,
                     const char *remote_cipher, struct gc_arena *gc);
 
 
@@ -83,8 +80,7 @@ ncp_get_best_cipher(const char *server_list, const char *peer_info,
  * or allocated via gc. If no information is available an empty string
  * ("") is returned.
  */
-const char *
-tls_peer_ncp_list(const char *peer_info, struct gc_arena *gc);
+const char * tls_peer_ncp_list(const char *peer_info, struct gc_arena *gc);
 
 /**
  * Check whether the ciphers in the supplied list are supported.
@@ -99,8 +95,7 @@ tls_peer_ncp_list(const char *peer_info, struct gc_arena *gc);
  *                      is short than MAX_NCP_CIPHERS_LENGTH. NULL
  *                      otherwise.
  */
-char *
-mutate_ncp_cipher_list(const char *list, struct gc_arena *gc);
+char * mutate_ncp_cipher_list(const char *list, struct gc_arena *gc);
 
 /**
  * Appends the cipher specified by the ciphernamer parameter to to
@@ -144,8 +139,7 @@ void p2p_mode_ncp(struct tls_multi *multi, struct tls_session *session);
  * @param gc            gc arena that will be used to allocate the returned cipher
  * @return              common cipher if one exist.
  */
-const char *
-get_p2p_ncp_cipher(struct tls_session *session, const char *peer_info,
+const char * get_p2p_ncp_cipher(struct tls_session *session, const char *peer_info,
                    struct gc_arena *gc);
 
 
@@ -153,7 +147,6 @@ get_p2p_ncp_cipher(struct tls_session *session, const char *peer_info,
  * Checks if the cipher is allowed, otherwise returns false and reset the
  * cipher to the config cipher.
  */
-bool
-check_session_cipher(struct tls_session *session, struct options *options);
+bool check_session_cipher(struct tls_session *session, struct options *options);
 
 #endif /* ifndef OPENVPN_SSL_NCP_H */

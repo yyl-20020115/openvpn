@@ -15,11 +15,10 @@
 #include <process.h>
 
 
-openvpn_service_t openvpn_service[_service_max];
+openvpn_service_t openvpn_service[_service_max] = { 0 };
 
 
-BOOL
-ReportStatusToSCMgr(SERVICE_STATUS_HANDLE service, SERVICE_STATUS *status)
+BOOL ReportStatusToSCMgr(SERVICE_STATUS_HANDLE service, SERVICE_STATUS *status)
 {
     static DWORD dwCheckPoint = 1;
     BOOL res = TRUE;
@@ -53,13 +52,12 @@ ReportStatusToSCMgr(SERVICE_STATUS_HANDLE service, SERVICE_STATUS *status)
     return res;
 }
 
-static int
-CmdInstallServices()
+static int CmdInstallServices()
 {
-    SC_HANDLE service;
-    SC_HANDLE svc_ctl_mgr;
-    TCHAR path[512];
-    int i, ret = _service_max;
+    SC_HANDLE service = { 0 };
+    SC_HANDLE svc_ctl_mgr = { 0 };
+    TCHAR path[512] = { 0 };
+    int i = 0, ret = _service_max;
 
     if (GetModuleFileName(NULL, path + 1, _countof(path) - 2) == 0)
     {
@@ -106,12 +104,11 @@ CmdInstallServices()
 }
 
 
-static int
-CmdStartService(openvpn_service_type type)
+static int CmdStartService(openvpn_service_type type)
 {
     int ret = 1;
-    SC_HANDLE svc_ctl_mgr;
-    SC_HANDLE service;
+    SC_HANDLE svc_ctl_mgr = { 0 };
+    SC_HANDLE service = { 0 };
 
     svc_ctl_mgr = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
     if (svc_ctl_mgr == NULL)
@@ -145,13 +142,12 @@ CmdStartService(openvpn_service_type type)
 }
 
 
-static int
-CmdRemoveServices()
+static int CmdRemoveServices()
 {
-    SC_HANDLE service;
-    SC_HANDLE svc_ctl_mgr;
-    SERVICE_STATUS status;
-    int i, ret = _service_max;
+    SC_HANDLE service = { 0 };
+    SC_HANDLE svc_ctl_mgr = { 0 };
+    SERVICE_STATUS status = { 0 };
+    int i = 0, ret = _service_max;
 
     svc_ctl_mgr = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
     if (svc_ctl_mgr == NULL)
@@ -220,8 +216,7 @@ out:
 }
 
 
-int
-_tmain(int argc, TCHAR *argv[])
+int _tmain(int argc, TCHAR *argv[])
 {
     /*
      * Interactive service (as a SERVICE_WIN32_SHARE_PROCESS)
@@ -280,10 +275,10 @@ _tmain(int argc, TCHAR *argv[])
 
                 wprintf(TEXT("\nService run-time parameters:\n"));
                 wprintf(TEXT("-instance interactive <id>\n")
-                        TEXT("   Runs the service as an alternate instance.\n")
-                        TEXT("   The service settings will be loaded from\n")
-                        TEXT("   HKLM\\Software\\" PACKAGE_NAME "<id> registry key, and the service will accept\n")
-                        TEXT("   requests on \\\\.\\pipe\\" PACKAGE "<id>\\service named pipe.\n"));
+                    TEXT("   Runs the service as an alternate instance.\n")
+                    TEXT("   The service settings will be loaded from\n")
+                    TEXT("   HKLM\\Software\\") PACKAGE_NAME TEXT("<id> registry key, and the service will accept\n")
+                    TEXT("   requests on \\\\.\\pipe\\") PACKAGE TEXT("<id>\\service named pipe.\n"));
 
                 return 0;
             }

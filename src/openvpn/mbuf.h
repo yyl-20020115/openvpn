@@ -76,28 +76,24 @@ bool mbuf_extract_item(struct mbuf_set *ms, struct mbuf_item *item);
 
 void mbuf_dereference_instance(struct mbuf_set *ms, struct multi_instance *mi);
 
-static inline bool
-mbuf_defined(const struct mbuf_set *ms)
+static inline bool mbuf_defined(const struct mbuf_set *ms)
 {
     return ms && ms->len;
 }
 
-static inline unsigned int
-mbuf_len(const struct mbuf_set *ms)
+static inline unsigned int mbuf_len(const struct mbuf_set *ms)
 {
     return ms->len;
 }
 
-static inline int
-mbuf_maximum_queued(const struct mbuf_set *ms)
+static inline int mbuf_maximum_queued(const struct mbuf_set *ms)
 {
     return (int) ms->max_queued;
 }
 
 struct multi_instance *mbuf_peek_dowork(struct mbuf_set *ms);
 
-static inline struct multi_instance *
-mbuf_peek(struct mbuf_set *ms)
+static inline struct multi_instance * mbuf_peek(struct mbuf_set *ms)
 {
     if (mbuf_defined(ms))
     {

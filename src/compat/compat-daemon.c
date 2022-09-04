@@ -49,8 +49,7 @@
 
 #include <errno.h>
 
-int
-daemon(int nochdir, int noclose)
+int daemon(int nochdir, int noclose)
 {
 #if defined(HAVE_FORK) && defined(HAVE_SETSID)
     switch (fork())

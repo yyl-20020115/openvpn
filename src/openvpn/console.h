@@ -91,8 +91,7 @@ bool query_user_exec(void);
  * been enabled
  *
  */
-static bool
-query_user_exec(void)
+static bool query_user_exec(void)
 {
     return query_user_exec_builtin();
 }
@@ -106,8 +105,7 @@ query_user_exec(void)
  *             to be called at start-up initialization of OpenVPN.
  *
  */
-static inline bool
-query_user_SINGLE(char *prompt, size_t prompt_len,
+static inline bool query_user_SINGLE(char *prompt, size_t prompt_len,
                   char *resp, size_t resp_len,
                   bool echo)
 {

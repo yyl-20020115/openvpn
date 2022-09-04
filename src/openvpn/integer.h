@@ -39,8 +39,7 @@
 /*
  * min/max functions
  */
-static inline unsigned int
-max_uint(unsigned int x, unsigned int y)
+static inline unsigned int max_uint(unsigned int x, unsigned int y)
 {
     if (x > y)
     {
@@ -52,8 +51,7 @@ max_uint(unsigned int x, unsigned int y)
     }
 }
 
-static inline unsigned int
-min_uint(unsigned int x, unsigned int y)
+static inline unsigned int min_uint(unsigned int x, unsigned int y)
 {
     if (x < y)
     {
@@ -65,8 +63,7 @@ min_uint(unsigned int x, unsigned int y)
     }
 }
 
-static inline int
-max_int(int x, int y)
+static inline int max_int(int x, int y)
 {
     if (x > y)
     {
@@ -78,8 +75,7 @@ max_int(int x, int y)
     }
 }
 
-static inline int
-min_int(int x, int y)
+static inline int min_int(int x, int y)
 {
     if (x < y)
     {
@@ -91,8 +87,7 @@ min_int(int x, int y)
     }
 }
 
-static inline int
-constrain_int(int x, int min, int max)
+static inline int constrain_int(int x, int min, int max)
 {
     if (min > max)
     {
@@ -122,8 +117,7 @@ constrain_int(int x, int min, int max)
  * 0 <= x < mod
  * 0 <= y < mod
  */
-static inline int
-modulo_subtract(int x, int y, int mod)
+static inline int modulo_subtract(int x, int y, int mod)
 {
     const int d1 = x - y;
     const int d2 = (x > y ? -mod : mod) + d1;
@@ -137,8 +131,7 @@ modulo_subtract(int x, int y, int mod)
  * 0 <= x < mod
  * -mod <= y <= mod
  */
-static inline int
-modulo_add(int x, int y, int mod)
+static inline int modulo_add(int x, int y, int mod)
 {
     int sum = x + y;
     ASSERT(0 <= x && x < mod && -mod <= y && y <= mod);
@@ -157,8 +150,7 @@ modulo_add(int x, int y, int mod)
  * Return the next largest power of 2
  * or u if u is a power of 2.
  */
-static inline size_t
-adjust_power_of_2(size_t u)
+static inline size_t adjust_power_of_2(size_t u)
 {
     size_t ret = 1;
 
@@ -171,8 +163,7 @@ adjust_power_of_2(size_t u)
     return ret;
 }
 
-static inline int
-index_verify(int index, int size, const char *file, int line)
+static inline int index_verify(int index, int size, const char *file, int line)
 {
     if (index < 0 || index >= size)
     {
@@ -188,8 +179,7 @@ index_verify(int index, int size, const char *file, int line)
 /**
  * Rounds down num to the nearest multiple of multiple
  */
-static inline unsigned int
-round_down_uint(unsigned int num, unsigned int multiple)
+static inline unsigned int round_down_uint(unsigned int num, unsigned int multiple)
 {
     return (num / multiple) * multiple;
 }

@@ -32,16 +32,14 @@
 #include <malloc.h>
 
 
-void
-msica_arg_seq_init(_Inout_ struct msica_arg_seq *seq)
+void msica_arg_seq_init(_Inout_ struct msica_arg_seq *seq)
 {
     seq->head = NULL;
     seq->tail = NULL;
 }
 
 
-void
-msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq)
+void msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq)
 {
     while (seq->head)
     {
@@ -53,8 +51,7 @@ msica_arg_seq_free(_Inout_ struct msica_arg_seq *seq)
 }
 
 
-void
-msica_arg_seq_add_head(
+void msica_arg_seq_add_head(
     _Inout_ struct msica_arg_seq *seq,
     _In_z_ LPCTSTR argument)
 {
@@ -74,8 +71,7 @@ msica_arg_seq_add_head(
 }
 
 
-void
-msica_arg_seq_add_tail(
+void msica_arg_seq_add_tail(
     _Inout_ struct msica_arg_seq *seq,
     _Inout_ LPCTSTR argument)
 {
@@ -92,8 +88,7 @@ msica_arg_seq_add_tail(
 }
 
 
-LPTSTR
-msica_arg_seq_join(_In_ const struct msica_arg_seq *seq)
+LPTSTR msica_arg_seq_join(_In_ const struct msica_arg_seq *seq)
 {
     /* Count required space. */
     size_t size = 2 /*x + zero-terminator*/;

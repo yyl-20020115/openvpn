@@ -40,8 +40,8 @@
 #include <stdlib.h>
 #include <tchar.h>
 
-#define APPNAME  TEXT(PACKAGE "serv")
-#define SERVICE_DEPENDENCIES  TAP_WIN_COMPONENT_ID "\0Dhcp\0\0"
+#define APPNAME  (PACKAGE TEXT("serv"))
+#define SERVICE_DEPENDENCIES  TAP_WIN_COMPONENT_ID TEXT("\0Dhcp\0\0")
 
 /*
  * Message handling
@@ -83,9 +83,9 @@ VOID WINAPI ServiceStartInteractiveOwn(DWORD argc, LPTSTR *argv);
 
 VOID WINAPI ServiceStartInteractive(DWORD argc, LPTSTR *argv);
 
-BOOL openvpn_vsntprintf(LPTSTR str, size_t size, LPCTSTR format, va_list arglist);
+//BOOL openvpn_vsntprintf(LPTSTR str, size_t size, LPCTSTR format, va_list arglist);
 
-BOOL openvpn_sntprintf(LPTSTR str, size_t size, LPCTSTR format, ...);
+//BOOL openvpn_sntprintf(LPTSTR str, size_t size, LPCTSTR format, ...);
 
 BOOL openvpn_swprintf(wchar_t *const str, const size_t size, const wchar_t *const format, ...);
 

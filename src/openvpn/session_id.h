@@ -44,33 +44,28 @@ extern const struct session_id x_session_id_zero;
 
 #define SID_SIZE (sizeof(x_session_id_zero.id))
 
-static inline bool
-session_id_equal(const struct session_id *sid1,
+static inline bool session_id_equal(const struct session_id *sid1,
                  const struct session_id *sid2)
 {
     return !memcmp(sid1->id, sid2->id, SID_SIZE);
 }
 
-static inline bool
-session_id_defined(const struct session_id *sid1)
+static inline bool session_id_defined(const struct session_id *sid1)
 {
     return memcmp(sid1->id, &x_session_id_zero.id, SID_SIZE) != 0;
 }
 
-static inline bool
-session_id_read(struct session_id *sid, struct buffer *buf)
+static inline bool session_id_read(struct session_id *sid, struct buffer *buf)
 {
     return buf_read(buf, sid->id, SID_SIZE);
 }
 
-static inline bool
-session_id_write_prepend(const struct session_id *sid, struct buffer *buf)
+static inline bool session_id_write_prepend(const struct session_id *sid, struct buffer *buf)
 {
     return buf_write_prepend(buf, sid->id, SID_SIZE);
 }
 
-static inline bool
-session_id_write(const struct session_id *sid, struct buffer *buf)
+static inline bool session_id_write(const struct session_id *sid, struct buffer *buf)
 {
     return buf_write(buf, sid->id, SID_SIZE);
 }

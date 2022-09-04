@@ -93,8 +93,7 @@ void platform_user_group_set(const struct platform_state_user *user_state,
  * Extract UID or GID
  */
 
-static inline int
-platform_state_user_uid(const struct platform_state_user *s)
+static inline int platform_state_user_uid(const struct platform_state_user *s)
 {
 #if defined(HAVE_GETPWNAM) && defined(HAVE_SETUID)
     if (s->pw)
@@ -105,8 +104,7 @@ platform_state_user_uid(const struct platform_state_user *s)
     return -1;
 }
 
-static inline int
-platform_state_group_gid(const struct platform_state_group *s)
+static inline int platform_state_group_gid(const struct platform_state_group *s)
 {
 #if defined(HAVE_GETGRNAM) && defined(HAVE_SETGID)
     if (s->gr)

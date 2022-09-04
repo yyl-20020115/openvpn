@@ -34,10 +34,9 @@
 /*
  * Modified version based on the glibc
  */
-char *
-strsep(char **stringp, const char *delim)
+char * strsep(char **stringp, const char *delim)
 {
-    char *begin, *end;
+    char *begin = 0, *end = 0;
     begin = *stringp;
     if (begin == NULL)
     {

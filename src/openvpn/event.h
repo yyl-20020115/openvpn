@@ -135,8 +135,7 @@ struct event_set
  */
 struct event_set *event_set_init(int *maxevents, unsigned int flags);
 
-static inline void
-event_free(struct event_set *es)
+static inline void event_free(struct event_set *es)
 {
     if (es)
     {
@@ -144,26 +143,22 @@ event_free(struct event_set *es)
     }
 }
 
-static inline void
-event_reset(struct event_set *es)
+static inline void event_reset(struct event_set *es)
 {
     (*es->func.reset)(es);
 }
 
-static inline void
-event_del(struct event_set *es, event_t event)
+static inline void event_del(struct event_set *es, event_t event)
 {
     (*es->func.del)(es, event);
 }
 
-static inline void
-event_ctl(struct event_set *es, event_t event, unsigned int rwflags, void *arg)
+static inline void event_ctl(struct event_set *es, event_t event, unsigned int rwflags, void *arg)
 {
     (*es->func.ctl)(es, event, rwflags, arg);
 }
 
-static inline int
-event_wait(struct event_set *es, const struct timeval *tv, struct event_set_return *out, int outlen)
+static inline int event_wait(struct event_set *es, const struct timeval *tv, struct event_set_return *out, int outlen)
 {
     int ret;
     perf_push(PERF_IO_WAIT);
@@ -172,8 +167,7 @@ event_wait(struct event_set *es, const struct timeval *tv, struct event_set_retu
     return ret;
 }
 
-static inline void
-event_set_return_init(struct event_set_return *esr)
+static inline void event_set_return_init(struct event_set_return *esr)
 {
     esr->rwflags = 0;
     esr->arg = NULL;
@@ -181,8 +175,7 @@ event_set_return_init(struct event_set_return *esr)
 
 #ifdef _WIN32
 
-static inline void
-wait_signal(struct event_set *es, void *arg)
+static inline void wait_signal(struct event_set *es, void *arg)
 {
     if (HANDLE_DEFINED(win32_signal.in.read))
     {

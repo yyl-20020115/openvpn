@@ -60,11 +60,10 @@ int openvpn_execve_check(const struct argv *a, const struct env_set *es,
  * Will run a script and return the exit code of the script if between
  * 0 and 255, -1 otherwise
  */
-static inline int
-openvpn_run_script(const struct argv *a, const struct env_set *es,
+static inline int openvpn_run_script(const struct argv *a, const struct env_set *es,
                    const unsigned int flags, const char *hook)
 {
-    char msg[256];
+    char msg[256] = { 0 };
 
     openvpn_snprintf(msg, sizeof(msg),
                      "WARNING: Failed running command (%s)", hook);

@@ -448,8 +448,7 @@ typedef SOCKET socket_descriptor_t;
 typedef int socket_descriptor_t;
 #endif
 
-static inline int
-socket_defined(const socket_descriptor_t sd)
+static inline int socket_defined(const socket_descriptor_t sd)
 {
     return sd != SOCKET_UNDEFINED;
 }

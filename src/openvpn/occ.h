@@ -80,8 +80,7 @@ struct mtu_load_test
 
 extern const uint8_t occ_magic[];
 
-static inline bool
-is_occ_msg(const struct buffer *buf)
+static inline bool is_occ_msg(const struct buffer *buf)
 {
     return buf_string_match_head(buf, occ_magic, OCC_STRING_SIZE);
 }
@@ -98,8 +97,7 @@ void check_send_occ_msg_dowork(struct context *c);
  * Inline functions
  */
 
-static inline int
-occ_reset_op(void)
+static inline int occ_reset_op(void)
 {
     return -1;
 }
@@ -107,8 +105,7 @@ occ_reset_op(void)
 /*
  * Should we send an OCC_REQUEST message?
  */
-static inline void
-check_send_occ_req(struct context *c)
+static inline void check_send_occ_req(struct context *c)
 {
     if (event_timeout_defined(&c->c2.occ_interval)
         && event_timeout_trigger(&c->c2.occ_interval,
@@ -122,8 +119,7 @@ check_send_occ_req(struct context *c)
 /*
  * Should we send an MTU load test?
  */
-static inline void
-check_send_occ_load_test(struct context *c)
+static inline void check_send_occ_load_test(struct context *c)
 {
     if (event_timeout_defined(&c->c2.occ_mtu_load_test_interval)
         && event_timeout_trigger(&c->c2.occ_mtu_load_test_interval,
@@ -137,8 +133,7 @@ check_send_occ_load_test(struct context *c)
 /*
  * Should we send an OCC message?
  */
-static inline void
-check_send_occ_msg(struct context *c)
+static inline void check_send_occ_msg(struct context *c)
 {
     if (c->c2.occ_op >= 0)
     {

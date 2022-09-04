@@ -119,35 +119,30 @@ void list_test(void);
 
 #endif
 
-static inline uint32_t
-hash_value(const struct hash *hash, const void *key)
+static inline uint32_t hash_value(const struct hash *hash, const void *key)
 {
     return (*hash->hash_function)(key, hash->iv);
 }
 
-static inline int
-hash_n_elements(const struct hash *hash)
+static inline int hash_n_elements(const struct hash *hash)
 {
     return hash->n_elements;
 }
 
-static inline int
-hash_n_buckets(const struct hash *hash)
+static inline int hash_n_buckets(const struct hash *hash)
 {
     return hash->n_buckets;
 }
 
-static inline struct hash_bucket *
-hash_bucket(struct hash *hash, uint32_t hv)
+static inline struct hash_bucket * hash_bucket(struct hash *hash, uint32_t hv)
 {
     return &hash->buckets[hv & hash->mask];
 }
 
-static inline void *
-hash_lookup(struct hash *hash, const void *key)
+static inline void * hash_lookup(struct hash *hash, const void *key)
 {
     void *ret = NULL;
-    struct hash_element *he;
+    struct hash_element *he = 0;
     uint32_t hv = hash_value(hash, key);
     struct hash_bucket *bucket = &hash->buckets[hv & hash->mask];
 
@@ -161,14 +156,13 @@ hash_lookup(struct hash *hash, const void *key)
 }
 
 /* NOTE: assumes that key is not a duplicate */
-static inline void
-hash_add_fast(struct hash *hash,
+static inline void hash_add_fast(struct hash *hash,
               struct hash_bucket *bucket,
               const void *key,
               uint32_t hv,
               void *value)
 {
-    struct hash_element *he;
+    struct hash_element *he = 0;
 
     ALLOC_OBJ(he, struct hash_element);
     he->value = value;
@@ -179,12 +173,11 @@ hash_add_fast(struct hash *hash,
     ++hash->n_elements;
 }
 
-static inline bool
-hash_remove(struct hash *hash, const void *key)
+static inline bool hash_remove(struct hash *hash, const void *key)
 {
-    uint32_t hv;
-    struct hash_bucket *bucket;
-    bool ret;
+    uint32_t hv = 0;
+    struct hash_bucket *bucket = 0;
+    bool ret = 0;
 
     hv = hash_value(hash, key);
     bucket = &hash->buckets[hv & hash->mask];

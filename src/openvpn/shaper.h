@@ -70,8 +70,7 @@ bool shaper_soonest_event(struct timeval *tv, int delay);
  * inline functions
  */
 
-static inline void
-shaper_reset(struct shaper *s, int bytes_per_second)
+static inline void shaper_reset(struct shaper *s, int bytes_per_second)
 {
     s->bytes_per_second = constrain_int(bytes_per_second, SHAPER_MIN, SHAPER_MAX);
 
@@ -82,15 +81,13 @@ shaper_reset(struct shaper *s, int bytes_per_second)
 #endif
 }
 
-static inline void
-shaper_init(struct shaper *s, int bytes_per_second)
+static inline void shaper_init(struct shaper *s, int bytes_per_second)
 {
     shaper_reset(s, bytes_per_second);
     shaper_reset_wakeup(s);
 }
 
-static inline int
-shaper_current_bandwidth(struct shaper *s)
+static inline int shaper_current_bandwidth(struct shaper *s)
 {
     return s->bytes_per_second;
 }
@@ -99,10 +96,9 @@ shaper_current_bandwidth(struct shaper *s)
  * Returns traffic shaping delay in microseconds relative to current
  * time, or 0 if no delay.
  */
-static inline int
-shaper_delay(struct shaper *s)
+static inline int shaper_delay(struct shaper *s)
 {
-    struct timeval tv;
+    struct timeval tv = { 0 };
     int delay = 0;
 
     if (tv_defined(&s->wakeup))
@@ -124,10 +120,9 @@ shaper_delay(struct shaper *s)
  * Compute when we can send another datagram,
  * based on target throughput (s->bytes_per_second).
  */
-static inline void
-shaper_wrote_bytes(struct shaper *s, int nbytes)
+static inline void shaper_wrote_bytes(struct shaper *s, int nbytes)
 {
-    struct timeval tv;
+    struct timeval tv = { 0 };
 
     /* compute delay in microseconds */
     tv.tv_sec = 0;
@@ -160,8 +155,7 @@ shaper_wrote_bytes(struct shaper *s, int nbytes)
  *
  * Return true if bandwidth changed.
  */
-static inline bool
-shaper_change_pct(struct shaper *s, int pct)
+static inline bool shaper_change_pct(struct shaper *s, int pct)
 {
     const int orig_bandwidth = s->bytes_per_second;
     const int new_bandwidth = orig_bandwidth + (orig_bandwidth * pct / 100);

@@ -434,8 +434,7 @@ bool fragment_ready_to_send(struct fragment_master *f, struct buffer *buf,
  * @li True, if there are one or more fragments ready to be sent.
  * @li False, otherwise.
  */
-static inline bool
-fragment_outgoing_defined(struct fragment_master *f)
+static inline bool fragment_outgoing_defined(struct fragment_master *f)
 {
     return f->outgoing.len > 0;
 }
@@ -461,8 +460,7 @@ void fragment_wakeup(struct fragment_master *f, struct frame *frame);
  * @param frame        - The packet geometry parameters for this VPN
  *                       tunnel.
  */
-static inline void
-fragment_housekeeping(struct fragment_master *f, struct frame *frame, struct timeval *tv)
+static inline void fragment_housekeeping(struct fragment_master *f, struct frame *frame, struct timeval *tv)
 {
     if (event_timeout_trigger(&f->wakeup, tv, ETT_DEFAULT))
     {

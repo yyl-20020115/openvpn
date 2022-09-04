@@ -31,11 +31,9 @@
 
 typedef void (*block_dns_msg_handler_t) (DWORD err, const char *msg);
 
-DWORD
-delete_block_dns_filters(HANDLE engine);
+DWORD delete_block_dns_filters(HANDLE engine);
 
-DWORD
-add_block_dns_filters(HANDLE *engine, int iface_index, const WCHAR *exe_path,
+DWORD add_block_dns_filters(HANDLE *engine, int iface_index, const WCHAR *exe_path,
                       block_dns_msg_handler_t msg_handler_callback);
 
 /**
@@ -48,8 +46,7 @@ add_block_dns_filters(HANDLE *engine, int iface_index, const WCHAR *exe_path,
  *
  * @return positive interface metric on success or -1 on error
  */
-int
-get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *is_auto);
+int get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *is_auto);
 
 /**
  * Sets interface metric value for specified interface index.
@@ -61,8 +58,7 @@ get_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family, int *
  * @return 0 on success, a non-zero status code of the last failed action on failure.
  */
 
-DWORD
-set_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family,
+DWORD set_interface_metric(const NET_IFINDEX index, const ADDRESS_FAMILY family,
                      const ULONG metric);
 
 #endif /* ifndef OPENVPN_BLOCK_DNS_H */

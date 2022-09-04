@@ -251,8 +251,7 @@ struct ip_tcp_udp_hdr {
  * This returns an ip protocol version of packet inside tun
  * and offset of IP header (via parameter).
  */
-static inline int
-get_tun_ip_ver(int tunnel_type, struct buffer *buf, int *ip_hdr_offset)
+static inline int get_tun_ip_ver(int tunnel_type, struct buffer *buf, int *ip_hdr_offset)
 {
     int ip_ver = -1;
 
@@ -308,8 +307,7 @@ bool is_ipv6(int tunnel_type, struct buffer *buf);
  * @param proto next    - header or IP protocol of the packet
  * @return The calculated checksum in host order
  */
-uint16_t
-ip_checksum(const sa_family_t af, const uint8_t *payload, const int len_payload,
+uint16_t ip_checksum(const sa_family_t af, const uint8_t *payload, const int len_payload,
             const uint8_t *src_addr, const uint8_t *dest_addr,  const int proto);
 
 #ifdef PACKET_TRUNCATION_CHECK

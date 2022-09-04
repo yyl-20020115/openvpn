@@ -148,8 +148,7 @@ void plugin_return_print(const int msglevel, const char *prefix, const struct pl
 
 #endif
 
-static inline int
-plugin_n(const struct plugin_list *pl)
+static inline int plugin_n(const struct plugin_list *pl)
 {
     if (pl && pl->common)
     {
@@ -161,14 +160,12 @@ plugin_n(const struct plugin_list *pl)
     }
 }
 
-static inline bool
-plugin_return_defined(const struct plugin_return *pr)
+static inline bool plugin_return_defined(const struct plugin_return *pr)
 {
     return pr->n >= 0;
 }
 
-static inline void
-plugin_return_init(struct plugin_return *pr)
+static inline void plugin_return_init(struct plugin_return *pr)
 {
     pr->n = 0;
 }
@@ -183,8 +180,7 @@ plugin_defined(const struct plugin_list *pl, const int type)
     return false;
 }
 
-static inline int
-plugin_call_ssl(const struct plugin_list *pl,
+static inline int plugin_call_ssl(const struct plugin_list *pl,
                 const int type,
                 const struct argv *av,
                 struct plugin_return *pr,
@@ -198,8 +194,7 @@ plugin_call_ssl(const struct plugin_list *pl,
 
 #endif /* ENABLE_PLUGIN */
 
-static inline int
-plugin_call(const struct plugin_list *pl,
+static inline int plugin_call(const struct plugin_list *pl,
             const int type,
             const struct argv *av,
             struct plugin_return *pr,

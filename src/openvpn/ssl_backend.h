@@ -403,8 +403,7 @@ void backend_tls_ctx_reload_crl(struct tls_root_ctx *ssl_ctx,
  * @param ekm_size     The size of ekm, in bytes
  * @returns            true if exporting succeeded, false otherwise
  */
-bool
-key_state_export_keying_material(struct tls_session *session,
+bool key_state_export_keying_material(struct tls_session *session,
                                  const char *label, size_t label_size,
                                  void *ekm, size_t ekm_size);
 
@@ -547,8 +546,7 @@ void print_details(struct key_state_ssl *ks_ssl, const char *prefix);
  * @param tls13             Select if <=TLS1.2 or TLS1.3+ ciphers
  *                          should be shown
  */
-void
-show_available_tls_ciphers_list(const char *cipher_list,
+void show_available_tls_ciphers_list(const char *cipher_list,
                                 const char *tls_cert_profile,
                                 bool tls13);
 

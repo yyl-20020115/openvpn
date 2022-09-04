@@ -74,16 +74,13 @@ void perf_output_results(void);
 
 #else  /* ifdef ENABLE_PERFORMANCE_METRICS */
 
-static inline void
-perf_push(int type)
+static inline void perf_push(int type)
 {
 }
-static inline void
-perf_pop(void)
+static inline void perf_pop(void)
 {
 }
-static inline void
-perf_output_results(void)
+static inline void perf_output_results(void)
 {
 }
 

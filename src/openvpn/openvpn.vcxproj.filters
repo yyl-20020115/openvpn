@@ -1,195 +1,574 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Manifest Include="openvpn.manifest" />
+    <ClCompile Include="argv.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="auth_token.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="base64.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="block_dns.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="buffer.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="clinat.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="comp.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="comp-lz4.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="compstub.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="console.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="console_builtin.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto_openssl.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="cryptoapi.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dco.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dco_linux.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dco_win.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dns.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="env_set.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="error.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="event.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="fdmisc.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="forward.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="fragment.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="gremlin.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="helper.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="httpdigest.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="init.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="interval.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="list.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="lladdr.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="lzo.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="manage.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mbuf.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="misc.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mroute.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mss.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mstats.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mtcp.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mtu.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mudp.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="multi.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ntlm.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="occ.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="openvpn.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="options.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="otime.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="packet_id.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="perf.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ping.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="pkcs11.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="pkcs11_openssl.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="platform.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="pool.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="proto.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ps.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="push.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="reliable.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="route.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="run_command.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="schedule.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="session_id.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="shaper.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="sig.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="socket.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="socks.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_ncp.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_openssl.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_pkt.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_util.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_verify.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl_verify_openssl.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="status.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="tls_crypt.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="tun.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="vlan.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="win32.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="win32-util.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="xkey_helper.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="xkey_provider.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="argv.c" />
-    <ClCompile Include="auth_token.c" />
-    <ClCompile Include="base64.c" />
-    <ClCompile Include="block_dns.c" />
-    <ClCompile Include="buffer.c" />
-    <ClCompile Include="clinat.c" />
-    <ClCompile Include="comp-lz4.c" />
-    <ClCompile Include="comp.c" />
-    <ClCompile Include="compstub.c" />
-    <ClCompile Include="console.c" />
-    <ClCompile Include="console_builtin.c" />
-    <ClCompile Include="crypto.c" />
-    <ClCompile Include="crypto_openssl.c" />
-    <ClCompile Include="cryptoapi.c" />
-    <ClCompile Include="dco.c" />
-    <ClCompile Include="dco_linux.c" />
-    <ClCompile Include="dco_win.c" />
-    <ClCompile Include="dhcp.c" />
-    <ClCompile Include="dns.c" />
-    <ClCompile Include="env_set.c" />
-    <ClCompile Include="error.c" />
-    <ClCompile Include="event.c" />
-    <ClCompile Include="fdmisc.c" />
-    <ClCompile Include="forward.c" />
-    <ClCompile Include="fragment.c" />
-    <ClCompile Include="gremlin.c" />
-    <ClCompile Include="helper.c" />
-    <ClCompile Include="httpdigest.c" />
-    <ClCompile Include="init.c" />
-    <ClCompile Include="interval.c" />
-    <ClCompile Include="list.c" />
-    <ClCompile Include="lladdr.c" />
-    <ClCompile Include="lzo.c" />
-    <ClCompile Include="manage.c" />
-    <ClCompile Include="mbuf.c" />
-    <ClCompile Include="misc.c" />
-    <ClCompile Include="mroute.c" />
-    <ClCompile Include="mss.c" />
-    <ClCompile Include="mstats.c" />
-    <ClCompile Include="mtcp.c" />
-    <ClCompile Include="mtu.c" />
-    <ClCompile Include="mudp.c" />
-    <ClCompile Include="multi.c" />
-    <ClCompile Include="ntlm.c" />
-    <ClCompile Include="occ.c" />
-    <ClCompile Include="openvpn.c" />
-    <ClCompile Include="options.c" />
-    <ClCompile Include="otime.c" />
-    <ClCompile Include="packet_id.c" />
-    <ClCompile Include="perf.c" />
-    <ClCompile Include="ping.c" />
-    <ClCompile Include="pkcs11.c" />
-    <ClCompile Include="pkcs11_openssl.c" />
-    <ClCompile Include="platform.c" />
-    <ClCompile Include="plugin.c" />
-    <ClCompile Include="pool.c" />
-    <ClCompile Include="proto.c" />
-    <ClCompile Include="proxy.c" />
-    <ClCompile Include="ps.c" />
-    <ClCompile Include="push.c" />
-    <ClCompile Include="reliable.c" />
-    <ClCompile Include="route.c" />
-    <ClCompile Include="run_command.c" />
-    <ClCompile Include="schedule.c" />
-    <ClCompile Include="session_id.c" />
-    <ClCompile Include="shaper.c" />
-    <ClCompile Include="sig.c" />
-    <ClCompile Include="socket.c" />
-    <ClCompile Include="socks.c" />
-    <ClCompile Include="ssl.c" />
-    <ClCompile Include="ssl_openssl.c" />
-    <ClCompile Include="ssl_ncp.c" />
-    <ClCompile Include="ssl_pkt.c" />
-    <ClCompile Include="ssl_util.c" />
-    <ClCompile Include="ssl_verify.c" />
-    <ClCompile Include="ssl_verify_openssl.c" />
-    <ClCompile Include="status.c" />
-    <ClCompile Include="tls_crypt.c" />
-    <ClCompile Include="tun.c" />
-    <ClCompile Include="vlan.c" />
-    <ClCompile Include="win32.c" />
-    <ClCompile Include="win32-util.c" />
-    <ClCompile Include="xkey_helper.c" />
-    <ClCompile Include="xkey_provider.c" />
+    <ClInclude Include="argv.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="auth_token.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="base64.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="basic.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="block_dns.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="circ_list.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="clinat.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="comp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="comp-lz4.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="compstub.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="console.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto_backend.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto_openssl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptoapi.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dco.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dco_internal.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dco_linux.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dco_win.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dhcp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dns.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="env_set.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="errlevel.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="event.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fdmisc.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="forward.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fragment.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="gremlin.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="helper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="httpdigest.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="init.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="integer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="interval.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="list.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lladdr.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lzo.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="manage.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="memdbg.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mbuf.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="misc.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mroute.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mss.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mstats.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mtcp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mtu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mudp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="multi.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ntlm.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="occ.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="openvpn.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="options.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="otime.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ovpn_dco_linux.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ovpn_dco_win.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="packet_id.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="perf.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ping.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pkcs11.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pkcs11_backend.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="platform.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pool.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="proto.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="proxy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ps.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="push.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pushlist.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="reliable.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ring_buffer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="route.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="run_command.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="schedule.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="session_id.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shaper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="socket.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="socks.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_backend.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_common.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_ncp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_openssl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_pkt.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_util.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_verify.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_verify_backend.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_verify_openssl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="status.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="syshead.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tls_crypt.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tun.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="vlan.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="win32.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="win32-util.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="xkey_common.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="argv.h" />
-    <ClInclude Include="auth_token.h" />
-    <ClInclude Include="base64.h" />
-    <ClInclude Include="basic.h" />
-    <ClInclude Include="block_dns.h" />
-    <ClInclude Include="buffer.h" />
-    <ClInclude Include="circ_list.h" />
-    <ClInclude Include="clinat.h" />
-    <ClInclude Include="common.h" />
-    <ClInclude Include="comp-lz4.h" />
-    <ClInclude Include="comp.h" />
-    <ClInclude Include="compstub.h" />
-    <ClInclude Include="console.h" />
-    <ClInclude Include="crypto.h" />
-    <ClInclude Include="crypto_backend.h" />
-    <ClInclude Include="crypto_openssl.h" />
-    <ClInclude Include="cryptoapi.h" />
-    <ClInclude Include="dco.h" />
-    <ClInclude Include="dco_internal.h" />
-    <ClInclude Include="dco_linux.h" />
-    <ClInclude Include="dco_win.h" />
-    <ClInclude Include="dhcp.h" />
-    <ClInclude Include="dns.h" />
-    <ClInclude Include="env_set.h" />
-    <ClInclude Include="errlevel.h" />
-    <ClInclude Include="error.h" />
-    <ClInclude Include="event.h" />
-    <ClInclude Include="fdmisc.h" />
-    <ClInclude Include="forward.h" />
-    <ClInclude Include="fragment.h" />
-    <ClInclude Include="gremlin.h" />
-    <ClInclude Include="helper.h" />
-    <ClInclude Include="httpdigest.h" />
-    <ClInclude Include="init.h" />
-    <ClInclude Include="integer.h" />
-    <ClInclude Include="interval.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="lladdr.h" />
-    <ClInclude Include="lzo.h" />
-    <ClInclude Include="manage.h" />
-    <ClInclude Include="mbuf.h" />
-    <ClInclude Include="memdbg.h" />
-    <ClInclude Include="misc.h" />
-    <ClInclude Include="mroute.h" />
-    <ClInclude Include="mss.h" />
-    <ClInclude Include="mstats.h" />
-    <ClInclude Include="mtcp.h" />
-    <ClInclude Include="mtu.h" />
-    <ClInclude Include="mudp.h" />
-    <ClInclude Include="multi.h" />
-    <ClInclude Include="ntlm.h" />
-    <ClInclude Include="occ.h" />
-    <ClInclude Include="openvpn.h" />
-    <ClInclude Include="options.h" />
-    <ClInclude Include="otime.h" />
-    <ClInclude Include="ovpn_dco_linux.h" />
-    <ClInclude Include="ovpn_dco_win.h" />
-    <ClInclude Include="packet_id.h" />
-    <ClInclude Include="perf.h" />
-    <ClInclude Include="ping.h" />
-    <ClInclude Include="pkcs11.h" />
-    <ClInclude Include="pkcs11_backend.h" />
-    <ClInclude Include="platform.h" />
-    <ClInclude Include="plugin.h" />
-    <ClInclude Include="pool.h" />
-    <ClInclude Include="proto.h" />
-    <ClInclude Include="proxy.h" />
-    <ClInclude Include="ps.h" />
-    <ClInclude Include="push.h" />
-    <ClInclude Include="pushlist.h" />
-    <ClInclude Include="reliable.h" />
-    <ClInclude Include="ring_buffer.h" />
-    <ClInclude Include="route.h" />
-    <ClInclude Include="run_command.h" />
-    <ClInclude Include="schedule.h" />
-    <ClInclude Include="session_id.h" />
-    <ClInclude Include="shaper.h" />
-    <ClInclude Include="sig.h" />
-    <ClInclude Include="socket.h" />
-    <ClInclude Include="socks.h" />
-    <ClInclude Include="ssl.h" />
-    <ClInclude Include="ssl_backend.h" />
-    <ClInclude Include="ssl_common.h" />
-    <ClInclude Include="ssl_ncp.h" />
-    <ClInclude Include="ssl_openssl.h" />
-    <ClInclude Include="ssl_pkt.h" />
-    <ClInclude Include="ssl_util.h" />
-    <ClInclude Include="ssl_verify.h" />
-    <ClInclude Include="ssl_verify_backend.h" />
-    <ClInclude Include="ssl_verify_openssl.h" />
-    <ClInclude Include="status.h" />
-    <ClInclude Include="syshead.h" />
-    <ClInclude Include="tls_crypt.h" />
-    <ClInclude Include="tun.h" />
-    <ClInclude Include="vlan.h" />
-    <ClInclude Include="win32.h" />
-    <ClInclude Include="win32-util.h" />
-    <ClInclude Include="xkey_common.h" />
+    <Filter Include="Headers">
+      <UniqueIdentifier>{732994a0-d2d5-4753-a101-123a95f8b331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{2e69e868-07a4-4598-89b2-cb4bbba6d8cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{86ccdb35-bed8-4cf2-811e-dfed2e109379}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="openvpn_win32_resources.rc" />
+    <ResourceCompile Include="openvpn_win32_resources.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="openvpn.manifest">
+      <Filter>Resources</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>

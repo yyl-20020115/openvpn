@@ -58,10 +58,9 @@ static PTOKEN_GROUPS GetTokenGroups(const HANDLE token);
  * Check workdir\fname is inside config_dir
  * The logic here is simple: we may reject some valid paths if ..\ is in any of the strings
  */
-static BOOL
-CheckConfigPath(const WCHAR *workdir, const WCHAR *fname, const settings_t *s)
+static BOOL CheckConfigPath(const WCHAR *workdir, const WCHAR *fname, const settings_t *s)
 {
-    WCHAR tmp[MAX_PATH];
+    WCHAR tmp[MAX_PATH] = { 0 };
     const WCHAR *config_file = NULL;
     const WCHAR *config_dir = NULL;
 
@@ -92,10 +91,9 @@ CheckConfigPath(const WCHAR *workdir, const WCHAR *fname, const settings_t *s)
  * A simple linear search meant for a small wchar_t *array.
  * Returns index to the item if found, -1 otherwise.
  */
-static int
-OptionLookup(const WCHAR *name, const WCHAR *white_list[])
+static int OptionLookup(const WCHAR *name, const WCHAR *white_list[])
 {
-    int i;
+    int i = 0;
 
     for (i = 0; white_list[i]; i++)
     {
@@ -112,15 +110,14 @@ OptionLookup(const WCHAR *name, const WCHAR *white_list[])
  * The Administrators group may be localized or renamed by admins.
  * Get the local name of the group using the SID.
  */
-static BOOL
-GetBuiltinAdminGroupName(WCHAR *name, DWORD nlen)
+static BOOL GetBuiltinAdminGroupName(WCHAR *name, DWORD nlen)
 {
     BOOL b = FALSE;
     PSID admin_sid = NULL;
     DWORD sid_size = SECURITY_MAX_SID_SIZE;
-    SID_NAME_USE snu;
+    SID_NAME_USE snu = { 0 };
 
-    WCHAR domain[MAX_NAME];
+    WCHAR domain[MAX_NAME] = { 0 };
     DWORD dlen = _countof(domain);
 
     admin_sid = malloc(sid_size);
@@ -144,16 +141,15 @@ GetBuiltinAdminGroupName(WCHAR *name, DWORD nlen)
  * Check whether user is a member of Administrators group or
  * the group specified in ovpn_admin_group
  */
-BOOL
-IsAuthorizedUser(PSID sid, const HANDLE token, const WCHAR *ovpn_admin_group)
+BOOL IsAuthorizedUser(PSID sid, const HANDLE token, const WCHAR *ovpn_admin_group)
 {
-    const WCHAR *admin_group[2];
-    WCHAR username[MAX_NAME];
-    WCHAR domain[MAX_NAME];
-    WCHAR sysadmin_group[MAX_NAME];
+    const WCHAR *admin_group[2] = { 0 };
+    WCHAR username[MAX_NAME] = { 0 };
+    WCHAR domain[MAX_NAME] = { 0 };
+    WCHAR sysadmin_group[MAX_NAME] = { 0 };
     DWORD len = MAX_NAME;
     BOOL ret = FALSE;
-    SID_NAME_USE sid_type;
+    SID_NAME_USE sid_type = { 0 };
 
     /* Get username */
     if (!LookupAccountSidW(NULL, sid, username, &len, domain, &len, &sid_type))
@@ -198,8 +194,7 @@ out:
  * Returns a pointer to TOKEN_GROUPS struct or NULL on error.
  * The caller should free the returned pointer.
  */
-static PTOKEN_GROUPS
-GetTokenGroups(const HANDLE token)
+static PTOKEN_GROUPS GetTokenGroups(const HANDLE token)
 {
     PTOKEN_GROUPS groups = NULL;
     DWORD buf_size = 0;
@@ -228,11 +223,10 @@ GetTokenGroups(const HANDLE token)
  * Returns true on success, false on failure.
  * Suggest: in caller allocate sid to hold SECURITY_MAX_SID_SIZE bytes
  */
-static BOOL
-LookupSID(const WCHAR *name, PSID sid, DWORD sid_size)
+static BOOL LookupSID(const WCHAR *name, PSID sid, DWORD sid_size)
 {
-    SID_NAME_USE su;
-    WCHAR domain[MAX_NAME];
+    SID_NAME_USE su = { 0 };
+    WCHAR domain[MAX_NAME] = { 0 };
     DWORD dlen = _countof(domain);
 
     if (!LookupAccountName(NULL, name, sid, &sid_size, domain, &dlen, &su))
@@ -254,13 +248,12 @@ LookupSID(const WCHAR *name, PSID sid, DWORD sid_size)
  *
  * Returns true if the user is in the group, false otherwise.
  */
-static BOOL
-IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_name)
+static BOOL IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_name)
 {
     BOOL ret = FALSE;
     DWORD_PTR resume = 0;
-    DWORD err;
-    BYTE grp_sid[SECURITY_MAX_SID_SIZE];
+    DWORD err = 0;
+    BYTE grp_sid[SECURITY_MAX_SID_SIZE] = { 0 };
     int nloop = 0; /* a counter used to not get stuck in the do .. while() */
 
     /* first check in the token groups */
@@ -282,7 +275,7 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
     }
     do
     {
-        DWORD nread, nmax;
+        DWORD nread = 0, nmax = 0;
         LOCALGROUP_MEMBERS_INFO_0 *members = NULL;
         err = NetLocalGroupGetMembers(NULL, group_name, 0, (LPBYTE *) &members,
                                       MAX_PREFERRED_LENGTH, &nread, &nmax, &resume);
@@ -313,8 +306,7 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
  * also check that argv[1], if present, passes CheckConfigPath().
  * The caller should set argc to the number of valid elements in argv[] array.
  */
-BOOL
-CheckOption(const WCHAR *workdir, int argc, WCHAR *argv[], const settings_t *s)
+BOOL CheckOption(const WCHAR *workdir, int argc, WCHAR *argv[], const settings_t *s)
 {
     /* Do not modify argv or *argv -- ideally it should be const WCHAR *const *, but alas...*/
 

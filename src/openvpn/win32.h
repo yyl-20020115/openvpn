@@ -85,8 +85,7 @@ struct rw_handle {
 #define NE32_PERSIST_EVENT (1<<0)
 #define NE32_WRITE_EVENT   (1<<1)
 
-static inline bool
-defined_net_event_win32(const struct rw_handle *event)
+static inline bool defined_net_event_win32(const struct rw_handle *event)
 {
     return event->read != NULL;
 }
@@ -120,26 +119,22 @@ void net_event_win32_stop(struct net_event_win32 *ne);
 
 void net_event_win32_close(struct net_event_win32 *ne);
 
-static inline bool
-net_event_win32_defined(const struct net_event_win32 *ne)
+static inline bool net_event_win32_defined(const struct net_event_win32 *ne)
 {
     return defined_net_event_win32(&ne->handle);
 }
 
-static inline struct rw_handle *
-net_event_win32_get_event(struct net_event_win32 *ne)
+static inline struct rw_handle * net_event_win32_get_event(struct net_event_win32 *ne)
 {
     return &ne->handle;
 }
 
-static inline long
-net_event_win32_get_event_mask(const struct net_event_win32 *ne)
+static inline long net_event_win32_get_event_mask(const struct net_event_win32 *ne)
 {
     return ne->event_mask;
 }
 
-static inline void
-net_event_win32_clear_selected_events(struct net_event_win32 *ne, long selected_events)
+static inline void net_event_win32_clear_selected_events(struct net_event_win32 *ne, long selected_events)
 {
     ne->event_mask &= ~selected_events;
 }
@@ -222,8 +217,7 @@ void overlapped_io_init(struct overlapped_io *o,
 
 void overlapped_io_close(struct overlapped_io *o);
 
-static inline bool
-overlapped_io_active(struct overlapped_io *o)
+static inline bool overlapped_io_active(struct overlapped_io *o)
 {
     return o->iostate == IOSTATE_QUEUED || o->iostate == IOSTATE_IMMEDIATE_RETURN;
 }
@@ -319,16 +313,14 @@ bool send_msg_iservice(HANDLE pipe, const void *data, size_t size,
 /*
  * Attempt to simulate fork/execve on Windows
  */
-int
-openvpn_execve(const struct argv *a, const struct env_set *es, const unsigned int flags);
+int openvpn_execve(const struct argv *a, const struct env_set *es, const unsigned int flags);
 
 /*
  * openvpn_swprintf() is currently only used by Windows code paths
  * and when enabled for all platforms it will currently break older
  * OpenBSD versions lacking vswprintf(3) support in their libc.
  */
-bool
-openvpn_swprintf(wchar_t *const str, const size_t size, const wchar_t *const format, ...);
+bool openvpn_swprintf(wchar_t *const str, const size_t size, const wchar_t *const format, ...);
 
 #endif /* ifndef OPENVPN_WIN32_H */
 #endif /* ifdef _WIN32 */

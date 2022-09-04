@@ -62,8 +62,7 @@ void interval_init(struct interval *top, int horizon, int refresh);
  *   return false
  */
 
-static inline bool
-interval_test(struct interval *top)
+static inline bool interval_test(struct interval *top)
 {
     bool trigger = false;
     const time_t local_now = now;
@@ -90,8 +89,7 @@ interval_test(struct interval *top)
     }
 }
 
-static inline void
-interval_schedule_wakeup(struct interval *top, interval_t *wakeup)
+static inline void interval_schedule_wakeup(struct interval *top, interval_t *wakeup)
 {
     const time_t local_now = now;
     interval_earliest_wakeup(wakeup, top->last_test_true + top->refresh, local_now);
@@ -104,8 +102,7 @@ interval_schedule_wakeup(struct interval *top, interval_t *wakeup)
 /*
  * In wakeup seconds, interval_test will return true once.
  */
-static inline void
-interval_future_trigger(struct interval *top, interval_t wakeup)
+static inline void interval_future_trigger(struct interval *top, interval_t wakeup)
 {
     if (wakeup)
     {
@@ -120,8 +117,7 @@ interval_future_trigger(struct interval *top, interval_t wakeup)
  * Once an action is triggered, interval_test will remain true for
  * horizon seconds.
  */
-static inline void
-interval_action(struct interval *top)
+static inline void interval_action(struct interval *top)
 {
 #if INTERVAL_DEBUG
     dmsg(D_INTERVAL, "INTERVAL action");
@@ -140,38 +136,33 @@ struct event_timeout
     time_t last; /* time of last event */
 };
 
-static inline bool
-event_timeout_defined(const struct event_timeout *et)
+static inline bool event_timeout_defined(const struct event_timeout *et)
 {
     return et->defined;
 }
 
-static inline void
-event_timeout_clear(struct event_timeout *et)
+static inline void event_timeout_clear(struct event_timeout *et)
 {
     et->defined = false;
     et->n = 0;
     et->last = 0;
 }
 
-static inline struct event_timeout
-event_timeout_clear_ret(void)
+static inline struct event_timeout event_timeout_clear_ret(void)
 {
-    struct event_timeout ret;
+    struct event_timeout ret = { 0 };
     event_timeout_clear(&ret);
     return ret;
 }
 
-static inline void
-event_timeout_init(struct event_timeout *et, interval_t n, const time_t local_now)
+static inline void event_timeout_init(struct event_timeout *et, interval_t n, const time_t local_now)
 {
     et->defined = true;
     et->n = (n >= 0) ? n : 0;
     et->last = local_now;
 }
 
-static inline void
-event_timeout_reset(struct event_timeout *et)
+static inline void event_timeout_reset(struct event_timeout *et)
 {
     if (et->defined)
     {
@@ -179,8 +170,7 @@ event_timeout_reset(struct event_timeout *et)
     }
 }
 
-static inline void
-event_timeout_modify_wakeup(struct event_timeout *et, interval_t n)
+static inline void event_timeout_modify_wakeup(struct event_timeout *et, interval_t n)
 {
     /* note that you might need to call reset_coarse_timers after this */
     if (et->defined)
@@ -193,8 +183,7 @@ event_timeout_modify_wakeup(struct event_timeout *et, interval_t n)
  * Will return the time left for a timeout, this function does not check
  * if the timeout is actually valid
  */
-static inline interval_t
-event_timeout_remaining(struct event_timeout *et)
+static inline interval_t event_timeout_remaining(struct event_timeout *et)
 {
     return (interval_t) (et->last - now + et->n);
 }
@@ -231,29 +220,25 @@ struct usec_timer {
 
 #ifdef HAVE_GETTIMEOFDAY
 
-static inline void
-usec_timer_start(struct usec_timer *obj)
+static inline void usec_timer_start(struct usec_timer *obj)
 {
     CLEAR(*obj);
     openvpn_gettimeofday(&obj->start, NULL);
 }
 
-static inline void
-usec_timer_end(struct usec_timer *obj)
+static inline void usec_timer_end(struct usec_timer *obj)
 {
     openvpn_gettimeofday(&obj->end, NULL);
 }
 
 #endif /* HAVE_GETTIMEOFDAY */
 
-static inline bool
-usec_timer_interval_defined(struct usec_timer *obj)
+static inline bool usec_timer_interval_defined(struct usec_timer *obj)
 {
     return obj->start.tv_sec && obj->end.tv_sec;
 }
 
-static inline int
-usec_timer_interval(struct usec_timer *obj)
+static inline int usec_timer_interval(struct usec_timer *obj)
 {
     return tv_subtract(&obj->end, &obj->start, USEC_TIMER_MAX);
 }

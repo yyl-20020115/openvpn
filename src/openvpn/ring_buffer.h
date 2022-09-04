@@ -94,16 +94,15 @@ struct TUN_PACKET
  *                            that data has been written to receive ring
  * @return                    true if registration is successful, false otherwise - use GetLastError()
  */
-static inline bool
-register_ring_buffers(HANDLE device,
+static inline bool register_ring_buffers(HANDLE device,
                       struct tun_ring *send_ring,
                       struct tun_ring *receive_ring,
                       HANDLE send_tail_moved,
                       HANDLE receive_tail_moved)
 {
-    struct tun_register_rings rr;
-    BOOL res;
-    DWORD bytes_returned;
+    struct tun_register_rings rr = { 0 };
+    BOOL res = FALSE;
+    DWORD bytes_returned = 0;
 
     ZeroMemory(&rr, sizeof(rr));
 

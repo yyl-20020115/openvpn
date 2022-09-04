@@ -222,15 +222,13 @@ __attribute__((__noreturn__))
 
 /* Inline functions */
 
-static inline bool
-check_debug_level(unsigned int level)
+static inline bool check_debug_level(unsigned int level)
 {
     return (level & M_DEBUG_LEVEL) <= x_debug_level;
 }
 
 /** Return true if flags represent an enabled, not muted log level */
-static inline bool
-msg_test(unsigned int flags)
+static inline bool msg_test(unsigned int flags)
 {
     return check_debug_level(flags) && dont_mute(flags);
 }
@@ -279,8 +277,7 @@ void x_check_status(int status,
                     struct link_socket *sock,
                     struct tuntap *tt);
 
-static inline void
-check_status(int status, const char *description, struct link_socket *sock, struct tuntap *tt)
+static inline void check_status(int status, const char *description, struct link_socket *sock, struct tuntap *tt)
 {
     if (status < 0 || check_debug_level(x_cs_verbose_level))
     {
@@ -288,8 +285,7 @@ check_status(int status, const char *description, struct link_socket *sock, stru
     }
 }
 
-static inline void
-set_check_status_error_delay(unsigned int milliseconds)
+static inline void set_check_status_error_delay(unsigned int milliseconds)
 {
     x_cs_err_delay_ms = milliseconds;
 }
@@ -307,14 +303,12 @@ void msg_thread_init(void);
 
 void msg_thread_uninit(void);
 
-static inline void
-msg_set_prefix(const char *prefix)
+static inline void msg_set_prefix(const char *prefix)
 {
     x_msg_prefix = prefix;
 }
 
-static inline const char *
-msg_get_prefix(void)
+static inline const char * msg_get_prefix(void)
 {
     return x_msg_prefix;
 }
@@ -327,14 +321,12 @@ struct virtual_output;
 
 extern const struct virtual_output *x_msg_virtual_output;
 
-static inline void
-msg_set_virtual_output(const struct virtual_output *vo)
+static inline void msg_set_virtual_output(const struct virtual_output *vo)
 {
     x_msg_virtual_output = vo;
 }
 
-static inline const struct virtual_output *
-msg_get_virtual_output(void)
+static inline const struct virtual_output * msg_get_virtual_output(void)
 {
     return x_msg_virtual_output;
 }
@@ -343,8 +335,7 @@ msg_get_virtual_output(void)
  * Return true if this is a system error
  * which can be safely ignored.
  */
-static inline bool
-ignore_sys_error(const int err, bool crt_error)
+static inline bool ignore_sys_error(const int err, bool crt_error)
 {
 #ifdef _WIN32
     if (!crt_error && ((err == WSAEWOULDBLOCK || err == WSAEINVAL)))
@@ -375,14 +366,12 @@ ignore_sys_error(const int err, bool crt_error)
 }
 
 /** Convert fatal errors to nonfatal, don't touch other errors */
-static inline unsigned int
-nonfatal(const unsigned int err)
+static inline unsigned int nonfatal(const unsigned int err)
 {
     return err & M_FATAL ? (err ^ M_FATAL) | M_NONFATAL : err;
 }
 
-static inline int
-openvpn_errno_maybe_crt(bool *crt_error)
+static inline int openvpn_errno_maybe_crt(bool *crt_error)
 {
     int err = 0;
     *crt_error = false;

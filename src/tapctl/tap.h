@@ -49,8 +49,7 @@
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-DWORD
-tap_create_adapter(
+DWORD tap_create_adapter(
     _In_opt_ HWND hwndParent,
     _In_opt_ LPCTSTR szDeviceDescription,
     _In_ LPCTSTR szHwId,
@@ -76,8 +75,7 @@ tap_create_adapter(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-DWORD
-tap_delete_adapter(
+DWORD tap_delete_adapter(
     _In_opt_ HWND hwndParent,
     _In_ LPCGUID pguidAdapter,
     _Inout_ LPBOOL pbRebootRequired);
@@ -103,8 +101,7 @@ tap_delete_adapter(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-DWORD
-tap_enable_adapter(
+DWORD tap_enable_adapter(
     _In_opt_ HWND hwndParent,
     _In_ LPCGUID pguidAdapter,
     _In_ BOOL bEnable,
@@ -123,8 +120,7 @@ tap_enable_adapter(
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  **/
-DWORD
-tap_set_adapter_name(
+DWORD tap_set_adapter_name(
     _In_ LPCGUID pguidAdapter,
     _In_ LPCTSTR szName,
     _In_ BOOL bSilent);
@@ -162,8 +158,7 @@ struct tap_adapter_node
  *
  * @return ERROR_SUCCESS on success; Win32 error code otherwise
  */
-DWORD
-tap_list_adapters(
+DWORD tap_list_adapters(
     _In_opt_ HWND hwndParent,
     _In_opt_ LPCTSTR szzHwIDs,
     _Out_ struct tap_adapter_node **ppAdapterList);
@@ -174,8 +169,7 @@ tap_list_adapters(
  *
  * @param pAdapterList  A pointer to the first adapter in the list to free.
  */
-void
-tap_free_adapter_list(
+void tap_free_adapter_list(
     _In_ struct tap_adapter_node *pAdapterList);
 
 #endif /* ifndef TAP_H */

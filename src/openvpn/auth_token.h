@@ -59,16 +59,14 @@
  * This function will free() an existing multi->auth_token and keep the
  * existing initial timestamp and session id contained in that token.
  */
-void
-generate_auth_token(const struct user_pass *up, struct tls_multi *multi);
+void generate_auth_token(const struct user_pass *up, struct tls_multi *multi);
 
 /**
  * Verifies the auth token to be in the format that generate_auth_token
  * create and checks if the token is valid.
  *
  */
-unsigned
-verify_auth_token(struct user_pass *up, struct tls_multi *multi,
+unsigned verify_auth_token(struct user_pass *up, struct tls_multi *multi,
                   struct tls_session *session);
 
 
@@ -77,8 +75,7 @@ verify_auth_token(struct user_pass *up, struct tls_multi *multi,
  * Loads an HMAC secret from a file or if no file is present generates a
  * epheremal secret for the run time of the server and stores it into ctx
  */
-void
-auth_token_init_secret(struct key_ctx *key_ctx, const char *key_file,
+void auth_token_init_secret(struct key_ctx *key_ctx, const char *key_file,
                        bool key_inline);
 
 
@@ -123,8 +120,7 @@ void wipe_auth_token(struct tls_multi *multi);
  * @param password
  * @return whether the password string starts with the session token prefix
  */
-static inline bool
-is_auth_token(const char *password)
+static inline bool is_auth_token(const char *password)
 {
     return (memcmp_constant_time(SESSION_ID_PREFIX, password,
                                  strlen(SESSION_ID_PREFIX)) == 0);
@@ -135,7 +131,6 @@ is_auth_token(const char *password)
  * @param multi     Pointer the multi object of the TLS session
  * @param session   Pointer to the TLS session itself
  */
-void
-resend_auth_token_renegotiation(struct tls_multi *multi, struct tls_session *session);
+void resend_auth_token_renegotiation(struct tls_multi *multi, struct tls_session *session);
 
 #endif /* AUTH_TOKEN_H */

@@ -187,8 +187,7 @@ struct key_type;
  *
  * *  [IP][UDP][OPENVPN PROTOCOL HEADER][ **PAYLOAD incl compression header** ]
  */
-size_t
-frame_calculate_payload_size(const struct frame *frame,
+size_t frame_calculate_payload_size(const struct frame *frame,
                              const struct options *options,
                              const struct key_type *kt);
 
@@ -208,8 +207,7 @@ frame_calculate_payload_size(const struct frame *frame,
  *
  * *  [IP][UDP][OPENVPN PROTOCOL HEADER][ **PAYLOAD incl compression header** ]
  */
-size_t
-frame_calculate_payload_overhead(const struct frame *frame,
+size_t frame_calculate_payload_overhead(const struct frame *frame,
                                  const struct options *options,
                                  const struct key_type *kt,
                                  bool extra_tun);
@@ -229,8 +227,7 @@ frame_calculate_payload_overhead(const struct frame *frame,
  * @param occ           Use the calculation for the OCC link-mtu
  * @return              size of the overhead in bytes
  */
-size_t
-frame_calculate_protocol_header_size(const struct key_type *kt,
+size_t frame_calculate_protocol_header_size(const struct key_type *kt,
                                      const struct options *options,
                                      bool occ);
 
@@ -241,16 +238,14 @@ frame_calculate_protocol_header_size(const struct key_type *kt,
  * value they expect.  This assumes that the traditional cipher/auth directives
  * in the config match the config of the peer.
  */
-size_t
-calc_options_string_link_mtu(const struct options *options,
+size_t calc_options_string_link_mtu(const struct options *options,
                              const struct frame *frame);
 
 /**
  * Return the size of the packet ID size that is currently in use by cipher and
  * options for the data channel.
  */
-unsigned int
-calc_packet_id_size_dc(const struct options *options,
+unsigned int calc_packet_id_size_dc(const struct options *options,
                        const struct key_type *kt);
 
 /*

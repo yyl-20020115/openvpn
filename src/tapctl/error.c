@@ -23,11 +23,10 @@
 
 
 /* Globals */
-unsigned int x_debug_level; /* GLOBAL */
+unsigned int x_debug_level = 0; /* GLOBAL */
 
 
-void
-x_msg(const unsigned int flags, const char *format, ...)
+void x_msg(const unsigned int flags, const char *format, ...)
 {
     va_list arglist;
     va_start(arglist, format);

@@ -204,8 +204,7 @@ struct context_1
 };
 
 
-static inline bool
-is_cas_pending(enum multi_status cas)
+static inline bool is_cas_pending(enum multi_status cas)
 {
     return cas == CAS_PENDING || cas == CAS_PENDING_DEFERRED
            || cas == CAS_PENDING_DEFERRED_PARTIAL;

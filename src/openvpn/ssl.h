@@ -325,8 +325,7 @@ struct key_state *tls_select_encryption_key(struct tls_multi *multi);
  *
  * @ingroup data_crypto
  */
-void
-tls_prepend_opcode_v1(const struct tls_multi *multi, struct buffer *buf);
+void tls_prepend_opcode_v1(const struct tls_multi *multi, struct buffer *buf);
 
 /**
  * Prepend an OpenVPN data channel P_DATA_V2 header to the packet.  The
@@ -344,8 +343,7 @@ tls_prepend_opcode_v1(const struct tls_multi *multi, struct buffer *buf);
  *
  * @ingroup data_crypto
  */
-void
-tls_prepend_opcode_v2(const struct tls_multi *multi, struct buffer *buf);
+void tls_prepend_opcode_v2(const struct tls_multi *multi, struct buffer *buf);
 
 /**
  * Perform some accounting for the key state used.
@@ -449,8 +447,7 @@ bool tls_session_update_crypto_params(struct tls_multi *multi,
  */
 
 /** Free the elements of a tls_wrap_ctx structure */
-static inline void
-tls_wrap_free(struct tls_wrap_ctx *tls_wrap)
+static inline void tls_wrap_free(struct tls_wrap_ctx *tls_wrap)
 {
     if (packet_id_initialized(&tls_wrap->opt.packet_id))
     {
@@ -466,14 +463,12 @@ tls_wrap_free(struct tls_wrap_ctx *tls_wrap)
     free_buf(&tls_wrap->work);
 }
 
-static inline bool
-tls_initial_packet_received(const struct tls_multi *multi)
+static inline bool tls_initial_packet_received(const struct tls_multi *multi)
 {
     return multi->n_sessions > 0;
 }
 
-static inline int
-tls_test_payload_len(const struct tls_multi *multi)
+static inline int tls_test_payload_len(const struct tls_multi *multi)
 {
     if (multi)
     {
@@ -486,8 +481,7 @@ tls_test_payload_len(const struct tls_multi *multi)
     return 0;
 }
 
-static inline void
-tls_set_single_session(struct tls_multi *multi)
+static inline void tls_set_single_session(struct tls_multi *multi)
 {
     if (multi)
     {
@@ -540,8 +534,7 @@ void ssl_clean_user_pass(void);
  * @param cipher_list_tls13 list of allowed TLS 1.3+ cipher, or NULL
  * @param tls_cert_profile  TLS certificate crypto profile name.
  */
-void
-show_available_tls_ciphers(const char *cipher_list,
+void show_available_tls_ciphers(const char *cipher_list,
                            const char *cipher_list_tls13,
                            const char *tls_cert_profile);
 
@@ -552,21 +545,18 @@ show_available_tls_ciphers(const char *cipher_list,
  * This erases the source material used to generate the data channel keys, and
  * can thus be called only once per session.
  */
-bool
-tls_session_generate_data_channel_keys(struct tls_multi *multi,
+bool tls_session_generate_data_channel_keys(struct tls_multi *multi,
                                        struct tls_session *session);
 
 /**
  * Load ovpn.xkey provider used for external key signing
  */
-void
-load_xkey_provider(void);
+void load_xkey_provider(void);
 
 /* Special method to skip the three way handshake RESET stages. This is
  * used by the HMAC code when seeing a packet that matches the previous
  * HMAC based stateless server state */
-bool
-session_skip_to_pre_start(struct tls_session *session,
+bool session_skip_to_pre_start(struct tls_session *session,
                           struct tls_pre_decrypt_state *state,
                           struct link_socket_actual *from);
 

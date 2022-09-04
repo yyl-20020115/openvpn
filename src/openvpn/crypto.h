@@ -436,8 +436,7 @@ void crypto_adjust_frame_parameters(struct frame *frame,
  *                      incorrect way as all previous OpenVPN versions did, to
  *                      end up with identical numbers for OCC compatibility
  */
-unsigned int
-calculate_crypto_overhead(const struct key_type *kt,
+unsigned int calculate_crypto_overhead(const struct key_type *kt,
                           unsigned int pkt_id_size,
                           bool occ);
 
@@ -451,8 +450,7 @@ unsigned int crypto_max_overhead(void);
  * @param filename          Filename of the server key file to create.
  * @param pem_name          The name to use in the PEM header/footer.
  */
-void
-write_pem_key_file(const char *filename, const char *key_name);
+void write_pem_key_file(const char *filename, const char *key_name);
 
 /**
  * Generate ephermal key material into the key structure
@@ -461,8 +459,7 @@ write_pem_key_file(const char *filename, const char *key_name);
  * @param pem_name      the name used for logging
  * @return              true if key generation was successful
  */
-bool
-generate_ephemeral_key(struct buffer *key, const char *pem_name);
+bool generate_ephemeral_key(struct buffer *key, const char *pem_name);
 
 /**
  * Read key material from a PEM encoded files into the key structure
@@ -474,8 +471,7 @@ generate_ephemeral_key(struct buffer *key, const char *pem_name);
  *                      otherwise.
  * @return              true if reading into key was successful
  */
-bool
-read_pem_key_file(struct buffer *key, const char *pem_name,
+bool read_pem_key_file(struct buffer *key, const char *pem_name,
                   const char *key_file, bool key_inline);
 
 /*
@@ -537,8 +533,7 @@ void crypto_read_openvpn_key(const struct key_type *key_type,
  */
 int memcmp_constant_time(const void *a, const void *b, size_t size);
 
-static inline bool
-key_ctx_bi_defined(const struct key_ctx_bi *key)
+static inline bool key_ctx_bi_defined(const struct key_ctx_bi *key)
 {
     return key->encrypt.cipher || key->encrypt.hmac || key->decrypt.cipher || key->decrypt.hmac;
 }
@@ -565,10 +560,9 @@ const char *print_key_filename(const char *str, bool is_inline);
  *
  * @return          the initialized key_type instance
  */
-static inline struct key_type
-create_kt(const char *cipher, const char *md, const char *optname)
+static inline struct key_type create_kt(const char *cipher, const char *md, const char *optname)
 {
-    struct key_type kt;
+    struct key_type kt = { 0 };
     kt.cipher = cipher;
     kt.digest = md;
 

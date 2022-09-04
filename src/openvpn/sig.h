@@ -85,14 +85,12 @@ void process_explicit_exit_notification_timer_wakeup(struct context *c);
 
 #ifdef _WIN32
 
-static inline void
-get_signal(volatile int *sig)
+static inline void get_signal(volatile int *sig)
 {
     *sig = win32_signal_get(&win32_signal);
 }
 
-static inline void
-halt_non_edge_triggered_signals(void)
+static inline void halt_non_edge_triggered_signals(void)
 {
     win32_signal_close(&win32_signal);
 }

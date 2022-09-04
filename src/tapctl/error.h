@@ -80,15 +80,13 @@ void x_msg_va(const unsigned int flags, const char *format, va_list arglist);
 
 /* Inline functions */
 
-static inline bool
-check_debug_level(unsigned int level)
+static inline bool check_debug_level(unsigned int level)
 {
     return (level & M_DEBUG_LEVEL) <= x_debug_level;
 }
 
 /** Return true if flags represent and enabled, not muted log level */
-static inline bool
-msg_test(unsigned int flags)
+static inline bool msg_test(unsigned int flags)
 {
     return check_debug_level(flags) && dont_mute(flags);
 }

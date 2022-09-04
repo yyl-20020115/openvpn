@@ -227,8 +227,7 @@ bool tls_authenticate_key(struct tls_multi *multi, const unsigned int mda_key_id
  */
 void auth_set_client_reason(struct tls_multi *multi, const char *client_reason);
 
-static inline const char *
-tls_client_reason(struct tls_multi *multi)
+static inline const char * tls_client_reason(struct tls_multi *multi)
 {
     return multi->client_reason;
 }

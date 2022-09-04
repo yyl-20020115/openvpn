@@ -55,8 +55,7 @@ struct key_state_ssl {
  */
 extern int mydata_index; /* GLOBAL */
 
-static inline void
-tls_clear_error(void)
+static inline void tls_clear_error(void)
 {
     ERR_clear_error();
 }

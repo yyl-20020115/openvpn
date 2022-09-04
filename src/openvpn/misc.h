@@ -202,14 +202,12 @@ void output_peer_info_env(struct env_set *es, const char *peer_info);
  * @param delimiter     the delimiter to count, typically ':'
  * @return              occrrences of delimiter + 1
  */
-int
-get_num_elements(const char *string, char delimiter);
+int get_num_elements(const char *string, char delimiter);
 
 /**
  * Prepend a directory to a path.
  */
-struct buffer
-prepend_dir(const char *dir, const char *path, struct gc_arena *gc);
+struct buffer prepend_dir(const char *dir, const char *path, struct gc_arena *gc);
 
 #define _STRINGIFY(S) #S
 /* *INDENT-OFF* - uncrustify need to ignore this macro */
