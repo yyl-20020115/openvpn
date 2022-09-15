@@ -1610,7 +1610,7 @@ process_ip_header(struct context *c, unsigned int flags, struct buffer *buf)
  *
  * Hide that complexity (...especially if more platforms show up
  * in future...) in a small inline function.
- */
+ *           /
 static inline bool
 should_use_dco_socket(struct link_socket *sock)
 {
